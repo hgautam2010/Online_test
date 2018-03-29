@@ -11,7 +11,7 @@
 		<div class="row">
 				<h1>ONLINE QUIZ</h1>
 				<ul>
-					<li><a href="#">HOME</a></li>  	
+					<li><a href="#">HOME</a></li>
 					<li><a href="#">NOTIFICATIONS</a></li>
 					<li><a href="#">ABOUT</a></li>
 					<li><a href="logout.php">LOGOUT</a></li>
@@ -38,16 +38,16 @@
 		</div>
 	<?php
 		session_start();
-		
+
 		$test_id=$_SESSION['sess_test'];
 		$count=$_SESSION['sess_ques'];
 		?>
 	<?php
-		
+
 		if(isset($_POST["submit"])){
-		if($count>0 &&!empty($_POST['desc']) && !empty($_POST['op1']) && !empty($_POST['op2'])&& !empty($_POST['op3'])&& !empty($_POST['op4']) && !empty($_POST['curr_ans'])) 
+		if($count>0 &&!empty($_POST['desc']) && !empty($_POST['op1']) && !empty($_POST['op2'])&& !empty($_POST['op3'])&& !empty($_POST['op4']) && !empty($_POST['curr_ans']))
 		{
-			
+
 			$des=$_POST['desc'];
 			$opt1=$_POST['op1'];
 			$opt2=$_POST['op2'];
@@ -59,14 +59,14 @@
 			echo $opt2;
 			echo $opt3;
 			echo $opt4;
-			
+
 			$con=mysqli_connect('localhost','root','');
 			mysqli_select_db($con,'online_test') or die("cannot select DB");
 			mysql_query("insert into question(test_id,que_desc,opt1,opt2,opt3,opt4,curr_ans) values ('$test_id','$des','$opt1','$opt2','$opt3','$opt4','$curr_ans')",$cn) or die(mysql_error());
 			$count=$count-1;
 			echo "<p align=center>Question Added Successfully.</p>";
 		unset($_POST);
-	
+
 		}
 		else{
 			if($count==0)
@@ -76,9 +76,9 @@
 			else
 				echo"ENTER REQUIRED FIELDS !!";
 		}
-			
+
 		}
 	?>
-		
+
 </body>
 </html>
