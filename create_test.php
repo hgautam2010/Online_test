@@ -11,7 +11,7 @@
 		<div class="row">
 				<h1>ONLINE QUIZ</h1>
 				<ul>
-					<li><a href="#">HOME</a></li>  	
+					<li><a href="#">HOME</a></li>
 					<li><a href="#">NOTIFICATIONS</a></li>
 					<li><a href="#">ABOUT</a></li>
 					<li><a href="logout.php">LOGOUT</a></li>
@@ -37,11 +37,11 @@
 				<li> CATEGORY:<input type="text" name="category" > <br></li>
 				<li> TOTAL QUES:<input type="text" name="totalq" > <br></li>
 				<li> START DATE and TIME:<input name="st_datetime" type="datetime-local"> <br></li>
-				<li> END DATE and TIME:<input name="end_datetime" type="datetime-local"> <br></li
+				<li> END DATE and TIME:<input name="end_datetime" type="datetime-local"> <br></li>
 				<li> CORRECT ANSWER:<input type="number_format" name="curr_ans" default='1' > <br></li>
 				<li> WRONG ANSWER:<input type="number_format" name="wng_ans" default='0' > <br></li>
 				<li> PASSING LIMIT:<input type="number_format" name="limit" > <br></li>
-					<br>	       
+					<br>
 					<input type="submit" value="submit" name="submit">
 					<input type="reset">
 			</ol>
@@ -74,7 +74,7 @@
 				}
 				else
 				{
-					echo "FILL REQUIRED FIELDS !!"
+					echo "FILL REQUIRED FIELDS !!";
 				}
 			}
 		?>
