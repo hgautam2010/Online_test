@@ -106,7 +106,7 @@
             </a>
 					</li>
 					<li>
-						<a href="#formsExamples">
+						<a href="logout.php">
                 <i class="ti-share"></i>
                 <p>
 									logout

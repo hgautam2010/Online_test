@@ -1,39 +1,4 @@
-<?php
-	//include 'init.php';
-	if(isset($_POST["submit"])){
-		if(!empty($_POST['user']) && !empty($_POST['pass'])) {
-			$user=$_POST['user'];
-			$pass=$_POST['pass'];
-			echo $user;
-			echo $pass;
-			$count=0;
-			$con=mysqli_connect('localhost','root','');
-			mysqli_select_db($con,'online_test') or die("cannot select DB");
-			//$query=mysqli_query($con,"SELECT * FROM register");
-			//$numrows=mysqli_num_rows($query);
-			//if($numrows==0)
-			//	$count=1;
-			//else
-			//	$count=$numrows+1;
-			$query=mysqli_query($con,"SELECT * FROM register WHERE username='".$user."'");
-			$numrows=mysqli_num_rows($query);
-			if($numrows==0)
-			{
-				$sql="INSERT INTO register(username,password) VALUES('$user','$pass')";
-				$result=mysqli_query($con,$sql);
-				if($result){
-					echo "Account Successfully Created";
-				} else {
-					echo "Failure!";
-				}
-			} else {
-				echo "That username already exists! Please try again with another.";
-			}
-		} else {
-		echo "All fields are required!";
-		}
-	}
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -124,30 +89,21 @@
 							</div>
 						</div>
 						<div class="col-md-4">
-							<form method="#" action="#">
+							<form method="post">
 								<div class="card card-plain">
 									<div class="content">
 										<div class="form-group">
-											<input type="email" placeholder="Your First Name" class="form-control">
+											<input type="text" name="user" placeholder="Username" class="form-control">
 										</div>
 										<div class="form-group">
-											<input type="email" placeholder="Your Last Name" class="form-control">
+											<input type="password" name="pass" placeholder="Password" class="form-control">
 										</div>
 										<div class="form-group">
-											<input type="email" placeholder="Company" class="form-control">
-										</div>
-										<div class="form-group">
-											<input type="email" placeholder="Enter email" class="form-control">
-										</div>
-										<div class="form-group">
-											<input type="password" placeholder="Password" class="form-control">
-										</div>
-										<div class="form-group">
-											<input type="password" placeholder="Password Confirmation" class="form-control">
+											<input type="password" name="conpass" placeholder="Password Confirmation" class="form-control">
 										</div>
 									</div>
 									<div class="footer text-center">
-										<button type="submit" class="btn btn-fill btn-danger btn-wd">Create Free Account</button>
+										<button type="submit" name="submit" id="name" class="btn btn-fill btn-danger btn-wd">Create Free Account</button>
 									</div>
 								</div>
 							</form>
@@ -155,7 +111,36 @@
 					</div>
 				</div>
 			</div>
-
+<?php
+	if(isset($_POST["submit"])){
+		if(!empty($_POST['user']) && !empty($_POST['pass']) && !empty($_POST['conpass'])) {
+			$user=$_POST['user'];
+			$pass=$_POST['pass'];
+			$cpass=$_POST['conpass'];
+			print "<span style='color:=#e53d37'>username/email already used.</span>";
+			$count=0;
+				$con=mysqli_connect('localhost','root','');
+				mysqli_select_db($con,'online_test') or die("cannot select DB");
+				$query=mysqli_query($con,"SELECT * FROM register WHERE username='$user'");
+				$numrows=mysqli_num_rows($query);
+				if($numrows==0)
+				{
+					$sql="INSERT INTO register(username,password) VALUES('$user','$pass')";
+					$result=mysqli_query($con,$sql);
+					if($result){
+						header("Location: index.php");
+						//echo "<script type='text/javascript'>alert('submitted successfully!')</script>";
+					} else {
+						//echo "<script type='text/javascript'>alert('Failure!')</script>";
+					}
+				} else {
+					//echo "<script type='text/javascript'>alert('username already exists! Please try again with another!')</script>";
+				}
+		}else {
+			//echo "<script type='text/javascript'>alert('All fields are required!')</script>";
+		}
+	}
+?>
 			<footer class="footer footer-transparent">
 				<div class="container">
 					<div class="copyright text-center">

@@ -1,38 +1,4 @@
-<?php
-	if(isset($_POST["submit"])){
-	if(!empty($_POST['username']) && !empty($_POST['password'])) {
-		$user=$_POST['username'];
-		$pass=$_POST['password'];
-		echo $user;
-		echo $pass;
-		$con=mysqli_connect('localhost','root','') or die(mysql_error());
-		mysqli_select_db($con,'online_test') or die("cannot select DB");
-		$result=mysqli_query($con,"SELECT * FROM register WHERE username='".$user."' AND password='".$pass."'");
-		$numrows=mysqli_num_rows($result);
-		if($numrows!=0)
-		{
-			while($row=mysqli_fetch_assoc($result))
-			{
-				$dbusername=$row['username'];
-				$dbpassword=$row['password'];
-			}
-			if($user == $dbusername && $pass == $dbpassword)
-			{
-				$result=mysqli_query($con,"SELECT user_id FROM register WHERE username='".$user."' AND password='".$pass."'");
-				session_start();
-				$_SESSION['sess_user']=$result;
-				echo "logged in session started";
-				/* Redirect browser */
-				header("Location: home.php");
-			}
-		} else {
-			echo "Invalid username or password!";
-		}
-		} else {
-			echo "All fields are required!";
-		}
-	}
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -109,11 +75,11 @@
 									<div class="card-content">
 										<div class="form-group">
 											<label>Login ID</label>
-											<input type="text" placeholder="Login ID" class="form-control input-no-border">
+											<input type="text" placeholder="Login ID" name="username" class="form-control input-no-border">
 										</div>
 										<div class="form-group">
 											<label>Password</label>
-											<input type="password" placeholder="Password" class="form-control input-no-border">
+											<input type="password" placeholder="Password" name="password" class="form-control input-no-border">
 										</div>
 									</div>
 									<div class="card-footer text-center">
@@ -125,6 +91,39 @@
 					</div>
 				</div>
 			</div>
+			<?php
+	if(isset($_POST["submit"])){
+	if(!empty($_POST['username']) && !empty($_POST['password'])) {
+		$user=$_POST['username'];
+		$pass=$_POST['password'];
+		$con=mysqli_connect('localhost','root','') or die(mysql_error());
+		mysqli_select_db($con,'online_test') or die("cannot select DB");
+		$result=mysqli_query($con,"SELECT * FROM register WHERE username='".$user."' AND password='".$pass."'");
+		$numrows=mysqli_num_rows($result);
+		if($numrows!=0)
+		{
+			while($row=mysqli_fetch_assoc($result))
+			{
+				$dbusername=$row['username'];
+				$dbpassword=$row['password'];
+			}
+			if($user == $dbusername && $pass == $dbpassword)
+			{
+				$result=mysqli_query($con,"SELECT user_id FROM register WHERE username='".$user."' AND password='".$pass."'");
+				session_start();
+				$_SESSION['sess_user']=$result;
+				echo "logged in session started";
+				
+				header("Location: home.php");
+			}
+		} else {
+			echo "Invalid username or password!";
+		}
+		} else {
+			echo "All fields are required!";
+		}
+	}
+?>
 			<footer class="footer footer-transparent">
 				<div class="container">
 					<div class="copyright">
