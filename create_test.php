@@ -1,42 +1,11 @@
 <?php
-		// session_start();
-		// if(!isset($_SESSION["sess_user"])){
-		// 	header("location:addquestions.php");
-		// }
-		// $user=$_SESSION['sess_user'];
+		 session_start();
+		 if(!isset($_SESSION["sess_user"])){
+		 	header("location:index.php");
+		 }
+		 $user=$_SESSION['sess_user'];
 		// echo "LOGGED IN USER IS -----";
 		// echo $user;
-?>
-<?php
-			// if($_POST[submit] )
-			// {
-			// 	if(!empty($_POST['testname']) && !empty($_POST['totalq']) && !empty($_POST['st_datetime']) && !empty($_POST['end_datetime']))
-			// 	{
-			// 		$test_name=$_POST['testname'];
-			// 		$category=$_POST['category'];
-			// 		$totalq=$_POST['totalq'];
-			// 		$st_date=$_POST['st_datetime'];
-			// 		$end_date=$_POST['end_datetime'];
-			// 		$curr_ans=$_POST['curr_ans'];
-			// 		$wng_ans=$_POST['wng_ans'];
-			// 		$limit=$_POST['limit'];
-			// 		$con=mysqli_connect('localhost','root','') or die(mysql_error());
-			// 		mysqli_select_db($con,'online_test') or die("cannot select DB");
-			// 		mysql_query("insert into test(test_name,category,total_que,start_date,end_date,pt_curr,pt_neg,pass_limit) values ('$testname','$category','$totque','$st_date','$end_date','$curr_ans','$wng_ans','$limit')",$con) or die(mysql_error());
-			// 		echo "<p align=center>Test <b>\"$testname\"</b> Added Successfully.</p>";
-			// 		$result=mysqli_query($con,"SELECT test_id FROM test WHERE username='".$user."' AND test_name='".$test_name."'");
-			// 		$_SESSION['sess_test']=$result;
-			// 		$_SESSION['sess_ques']=$totalq;
-			// 		echo "logged in session started";
-			// 			/* Redirect browser */
-			// 		header("Location: addquestions.php");
-			// 		unset($_POST);
-			// 	}
-			// 	else
-			// 	{
-			// 		echo "FILL REQUIRED FIELDS !!";
-			// 	}
-			// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,7 +49,7 @@
 			<div class="sidebar-wrapper">
 				<ul class="nav">
 					<li>
-						<a href="#dashboardOverview">
+						<a href="home.php">
 	              <i class="ti-panel"></i>
 								<p>Home</p>
 	          </a>
@@ -130,7 +99,7 @@
             </a>
 					</li>
 					<li>
-						<a href="#formsExamples">
+						<a href="logout.php">
                 <i class="ti-share"></i>
                 <p>
 									logout
@@ -191,7 +160,7 @@
 			<div class="content">
 				<div style="width: 60%; margin-left: auto; margin-right: auto;">
 					<div class="card">
-						<form id="registerFormValidation" action="" method="" novalidate="novalidate">
+						<form method="post">
 							<div class="card-header">
 								<h4 class="card-title">
 										Create Test
@@ -206,7 +175,7 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label">
-											Category <star>*</star>
+											Category 
 									</label>
 									<input class="form-control" name="category" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
@@ -218,19 +187,19 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label">
-											Correct Answers Marks <star>*</star>
+											Correct Answers Marks 
 									</label>
 									<input class="form-control" name="curr_ans" default="1" value="1" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
 								<div class="form-group">
 									<label class="control-label">
-											Worng Answers Penalty <star>*</star>
+											Worng Answers Penalty 
 									</label>
 									<input class="form-control" name="wng_ans" default="0" value="0" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
 								<div class="form-group">
 									<label class="control-label">
-											Passing Marks <star>*</star>
+											Passing Marks 
 									</label>
 									<input class="form-control" name="limit" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
@@ -238,13 +207,13 @@
 									<label class="control-label">
 											Start at <star>*</star>
 									</label>
-									<input type="text" class="form-control datetimepicker" placeholder="Start Date and Time" />
+									<input type="text" name="st_datetime" class="form-control datetimepicker" placeholder="Start Date and Time" />
 								</div>
 								<div class="form-group">
 									<label class="control-label">
 											End at <star>*</star>
 									</label>
-									<input type="text" class="form-control datetimepicker" placeholder="End Date and Time" />
+									<input type="text" name="end_datetime" class="form-control datetimepicker" placeholder="End Date and Time" />
 								</div>
 								<div class="form-group">
 									<label class="control-label">
@@ -259,13 +228,57 @@
 									<star>*</star> Required fields</div>
 							</div>
 							<div class="card-footer">
-								<button type="submit" class="btn btn-info btn-fill pull-right">Submit</button>
+								<button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Submit</button>
 								<div class="clearfix"></div>
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
+			<?php
+		 //$user=$_SESSION['sess_user'];
+		 echo "LOGGED IN USER IS -----";
+		 echo $user;
+		 //echo " ".date("Y-m-d H:i", strtotime("2018/12/07 04:25 PM"));
+?>
+			<?php
+			 if(isset($_POST["submit"]))
+			 {
+			 	if(!empty($_POST['testname']) && !empty($_POST['totalq']) && !empty($_POST['st_datetime']) && !empty($_POST['end_datetime']))
+			 	{
+					$test_name=$_POST['testname'];
+			 		$category=$_POST['category'];
+			 		$totalq=$_POST['totalq'];
+			 		$st_date=$_POST['st_datetime'];
+			 		$end_date=$_POST['end_datetime'];
+			 		$curr_ans=$_POST['curr_ans'];
+			 		$wng_ans=$_POST['wng_ans'];
+			 		$limit=$_POST['limit'];
+					//echo "value set=".$st_date." ";
+					$st_date=date("Y-m-d H:i", strtotime($st_date));
+					$st_date=$st_date.":00";
+					$end_date=date("Y-m-d H:i", strtotime($end_date));
+					$end_date=$end_date.":00";
+					
+			 		$con=mysqli_connect('localhost','root','') or die(mysql_error());
+			 		mysqli_select_db($con,'online_test') or die("cannot select DB");
+			 		$sql=mysqli_query($con,"INSERT INTO `tests`(`user_id`, `test_name`, `category`, `total_ques`, `startTest_dateTime`, `endTest_datetime`, `pt_curr`, `pt_neg`, `pass_limit`) VALUES  ('$user','$test_name','$category','$totalq','$st_date','$end_date','$curr_ans','$wng_ans','$limit')");
+			 		echo $sql;
+			 		$result=mysqli_query($con,"SELECT test_id FROM tests WHERE user_id='".$user."' AND test_name='".$test_name."'");
+					$row=mysqli_fetch_assoc($result);
+					//session_start();
+			 		@$_SESSION['sess_test']=$row['test_id'];
+			 		@$_SESSION['sess_ques']=$totalq;
+			 			
+						echo "Success hurray!!!";
+			 		//header("Location: addquestions.php");
+			 	}
+			 	else
+			 	{
+			 		echo "FILL REQUIRED FIELDS !!";
+			 	}
+			 }
+?>
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">

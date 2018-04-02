@@ -110,8 +110,9 @@
 			if($user == $dbusername && $pass == $dbpassword)
 			{
 				$result=mysqli_query($con,"SELECT user_id FROM register WHERE username='".$user."' AND password='".$pass."'");
+				$row=mysqli_fetch_assoc($result);
 				session_start();
-				$_SESSION['sess_user']=$result;
+				@$_SESSION['sess_user']=$row['user_id'];
 				echo "logged in session started";
 				
 				header("Location: home.php");

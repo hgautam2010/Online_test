@@ -1,5 +1,4 @@
 <?php
-	/*
 	session_start();
 	if(!isset($_SESSION["sess_user"])){
 		header("location:index.php");
@@ -7,7 +6,7 @@
 	$user=$_SESSION['sess_user'];
 	echo "LOGGED IN USER IS -----";
 	echo $user;
-	if(!isset($_GET)) {
+	/*if(!isset($_GET)) {
 		$topic =$_GET['user_id'];
 		echo "Get". $topic ;
 	}*/
@@ -56,7 +55,7 @@
 			<div class="sidebar-wrapper">
 				<ul class="nav">
 					<li class="active">
-						<a href="#dashboardOverview">
+						<a href="home.php">
 	              <i class="ti-panel"></i>
 								<p>Home</p>
 	          </a>
@@ -71,7 +70,7 @@
 						<div class="collapse" id="componentsExamples">
 							<ul class="nav">
 								<li>
-									<a href="components/buttons.html">
+									<a href="create_test.php">
 										<span class="sidebar-mini">CT</span>
 										<span class="sidebar-normal">Create Test</span>
 									</a>
@@ -167,6 +166,12 @@
 			<div class="content">
 
 			</div>
+			<?php
+		
+		 //$user=$_SESSION['sess_user'];
+		 echo "LOGGED IN USER IS -----";
+		 echo $user;
+?>
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
