@@ -1,46 +1,9 @@
 <?php
-		// session_start();
-		//
-		// $test_id=$_SESSION['sess_test'];
-		// $count=$_SESSION['sess_ques'];
+		 session_start();
+		 $test_id=$_SESSION['sess_test'];
+		 $count=$_SESSION['sess_ques'];
 		?>
-	<?php
-
-		if(isset($_POST["submit"])){
-		if($count>0 &&!empty($_POST['desc']) && !empty($_POST['op1']) && !empty($_POST['op2'])&& !empty($_POST['op3'])&& !empty($_POST['op4']) && !empty($_POST['curr_ans']))
-		{
-
-			$des=$_POST['desc'];
-			$opt1=$_POST['op1'];
-			$opt2=$_POST['op2'];
-			$opt3=$_POST['op3'];
-			$opt4=$_POST['op4'];
-			$curr_ans=$_POST['curr_ans'];
-			echo $des;
-			echo $opt1;
-			echo $opt2;
-			echo $opt3;
-			echo $opt4;
-
-			$con=mysqli_connect('localhost','root','');
-			mysqli_select_db($con,'online_test') or die("cannot select DB");
-			mysql_query("insert into question(test_id,que_desc,opt1,opt2,opt3,opt4,curr_ans) values ('$test_id','$des','$opt1','$opt2','$opt3','$opt4','$curr_ans')",$cn) or die(mysql_error());
-			$count=$count-1;
-			echo "<p align=center>Question Added Successfully.</p>";
-		unset($_POST);
-
-		}
-		else{
-			if($count==0)
-			{
-				header("Location: home.php");
-			}
-			else
-				echo"ENTER REQUIRED FIELDS !!";
-		}
-
-		}
-	?>
+	
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,7 +46,7 @@
 			<div class="sidebar-wrapper">
 				<ul class="nav">
 					<li>
-						<a href="#dashboardOverview">
+						<a href="home.php">
 	              <i class="ti-panel"></i>
 								<p>Home</p>
 	          </a>
@@ -98,7 +61,7 @@
 						<div class="collapse in" id="componentsExamples">
 							<ul class="nav">
 								<li class="active">
-									<a href="components/buttons.html">
+									<a href="create_test.php">
 										<span class="sidebar-mini">CT</span>
 										<span class="sidebar-normal">Create Test</span>
 									</a>
@@ -133,7 +96,7 @@
             </a>
 					</li>
 					<li>
-						<a href="#formsExamples">
+						<a href="logout.php">
                 <i class="ti-share"></i>
                 <p>
 									logout
@@ -194,7 +157,7 @@
 			<div class="content">
 				<div style="width: 60%; margin-left: auto; margin-right: auto;">
 					<div class="card">
-						<form id="registerFormValidation" action="" method="" novalidate="novalidate">
+						<form method="post">
 							<div class="card-header">
 								<h4 class="card-title">
 										Add Question
@@ -205,44 +168,44 @@
 									<label class="control-label">
 											Question Description <star>*</star>
 									</label>
-									<textarea id="desc" maxlength="700" class="form-control" placeholder="Enter Question" rows="3"></textarea>
+									<textarea name="desc" maxlength="700" class="form-control" placeholder="Enter Question" rows="3"></textarea>
 								</div>
 								<div class="form-group">
 									<label class="control-label">
 											Option 1 <star>*</star>
 									</label>
-									<textarea id="op1" maxlength="200" class="form-control" placeholder="Option 1" rows="1"></textarea>
+									<textarea name="op1" maxlength="200" class="form-control" placeholder="Option 1" rows="1"></textarea>
 								</div>
 								<div class="form-group">
 									<label class="control-label">
 											Option 2 <star>*</star>
 									</label>
-									<textarea id="op2" maxlength="200" class="form-control" placeholder="Option 2" rows="1"></textarea>
+									<textarea name="op2" maxlength="200" class="form-control" placeholder="Option 2" rows="1"></textarea>
 								</div>
 								<div class="form-group">
 									<label class="control-label">
 											Option 3 <star>*</star>
 									</label>
-									<textarea id="op3" maxlength="200" class="form-control" placeholder="Option 3" rows="1"></textarea>
+									<textarea name="op3" maxlength="200" class="form-control" placeholder="Option 3" rows="1"></textarea>
 								</div>
 								<div class="form-group">
 									<label class="control-label">
 											Option 4 <star>*</star>
 									</label>
-									<textarea id="op4" maxlength="200" class="form-control" placeholder="Option 4" rows="1"></textarea>
+									<textarea name="op4" maxlength="200" class="form-control" placeholder="Option 4" rows="1"></textarea>
 								</div>
 								<div class="form-group">
 									<label class="control-label">
 											Correct Answer <star>*</star>
 									</label>
-									<textarea id="ans" name="curr_ans" maxlength="200" class="form-control" placeholder="Answer" rows="1"></textarea>
+									<textarea name="curr_ans" name="curr_ans" maxlength="200" class="form-control" placeholder="Answer" rows="1"></textarea>
 								</div>
 								<br>
 								<div class="category">
 									<star>*</star> Required fields</div>
 							</div>
 							<div class="card-footer">
-								<button type="submit" class="btn btn-info btn-fill pull-right">Submit</button>
+								<button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Submit</button>
 								<button type="reset" style="margin-right: 20px;" class="btn btn-danger btn-fill pull-right">Reset</button>
 								<div class="clearfix"></div>
 							</div>
@@ -250,6 +213,55 @@
 					</div>
 				</div>
 			</div>
+			<?php
+		 echo "test_id=".$test_id."count=".$count;
+		?>
+	<?php
+
+		if(isset($_POST["submit"])){
+		if($count>0 &&!empty($_POST['desc']) && !empty($_POST['op1']) && !empty($_POST['op2'])&& !empty($_POST['op3'])&& !empty($_POST['op4']) && !empty($_POST['curr_ans']))
+		{
+
+			$des=$_POST['desc'];
+			$opt1=$_POST['op1'];
+			$opt2=$_POST['op2'];
+			$opt3=$_POST['op3'];
+			$opt4=$_POST['op4'];
+			$curr_ans=$_POST['curr_ans'];
+			echo $des;
+			echo $opt1;
+			echo $opt2;
+			echo $opt3;
+			echo $opt4;
+
+			$con=mysqli_connect('localhost','root','');
+			mysqli_select_db($con,'online_test') or die("cannot select DB");
+			mysqli_query($con,"insert into questions(test_id,ques_desc,opt1,opt2,opt3,opt4,curr_ans) values ('$test_id','$des','$opt1','$opt2','$opt3','$opt4','$curr_ans')");
+			--$count;
+			@$_SESSION['sess_ques']=$count;
+			echo "count1=".$count;
+			echo "<p align=center>Question Added Successfully.</p>";
+			if($count==0)
+			{
+				unset($_SESSION['sess_test']);
+				unset($_SESSION['sess_ques']);
+				//header("Location: home.php");
+				echo("<script>location.href = '".home.".php';</script>");
+			}
+		}
+		else{
+			if($count<1)
+			{
+				unset($_SESSION['sess_test']);
+				unset($_SESSION['sess_ques']);
+				echo("<script>location.href = '".home.".php';</script>");
+			}
+			else
+				echo"ENTER REQUIRED FIELDS !!";
+		}
+
+		}
+	?>
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
