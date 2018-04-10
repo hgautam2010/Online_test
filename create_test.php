@@ -1,11 +1,9 @@
 <?php
 		 session_start();
-		 if(!isset($_SESSION["sess_user"])){
-		 	header("location:index.php");
-		 }
+		 //if(!isset($_SESSION["sess_user"])){
+		 //	header("location:index.php");
+		 //}
 		 $user=$_SESSION['sess_user'];
-		// echo "LOGGED IN USER IS -----";
-		// echo $user;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -228,20 +226,15 @@
 									<star>*</star> Required fields</div>
 							</div>
 							<div class="card-footer">
-								<button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Submit</button>
+								<button type="submit" action="addquestions.php" name="submit" class="btn btn-info btn-fill pull-right">Submit</button>
+
 								<div class="clearfix"></div>
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
-			<?php
-		 //$user=$_SESSION['sess_user'];
-		 echo "LOGGED IN USER IS -----";
-		 echo $user;
-		 //echo " ".date("Y-m-d H:i", strtotime("2018/12/07 04:25 PM"));
-?>
-			<?php
+<?php
 			 if(isset($_POST["submit"]))
 			 {
 			 	if(!empty($_POST['testname']) && !empty($_POST['totalq']) && !empty($_POST['st_datetime']) && !empty($_POST['end_datetime']))
@@ -254,7 +247,6 @@
 			 		$curr_ans=$_POST['curr_ans'];
 			 		$wng_ans=$_POST['wng_ans'];
 			 		$limit=$_POST['limit'];
-					//echo "value set=".$st_date." ";
 					$st_date=date("Y-m-d H:i", strtotime($st_date));
 					$st_date=$st_date.":00";
 					$end_date=date("Y-m-d H:i", strtotime($end_date));
@@ -262,16 +254,16 @@
 					
 			 		$con=mysqli_connect('localhost','root','') or die(mysql_error());
 			 		mysqli_select_db($con,'online_test') or die("cannot select DB");
-			 		$sql=mysqli_query($con,"INSERT INTO `tests`(`user_id`, `test_name`, `category`, `total_ques`, `startTest_dateTime`, `endTest_datetime`, `pt_curr`, `pt_neg`, `pass_limit`) VALUES  ('$user','$test_name','$category','$totalq','$st_date','$end_date','$curr_ans','$wng_ans','$limit')");
-			 		echo $sql;
-			 		$result=mysqli_query($con,"SELECT test_id FROM tests WHERE user_id='".$user."' AND test_name='".$test_name."'");
-					$row=mysqli_fetch_assoc($result);
-					//session_start();
-			 		@$_SESSION['sess_test']=$row['test_id'];
-			 		@$_SESSION['sess_ques']=$totalq;
-			 			
-						echo "Success hurray!!!";
-			 		//header("Location: addquestions.php");
+			 		$sql="INSERT INTO `tests`(`user_id`, `test_name`, `category`, `total_ques`, `startTest_dateTime`, `endTest_datetime`, `pt_curr`, `pt_neg`, `pass_limit`) VALUES  ('$user','$test_name','$category','$totalq','$st_date','$end_date','$curr_ans','$wng_ans','$limit')";
+					if ($con->query($sql) === TRUE) {
+						$last_id = mysqli_insert_id($con);
+						@$_SESSION['sess_test']=$last_id;
+						@$_SESSION['sess_ques']=$totalq;
+						echo("<script>location.href = '".addquestions.".php';</script>");
+						//<script> location.replace("addquestions.php"); </script>
+						//header('Location: addquestions.php');
+					}
+			 		
 			 	}
 			 	else
 			 	{
@@ -279,7 +271,7 @@
 			 	}
 			 }
 ?>
-			<footer class="footer">
+		<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
 						<ul>
