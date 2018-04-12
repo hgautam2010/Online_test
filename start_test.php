@@ -1,3 +1,7 @@
+<?php
+	session_start();
+	$user=$_SESSION['sess_user'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +45,7 @@
 			<div class="sidebar-wrapper">
 				<ul class="nav">
 					<li>
-						<a href="#dashboardOverview">
+						<a href="home.php">
 	              <i class="ti-panel"></i>
 								<p>Home</p>
 	          </a>
@@ -56,7 +60,7 @@
 						<div class="collapse in" id="componentsExamples">
 							<ul class="nav">
 								<li>
-									<a href="components/buttons.html">
+									<a href="create_test.php">
 										<span class="sidebar-mini">CT</span>
 										<span class="sidebar-normal">Create Test</span>
 									</a>
@@ -74,7 +78,7 @@
 									</a>
 								</li>
 								<li class="active">
-									<a href="components/sweet-alert.html">
+									<a href="start_test.php">
 										<span class="sidebar-mini">ST</span>
 										<span class="sidebar-normal">Start Test</span>
 									</a>
@@ -91,7 +95,7 @@
             </a>
 					</li>
 					<li>
-						<a href="#formsExamples">
+						<a href="logout.php">
                 <i class="ti-share"></i>
                 <p>
 									logout
@@ -150,29 +154,53 @@
 				</div>
 			</nav>
 			<div class="content" style="padding-top: 5px; margin-top: 10px;">
-				<form class="navbar-left navbar-search-form" role="search">
+				<form class="navbar-left navbar-search-form" role="search" method="post">
 					<div class="" style="display: flex;">
 						<div class="input-group" style="margin-right: auto; margin-left: auto;">
-	              <span class="input-group-addon"><i class="fa fa-search"></i></span>
-	              <input type="text" class="form-control" style="margin-right: 10px;" placeholder="Search...">
-	          </div>
-						<button type="submit" style="margin-left: 10px; height: 40px;" class="btn btn-fill btn-wd ">Search</button>
+							<span class="input-group-addon"><i class="fa fa-search"></i></span>
+							<input type="text" name="test_name" class="form-control" style="margin-right: 10px;" placeholder="Search...">
+						</div>
+						<button type="submit" name="submit" style="margin-left: 10px; height: 40px;" class="btn btn-fill btn-wd ">Search</button>
 					</div>
-        </form>
+				</form>
 				<br><br>
 				<hr>
-				<div class="card" style="width: 50%; margin-left: auto; margin-right: auto;">
-					<a href="#">
-				    <div class="card-body" style="padding: 10px;"><h4 style="margin: 0px;">Test Name</h4></div>
-						<hr style="margin: 0px;">
-						<div class="" style="width: 100%;">
-							<div class="card-body" style="padding: 10px;"><b>Start Time :</b> Time</div>
-							<div class="card-body" style="padding: 10px;"><b>End Time : </b> Time </div>
-							<div class="card-body" style="padding: 10px;"><b>Questions : </b> Number </div>
-						</div>
-					</a>
-			  </div>
+				<?php
+					if(isset($_POST["submit"]))
+					{
+						if(!empty($_POST['test_name']))
+						{
+							$name=$_POST['test_name'];
+							$con=mysqli_connect('localhost','root','') or die(mysql_error());
+							mysqli_select_db($con,'online_test') or die("cannot select DB");
+							$query=mysqli_query($con,"SELECT test_id,total_ques,startTest_dateTime,endTest_datetime FROM tests WHERE test_name='$name'");
+							$numrows=mysqli_num_rows($query);
+							if($numrows>0)
+							while ($row=mysqli_fetch_row($query))
+							{
+								//printf ("%s (%s)\n",$row[0],$row[1]);
+							
+								$id=$row[0];
+								
+								echo "<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
+									 <a href='testPage.php?id=$id'>
+									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$name</h4></div>
+									<hr style='margin: 0px;'>
+									<div class='' style='width: 100%;'>
+										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[2]</div>
+										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[3] </div>
+										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[1] </div>
+										
+									</div>
+									</a>
+								</div>";
+							}
+						}
+					}
+				?>
+				
 			</div>
+					
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
