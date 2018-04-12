@@ -1,3 +1,9 @@
+<?php
+	session_start();
+	$user=$_SESSION['sess_user'];
+	$_SESSION["test_id"] = $_GET["id"];
+	$id=$_SESSION['test_id'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +47,7 @@
 			<div class="sidebar-wrapper">
 				<ul class="nav">
 					<li>
-						<a href="#dashboardOverview">
+						<a href="home.php">
 	              <i class="ti-panel"></i>
 								<p>Home</p>
 	          </a>
@@ -56,7 +62,7 @@
 						<div class="collapse in" id="componentsExamples">
 							<ul class="nav">
 								<li>
-									<a href="components/buttons.html">
+									<a href="create_test.php">
 										<span class="sidebar-mini">CT</span>
 										<span class="sidebar-normal">Create Test</span>
 									</a>
@@ -73,8 +79,8 @@
 										<span class="sidebar-normal">Edit Test</span>
 									</a>
 								</li>
-								<li class="active">
-									<a href="components/sweet-alert.html">
+								<li class="active">?
+									<a href="start_test.php" <?php unset($_SESSION["test_id"]);?>>
 										<span class="sidebar-mini">ST</span>
 										<span class="sidebar-normal">Start Test</span>
 									</a>
@@ -91,7 +97,7 @@
             </a>
 					</li>
 					<li>
-						<a href="#formsExamples">
+						<a href="logout.php">
                 <i class="ti-share"></i>
                 <p>
 									logout
@@ -157,35 +163,61 @@
 						</div>
 						<div style="margin-left: auto; margin-right: auto; font-size: 1.5em; text-align: center; color: white; width: 500px; padding-top: 20vh;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, repellendus!</div>
 						<br>
-						<button class="btn btn-success" style="display: block;margin-left: auto; margin-right: auto; width: 100px;">Start</button>
+						<form method="post">
+						<button type="submit" name="start" class="btn btn-success" style="display: block;margin-left: auto; margin-right: auto; width: 100px;">Start</button>
+						</form>
 					</div>
 					<h3>Introduction</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam quisquam pariatur laudantium velit voluptate ipsa, similique laborum, quibusdam debitis alias magni illo, eveniet beatae nobis. Ex, deleniti. Ducimus ipsum quisquam officia doloremque reprehenderit, quod provident, sed assumenda tenetur aspernatur in. Tenetur quo inventore possimus aspernatur cumque reprehenderit sunt assumenda? Aperiam dolor magnam inventore, maiores illum enim blanditiis quaerat a incidunt voluptates eligendi, rem quod consectetur, iure aspernatur. Porro, natus mollitia hic quibusdam repellendus consectetur accusantium impedit iure velit reiciendis ipsam earum placeat quasi aperiam voluptates sit! Aliquid eum quae laudantium, illum molestiae quasi incidunt, recusandae atque vitae assumenda reiciendis. Ea.</p>
-					<h3>Rules</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<ol>
-						<li>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam, eligendi! ipsum dolor sit amet. ipsum dolor sit amet, consectetur adipisicing elit. Veritatis, dolore.
-						</li>
-						<li>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum assumenda consectetur officiis laudantium, saepe, mollitia.
-						</li>
-						<li>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque eveniet consequuntur ipsam explicabo laboriosam, sequi ipsum voluptate laudantium provident rem! ipsum dolor sit amet, consectetur adipisicing elit. Veritatis, laboriosam, sed? Sint?
-						</li>
-					</ol>
-					<h3>
-						Prizes
-					</h3>
-					<h5>1st Prize</h5>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate numquam totam reprehenderit quis, rerum sapiente ducimus. Fuga placeat officiis quas voluptatum quisquam aliquam, sunt eos.</p>
-					<h5>2nd Prize</h5>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto distinctio dignissimos molestiae eius magni ea maiores aliquid ratione quia repellat!</p>
-					<h5>3rd Prize</h5>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum iste nemo illo neque quam accusamus, odio doloribus maxime eum explicabo mollitia, ab vitae nam quibusdam. Laborum, earum quia veritatis deleniti.</p>
-					<hr>
-					<h3>Contact</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					<?php
+							$con=mysqli_connect('localhost','root','') or die(mysql_error());
+							mysqli_select_db($con,'online_test') or die("cannot select DB");
+							$query=mysqli_query($con,"SELECT * FROM tests WHERE test_id='$id'");
+							$numrows=mysqli_num_rows($query);
+							if($numrows>0)
+							{
+								$row=mysqli_fetch_row($query);
+								$s=time();
+								echo "<p><h4> Test name: $row[2]</h4>
+										<h3>RULES</h3>
+										<ol>
+											<li>
+												Total no of questions: $row[4]
+											</li>
+											<li>
+												Points on correct answer: $row[7]
+											</li>
+											<li>
+												Points deducted on wrong answer: $row[8]
+											</li>
+											<li>
+												Passing marks are: $row[9]
+											</li>
+											<li>
+												Start Time of test: $row[5]
+											</li>
+											<li>
+												End Time of test: $row[6]
+											</li>
+											$s
+										</ol>
+										</p>";
+							}
+						?>
+						<?php
+							if(isset($_POST['start']))
+							{
+								$sec = strtotime($row[5]);
+								$sec2 =strtotime($row[6]);
+								$sec1 = time();
+								$can="CAN START TEST";
+								$cannot="CANNOT START TEST";
+								if( ($sec1>=$sec) && ($sec1<$sec2))
+									echo "<script type='text/javascript'>alert('$can');</script>";
+								else
+									echo "<script type='text/javascript'>alert('$cannot');</script>";
+							}	
+					
+					?>
 					<br>
 			</div>
 			<footer class="footer">

@@ -79,7 +79,7 @@
 									</a>
 								</li>
 								<li>
-									<a href="components/sweet-alert.html">
+									<a href="startTest.php">
 										<span class="sidebar-mini">ST</span>
 										<span class="sidebar-normal">start test</span>
 									</a>
