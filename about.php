@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
+	<link rel="icon" type="image/png" href="assets/ot.png">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title>Online Test</title>
+
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<meta name="viewport" content="width=device-width" />
+
+
+	<!-- Bootstrap core CSS     -->
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+	<!--  Paper Dashboard core CSS    -->
+	<link href="assets/css/paper-dashboard.css" rel="stylesheet" />
+
+
+	<!--  CSS for Demo Purpose, don't include it in your project     -->
+	<link href="assets/css/demo.css" rel="stylesheet" />
+
+
+	<!--  Fonts and icons     -->
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Muli:400,300" rel="stylesheet" type="text/css">
+	<link href="assets/css/themify-icons.css" rel="stylesheet">
+<style>
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+
+.button5 {
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+}
+
+.button5:hover {
+    background-color: #555555;
+    color: white;
+}
+</style>
+</head>
+<body style="background-color:rgba(0,0,0,0.7);">
+<div style="
+    margin-top: 200px;
+    margin-bottom: 200px;
+    margin-right: 200px;
+    margin-left: 200px;
+"
+>
+<p style ="font:Lucida Console;font-size:20px;color:white;">Online quiz is sure to be one of the simplest and interactive test conducting platform.
+utmost importance has been given to the user interactiveness.The team behind online quiz has
+tried their best to ease out all the cumbersome test conducting procedures and turning it into one simple web
+portal, by simply incorporating the simple tools nad techniques used in php and html.<br>
+With the online quiz one can easily start a test and put questions in the test according to their choice,you can also remove or add or edit 
+any question whenever you want.<br>
+And those giving the test can quickly get their test sheets checked and can have their evaluated score as soon as the 
+test ends.Those enrolled to the portal will also get the notification of the upcoming tests with full details
+on their respective profile pages.to make it more interactive we have given each user his profile page where he can add his pictures and
+add some other details to make it more like himself.<br><br>
+
+The team is ready to follow your feedbacks at any time.
+So make sure to help us out!!!
+</p>
+<br>
+
+<p style="margin-left:900px;font-size:20px;color:white;">Thought, designed and implemented by:</p>
+<p style="margin-left:1000px;font-size:25px;color:white;">TEAM OQ(MCA)___</p>
+
+<p style="color:blue;margin-left:1000px;font-size:20px;">HIMANSHU GAUTAM<br>
+KOMAL AGARWAL<br>
+LAKSHMI SINGH<br>
+MAHIMA<br>
+MANISHA<br>
+</p>
+</div>
+<button class="button button5"  onclick="goBack()">Back</button>
+
+
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+</body>
+<!--   Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js   -->
+<script src="assets/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+<script src="assets/js/jquery-ui.min.js" type="text/javascript"></script>
+<script src="assets/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+
+<!--  Forms Validations Plugin -->
+<script src="assets/js/jquery.validate.min.js"></script>
+
+<!-- Promise Library for SweetAlert2 working on IE -->
+<script src="assets/js/es6-promise-auto.min.js"></script>
+
+<!--  Plugin for Date Time Picker and Full Calendar Plugin-->
+<script src="assets/js/moment.min.js"></script>
+
+<!--  Date Time Picker Plugin is included in this js file -->
+<script src="assets/js/bootstrap-datetimepicker.js"></script>
+
+<!--  Select Picker Plugin -->
+<script src="assets/js/bootstrap-selectpicker.js"></script>
+
+<!--  Switch and Tags Input Plugins -->
+<script src="assets/js/bootstrap-switch-tags.js"></script>
+
+<!-- Circle Percentage-chart -->
+<script src="assets/js/jquery.easypiechart.min.js"></script>
+
+<!--  Charts Plugin -->
+<script src="assets/js/chartist.min.js"></script>
+
+<!--  Notifications Plugin    -->
+<script src="assets/js/bootstrap-notify.js"></script>
+
+<!-- Sweet Alert 2 plugin -->
+<script src="assets/js/sweetalert2.js"></script>
+
+<!-- Vector Map plugin -->
+<script src="assets/js/jquery-jvectormap.js"></script>
+
+<!--  Google Maps Plugin    -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+
+<!-- Wizard Plugin    -->
+<script src="assets/js/jquery.bootstrap.wizard.min.js"></script>
+
+<!--  Bootstrap Table Plugin    -->
+<script src="assets/js/bootstrap-table.js"></script>
+
+<!--  Plugin for DataTables.net  -->
+<script src="assets/js/jquery.datatables.js"></script>
+
+<!--  Full Calendar Plugin    -->
+<script src="assets/js/fullcalendar.min.js"></script>
+
+<!-- Paper Dashboard PRO Core javascript and methods for Demo purpose -->
+<script src="assets/js/paper-dashboard.js"></script>
+
+<!-- Paper Dashboard PRO DEMO methods, don't include it in your project! -->
+<script src="assets/js/demo.js"></script>
+
+<script type="text/javascript">
+	$().ready(function() {
+		demo.checkFullPageBackgroundImage();
+
+		setTimeout(function() {
+			// after 1000 ms we add the class animated to the login/register card
+			$('.card').removeClass('card-hidden');
+		}, 700)
+	});
+</script>
+
+</html>
