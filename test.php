@@ -1,3 +1,17 @@
+<?php
+	session_start();
+	$user=$_SESSION['sess_user'];
+	$id=$_SESSION['test_id'];
+	$num=$_SESSION["ques_num"];
+	$qid=0;
+	$con=mysqli_connect('localhost','root','') or die(mysql_error());
+	mysqli_select_db($con,'online_test') or die("cannot select DB");
+	$query=mysqli_query($con,"SELECT * FROM questions WHERE test_id='$id'");
+	$numrows=mysqli_num_rows($query);
+	
+		
+		
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,25 +53,41 @@
 					Online Quiz
 				</a>
 			</div>
-			<div class="sidebar-wrapper">
-				<ul class="nav">
-					<li class="active">
-						<a style="margin-top: 0px;" href="#dashboardOverview">
-	              <i style="font-style: normal;">1</i>
-								<p style="max-width: 200px; height: 32px; text-transform: none;overflow: hidden; margin: 0px; white-space: normal; word-wrap: normal; line-height: normal;font-size: 12px;">
-									Lorem ipsum dolor sit. ipsum dolor sit amet.
-								</p>
-	          </a>
-					</li>
-					<li>
-						<a style="margin-top: 0px;" href="#formsExamples">
-                <i style="font-style: normal;">2</i>
-                <p style="max-width: 200px; height: 32px; text-transform: none;overflow: hidden; margin: 0px; white-space: normal; word-wrap: normal; line-height: normal;font-size: 12px;">
-									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, cupiditate autem illo doloremque similique vero voluptatem reprehenderit accusamus maxime ab explicabo, aperiam quas aspernatur aliquam iusto repellendus accusantium! Molestias, vel.
-                </p>
-            </a>
-					</li>
-				</ul>
+			<div id='select' class="sidebar-wrapper">
+			<ul class='nav'>
+				<?php
+				$i=1;
+				$j=0;
+				$k=0;
+				$p=array();
+				$questions=array();
+				if($numrows>0)
+				while ($row=mysqli_fetch_row($query))
+				{//<?php $qid=$row[0];<a id='select' style='margin-top: 0px;' href='#dashboardOverview' $qid=$row[0]; >
+					$questions[$j]=array();
+					$questions[$j][0]=$row[0];
+					$questions[$j][1]=$row[1];
+					$questions[$j][2]=$row[2];
+					$questions[$j][3]=$row[3];
+					$questions[$j][4]=$row[4];
+					$questions[$j][5]=$row[5];
+					$questions[$j][6]=$row[6];
+					$questions[$j][7]=$row[7];
+					//$questions[]=array($row[0],$row[1],$row[2],$row[3],$row[4],$row[5],$row[6],$row[7]);
+				//echo //"<p id=$i>$row[2]</p>";
+				echo "<form method='post'><li>
+				<button id=$j style='margin-top: 0px; width: 100px' name='select' value=$j >
+							<i class='nav' style='font-style: normal;'>$i:</i>
+								<p style='max-width: 200px; height: 32px; text-transform: none;overflow: hidden; margin: 0px; white-space: normal; word-wrap: normal; line-height: normal;font-size: 12px;'>$row[2]	
+								 </p></button>
+						</li></form>
+					";
+					
+					$i=$i+1;
+					$j=$j+1;
+				}
+					?>
+					</ul>
 			</div>
 		</div>
 		<div class="main-panel">
@@ -83,7 +113,7 @@
 								<p style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px; margin-bottom: 16px; margin-left: 0px; padding: 10px 15px;">Time goes here</p>
 							</li>
 							<li>
-								<button style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-danger">
+								<button onclick="location.href = 'user_result.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-danger">
 									End Test
                 </button>
 							</li>
@@ -92,27 +122,77 @@
 				</div>
 			</nav>
 			<div class="content">
-				<div class="">
-					<h3 style="margin-top: 0px;">Question: 1</h3>
-					<hr style="color: black; height: 1px; background-color: black;">
-					<p style="margin-bottom: 20px; font-size: 1.2em;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<form class="" action="" method="post">
-						<div style="margin: 10px 0px; padding: 10px; padding-left: 20px; border: 1px solid grey; border-radius: 10px;">
-							<input type="radio" name="answer" value="op1">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+				<div class="group" id='ques'>
+				
+				<?php
+				if(isset($_POST["select"]))
+				{
+					$num=$_POST["select"];
+					$num1=$num+1;
+				?>
+				<h3 style='margin-top: 0px;'>Question: <?php echo $num1 ?></h3>
+					<hr style='color: black; height: 1px; background-color: black;'>
+					<p style='margin-bottom: 20px; font-size: 1.2em;'><?php echo $questions[$num][2]?></p>
+					<form method='post'>
+						<div style='margin: 10px 0px; padding: 10px; padding-left: 20px; border: 1px solid grey; border-radius: 10px;'>
+							<input type='radio' name='answer' value='1'>
+							<?php echo $questions[0][3]?><br>
 						</div>
-					  <div style="margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;">
-					  	<input type="radio" name="answer" value="op2"> Lorem ipsum dolor.<br>
+					  <div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
+					  	<input type='radio' name='answer' value='2'> <?php echo $questions[$num][4]?><br>
 					  </div>
-					  <div style="margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;">
-					  	<input type="radio" name="answer" value="op3"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. <br>
+					  <div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
+					  	<input type='radio' name='answer' value='3'><?php echo $questions[$num][5]?> <br>
 					  </div>
-						<div style="margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;">
-							<input type="radio" name="answer" value="op4"> Lorem ipsum.<br>
+						<div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
+							<input type='radio' name='answer' value='4'><?php echo $questions[$num][6]?><br>
 						</div>
-						<input style="margin: 20px;" class="btn btn-warning pull-right" type="reset" name="Reset" value="reset">
-						<input style="margin: 20px;" class="btn btn-success pull-right" type="submit" name="submit" value="submit">
-					</form>
+						<?php
+						echo "
+						<input style='margin: 20px;' class='btn btn-warning pull-right' type='reset' name='Reset' value='reset'>
+						<input style='margin: 20px;' class='btn btn-success pull-right' type='submit' name='submit' value=$num1>
+					</form>";
+					
+				}
+				?>
+				<?php
+				$cannot="SELECT any option !!";
+				if(isset($_POST["submit"]))
+				{
+					$num2=$_POST["submit"];
+					if(isset($_POST["answer"]))
+					{
+						$val=$_POST["answer"];
+						$con=mysqli_connect('localhost','root','') or die(mysql_error());
+						mysqli_select_db($con,'online_test') or die("cannot select DB");
+						$query=mysqli_query($con,"SELECT user_ans FROM useranswer WHERE user_id='$user' and test_id='$id' and que_id='$num2'");
+						$numrows=mysqli_num_rows($query);
+						if($numrows==0)
+						{
+						$r=mysqli_query($con,"insert into useranswer(user_id,test_id,que_id,user_ans) values ('$user','$id','$num2','$val')");
+						if($r)
+						{echo "";}
+						else
+							echo "not";
+						}
+						else
+						{
+							$query=mysqli_query($con,"UPDATE useranswer SET user_ans='$val' WHERE user_id='$user' and test_id='$id' and que_id='$num2'");
+							if($query)
+								{echo "<script>
+								function show_func(){
+									$('#group').hide(); 
+									$('#group').show(); 
+								}
+								</script>";}
+							else
+								echo "not upadted";
+						}
+					}
+					else
+					echo "<script type='text/javascript'>alert('$cannot');</script>";
+				}
+				?>
 				</div>
 			</div>
 			<footer class="footer">

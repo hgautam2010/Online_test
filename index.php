@@ -49,7 +49,7 @@
 	           </a>
 					</li>
 					<li>
-						<a href="about.php">
+						<a href="new.html">
                 About
             </a>
 					</li>
@@ -111,6 +111,7 @@
 				$row=mysqli_fetch_assoc($result);
 				session_start();
 				@$_SESSION['sess_user']=$row['user_id'];
+				@$_SESSION['sess_name']=$user;
 				echo "logged in session started";
 				
 				header("Location: home.php");

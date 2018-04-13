@@ -80,7 +80,7 @@
 									</a>
 								</li>
 								<li class="active">?
-									<a href="start_test.php" <?php unset($_SESSION["test_id"]);?>>
+									<a href="start_test.php" >
 										<span class="sidebar-mini">ST</span>
 										<span class="sidebar-normal">Start Test</span>
 									</a>
@@ -177,6 +177,9 @@
 							{
 								$row=mysqli_fetch_row($query);
 								$s=time();
+								$sec = strtotime($row[5]);
+								echo $sec;
+								//$sec1 = current_timestamp();
 								echo "<p><h4> Test name: $row[2]</h4>
 										<h3>RULES</h3>
 										<ol>
@@ -198,6 +201,8 @@
 											<li>
 												End Time of test: $row[6]
 											</li>
+											
+											
 											$s
 										</ol>
 										</p>";
@@ -206,13 +211,22 @@
 						<?php
 							if(isset($_POST['start']))
 							{
+								//$query=mysqli_query($con,"select now() from DUAL");
+								//echo "<script>console$query</script>";
+								//$row=mysql_fetch_assoc($query);
+								//echo $row;
+								
 								$sec = strtotime($row[5]);
 								$sec2 =strtotime($row[6]);
-								$sec1 = time();
+								$sec1 = 1523535555;
+								echo $sec1." ";
+								echo $sec." ";
+								echo $sec2." ";
 								$can="CAN START TEST";
 								$cannot="CANNOT START TEST";
 								if( ($sec1>=$sec) && ($sec1<$sec2))
-									echo "<script type='text/javascript'>alert('$can');</script>";
+								{ @$_SESSION['ques_num']=0;
+								echo("<script>location.href = '".test.".php';</script>");}
 								else
 									echo "<script type='text/javascript'>alert('$cannot');</script>";
 							}	

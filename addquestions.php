@@ -2,6 +2,12 @@
 		 session_start();
 		 $test_id=$_SESSION['sess_test'];
 		 $count=$_SESSION['sess_ques'];
+		 if($count==0)
+		 {
+			 unset($_SESSION['sess_test']);
+				unset($_SESSION['sess_ques']);
+			header("Location: index.php");
+		 }
 		?>
 	
 <!DOCTYPE html>
