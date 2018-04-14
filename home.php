@@ -105,8 +105,15 @@
 									Results
                 </p>
             </a>
-					</li>
+					</li>	
 					<li>
+						<a href="changepassword.php">
+                <i class="ti-clipboard"></i>
+                <p>
+									Change Password
+                </p>
+            </a>
+					</li>						<li>
 						<a href="logout.php">
                 <i class="ti-share"></i>
                 <p>
