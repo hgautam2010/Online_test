@@ -53,6 +53,11 @@
                 About
             </a>
 					</li>
+					<li>
+						<a href="feedback.php">
+                Feedback
+            </a>
+					</li>
 				</ul>
 			</div>
 		</div>
