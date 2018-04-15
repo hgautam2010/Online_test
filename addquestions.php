@@ -136,7 +136,7 @@
 						<a class="navbar-brand" href="addquestions.php">
 							Add Questions
 						</a>
-						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
+						<a class="navbar-brand" href="start_test.php" style="margin-left: 600px;">
 							Start Test
 						</a>
 					</div>

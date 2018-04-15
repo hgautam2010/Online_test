@@ -1,12 +1,14 @@
 <?php
-	session_start();
-	if(!isset($_SESSION["sess_user"])){
-		header("location:index.php");
-	}
-	$user=$_SESSION['sess_user'];
-	$n=$_SESSION['sess_name'];
-	//$id=$_GET["id"];
-	$id=44;
+ob_start();
+$id=44;
+			$con=mysqli_connect('localhost','root','') or die(mysql_error());
+			mysqli_select_db($con,'online_test') or die("cannot select DB");
+			$query5=mysqli_query($con,"select * from tests where test_id='$id'");
+			$row=mysqli_fetch_row($query5);
+			$test_n=$row[2];
+			$total_marks=$row[4]*$row[7];
+							$query=mysqli_query($con,"SELECT * FROM result WHERE test_id='$id'");
+							$numrows=mysqli_num_rows($query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +39,6 @@
 	<link href="https://fonts.googleapis.com/css?family=Muli:400,300" rel="stylesheet" type="text/css">
 	<link href="assets/css/themify-icons.css" rel="stylesheet">
 </head>
-
 <body>
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
@@ -137,7 +138,7 @@
 							Result
 						</a>
 						
-						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
+						<a class="navbar-brand" href="start_test.php" style="margin-left: 600px;">
 							Start Test
 						</a>
 					</div>
@@ -173,52 +174,92 @@
 				</div>
 			</nav>
 			<div class="content">
-			<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>Test Given By :</h4></div><br>
-					<?php
-							$con=mysqli_connect('localhost','root','') or die(mysql_error());
-							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT * FROM result WHERE test_id='$id'");
-							$numrows=mysqli_num_rows($query);
+			<div class='card-body' style='padding: 10px;'>
+			<h4 style='margin: 0px;'>Test Name :<?php echo $test_n ?></h4>
+			<h4 style='margin: 0px; '>Total Marks :<?php echo $total_marks ?></h4>
+			</div><br>
+			<div class='card' style='width: 80%; margin-left: auto; margin-right: auto;' >
 							
-							if($numrows>0)
-							{
-							while ($row=mysqli_fetch_row($query))
-							{
-								$username=$row[2];
-								$marks=$row[3];
-								echo "<div class='card' style='width: 80%; margin-left: auto; margin-right: auto;' >
-									<hr style='margin: 0px;'>
-									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>User Name :</b> $username </div>
-										<div class='card-body' style='padding: 10px;'><b>Marks : </b> $marks </div>
-									</div>
-								</div>";
-							}}
-							else
-							{
-								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>No Result Stored !!</h6></div>";
+							 <div class='table-responsive'>   
+								<table class='table table-bordered'>
+								<tr>
+									<th>Username</th>
+									<th>Marks</th>
+								</tr>
+<?php
+							while($row = mysqli_fetch_array($query))  
+							{  
+								echo '  
+								<tr>  
+									<td>'.$row[2].'</td>  
+									<td>'.$row[3].'</td>  
+								</tr>  
+								';  
 							}
-				?>
-				<form method="post">
-				<button type='submit' name='download' class='btn btn-danger data-active-color btn-fill pull-right'>Download Result</button>
-				</form>
-				<?php
+?>
+							</table>
+							</div>
+			</div>
+			<div class='active' style='width: 50%; margin-left: 500px; margin-right: auto;' >
+			<a href="export.php">Download</a>
+			</div>
+				<!--form method="post">
+				<button type='submit' action="export.php" name='download' class='btn btn-danger data-active-color btn-fill pull-right'>Download Result</button>
+				</form-->
+				</div>
+<!--?php
 					if(isset($_POST["download"]))
 					{
 						$con=mysqli_connect('localhost','root','') or die(mysql_error());
 						mysqli_select_db($con,'online_test') or die("cannot select DB");
-						$query=mysqli_query($con,"SELECT * FROM result WHERE test_id='$id'");
+						$query=mysqli_query($con,"SELECT username, result FROM result WHERE test_id='$id'");
 						$numrows=mysqli_num_rows($query);
-						if($numrows>0)
+						$output='';
+						/*$output .= '
+							<table class="table" bordered="1">  
+							<tr> 
+								<th>Test Name : $test_n</th>
+								<th>Total Marks : $total_marks</th>
+							</tr>
+							<tr></tr>';*/
+							$columnHeader = ''; 
+							$columnHeader = "Username" . "\t" . "Marks" ."\t"; 
+							$setData = ''; 
+							while ($rec = mysqli_fetch_row($query)) { 
+							$rowData = ''; 
+							foreach ($rec as $value) { 
+							$value = '"' . $value . '"' . "\t"; 
+							$rowData .= $value; 
+							} 
+							$setData .= trim($rowData) . "\n"; 
+							} 
+						/*if($numrows > 0)
 						{
-							while ($row=mysqli_fetch_row($query))
-							{		
-								
-							}
+							$output .= '<table class="table" bordered="1"> 
+							<tr>  
+								<th>Username</th>  
+								<th>Marks</th>  
+                         
+							</tr>';
+						while($row = mysqli_fetch_array($query))
+						{
+							$output .= '
+							<tr>  
+								<td>'.$row["2"].'</td>  
+								<td>'.$row["3"].'</td>  
+							</tr>';
 						}
-					}
-				?>
-			</div>
+						$output .= '</table>';*/
+						header('Content-Type: application/octet-stream');
+						header('Content-Disposition: attachment; filename=download.xls');
+						header("Pragma: no-cache"); 
+						header("Expires: 0"); 
+						echo ucwords($columnHeader) . "\n" . $setData . "\n"; 
+						//echo $output;
+						}
+					
+?-->
+			
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
