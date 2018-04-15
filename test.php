@@ -3,13 +3,18 @@
 	$user=$_SESSION['sess_user'];
 	$id=$_SESSION['test_id'];
 	$num=$_SESSION["ques_num"];
+	//$user=4;
+	//$id=44;
+	//$num=4;
 	$qid=0;
+	$x=1;
 	$con=mysqli_connect('localhost','root','') or die(mysql_error());
 	mysqli_select_db($con,'online_test') or die("cannot select DB");
 	$query=mysqli_query($con,"SELECT * FROM questions WHERE test_id='$id'");
 	$numrows=mysqli_num_rows($query);
-	
-		
+	$query1=mysqli_query($con,"SELECT test_name FROM tests WHERE test_id='$id'");
+	$row=mysqli_fetch_row($query1);
+	$nam=$row[0];
 		
 ?>
 <!DOCTYPE html>
@@ -104,7 +109,7 @@
                 <span class="icon-bar bar3"></span>
             </button>
 						<p class="navbar-brand">
-							Test Name
+							Test Name : <?php echo $nam ?>
 						</p>
 					</div>
 					<div class="collapse navbar-collapse">
@@ -122,44 +127,72 @@
 				</div>
 			</nav>
 			<div class="content">
-				<div class="group" id='ques'>
+				
+				
 				
 				<?php
-				if(isset($_POST["select"]))
+				/*if(isset($_POST["select"]))
 				{
 					$num=$_POST["select"];
-					$num1=$num+1;
+					$num1=$num+1;*/
+					while($x<=$num)
+					{
+						$z=$x-1;
 				?>
-				<h3 style='margin-top: 0px;'>Question: <?php echo $num1 ?></h3>
+				<div style="width: 70%; margin-left: auto; margin-right: auto;">
+				<div class="card">
+				<h3 style='margin-top: 0px;'>Question: <?php echo $x ?></h3>
 					<hr style='color: black; height: 1px; background-color: black;'>
-					<p style='margin-bottom: 20px; font-size: 1.2em;'><?php echo $questions[$num][2]?></p>
+					<p style='margin-bottom: 20px; font-size: 1.2em;'><?php echo $questions[$z][2]?></p>
 					<form method='post'>
+					<div class="card-content">
+					<label class="control-label">
+						Option 1 
+					</label>
 						<div style='margin: 10px 0px; padding: 10px; padding-left: 20px; border: 1px solid grey; border-radius: 10px;'>
 							<input type='radio' name='answer' value='1'>
-							<?php echo $questions[0][3]?><br>
+							<?php echo $questions[$z][3]?><br>
 						</div>
+						<label class="control-label">
+							Option 2 
+						</label>
 					  <div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
-					  	<input type='radio' name='answer' value='2'> <?php echo $questions[$num][4]?><br>
+					  	<input type='radio' name='answer' value='2'> <?php echo $questions[$z][4]?><br>
 					  </div>
+					  <label class="control-label">
+							Option 3 
+						</label>
 					  <div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
-					  	<input type='radio' name='answer' value='3'><?php echo $questions[$num][5]?> <br>
+					  	<input type='radio' name='answer' value='3'><?php echo $questions[$z][5]?> <br>
 					  </div>
+					  <label class="control-label">
+							Option 4 
+						</label>
 						<div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
-							<input type='radio' name='answer' value='4'><?php echo $questions[$num][6]?><br>
+							<input type='radio' name='answer' value='4'><?php echo $questions[$z][6]?><br>
 						</div>
-						<?php
-						echo "
-						<input style='margin: 20px;' class='btn btn-warning pull-right' type='reset' name='Reset' value='reset'>
-						<input style='margin: 20px;' class='btn btn-success pull-right' type='submit' name='submit' value=$num1>
-					</form>";
-					
-				}
-				?>
+						<div class="card-footer">
+								<button type="submit" name="submit" value="<?php echo $z ?>"class="btn btn-info btn-fill pull-right">Submit</button>
+								<button type="reset" name="reset" class="btn btn-warning pull-right">Reset</button>
+								<div class="clearfix"></div>
+
+							</div>
+							</form>
+							</div>
+					</div>
+				</div>
+				<br>
+				<?php 
+					$x=$x+1;
+					}
+					?>
 				<?php
 				$cannot="SELECT any option !!";
 				if(isset($_POST["submit"]))
 				{
 					$num2=$_POST["submit"];
+					$num3=$questions[$num2][0];
+					$num4=$questions[$num2][7];
 					if(isset($_POST["answer"]))
 					{
 						$val=$_POST["answer"];
@@ -169,22 +202,17 @@
 						$numrows=mysqli_num_rows($query);
 						if($numrows==0)
 						{
-						$r=mysqli_query($con,"insert into useranswer(user_id,test_id,que_id,user_ans) values ('$user','$id','$num2','$val')");
+						$r=mysqli_query($con,"insert into useranswer(user_id,test_id,que_id,user_ans,curr_ans) values ('$user','$id','$num3','$val','$num4')");
 						if($r)
-						{echo "";}
+						{echo "SUBMITTED !!";}
 						else
-							echo "not";
+							echo "not SUBMITTED";
 						}
 						else
 						{
 							$query=mysqli_query($con,"UPDATE useranswer SET user_ans='$val' WHERE user_id='$user' and test_id='$id' and que_id='$num2'");
 							if($query)
-								{echo "<script>
-								function show_func(){
-									$('#group').hide(); 
-									$('#group').show(); 
-								}
-								</script>";}
+								{echo "SUBMITTED !!";}
 							else
 								echo "not upadted";
 						}
@@ -193,7 +221,7 @@
 					echo "<script type='text/javascript'>alert('$cannot');</script>";
 				}
 				?>
-				</div>
+				
 			</div>
 			<footer class="footer">
 				<div class="container-fluid">

@@ -1,47 +1,13 @@
 <?php
-		 session_start();
-		 $test_id=$_SESSION['sess_test'];
-		 $count=$_SESSION['sess_ques'];
-		 $z=1;
-		 
-		 $no="SUCCESSFULLY EDITED ALL QUESTIONS !!";
-		/* if($count==0)
-		 {
-			 echo "<script type='text/javascript'>alert('$no');</script>";
-			 echo("<script>location.href = '".home.".php';</script>");
-		 }*/
-		 $con=mysqli_connect('localhost','root','') or die(mysql_error());
-		 mysqli_select_db($con,'online_test') or die("cannot select DB");
-		 $query=mysqli_query($con,"SELECT * FROM questions WHERE test_id='$test_id'");
-		 $numrows=mysqli_num_rows($query);
-		 $noques="NO QUESTIONS ADDED, FIRST ADD QUESTIONS !!";
-		 if($numrows==0)
-		 {
-			 echo "<script type='text/javascript'>alert('$noques');</script>";
-			 echo("<script>location.href = '".addquestions.".php';</script>");
-		 }
-		 $i=1;
-		$j=0;
-		$k=0;
-		$questions=array();
-		if($numrows>0)
-		while ($row=mysqli_fetch_row($query))
-		{
-			$questions[$j]=array();
-			$questions[$j][0]=$row[0];
-			$questions[$j][1]=$row[1];
-			$questions[$j][2]=$row[2];
-			$questions[$j][3]=$row[3];
-			$questions[$j][4]=$row[4];
-			$questions[$j][5]=$row[5];
-			$questions[$j][6]=$row[6];
-			$questions[$j][7]=$row[7];		
-			$i=$i+1;
-			$j=$j+1;
-			
-		}
+	session_start();
+	if(!isset($_SESSION["sess_user"])){
+		header("location:index.php");
+	}
+	$user=$_SESSION['sess_user'];
+	$n=$_SESSION['sess_name'];
+	//$id=$_GET["id"];
+	$id=44;
 ?>
-	
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,11 +21,13 @@
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 	<meta name="viewport" content="width=device-width" />
 
+
 	<!-- Bootstrap core CSS     -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 
 	<!--  Paper Dashboard core CSS    -->
 	<link href="assets/css/paper-dashboard.css" rel="stylesheet" />
+
 
 	<!--  CSS for Demo Purpose, don't include it in your project     -->
 	<link href="assets/css/demo.css" rel="stylesheet" />
@@ -89,14 +57,14 @@
 								<p>Home</p>
 	          </a>
 					</li>
-					<li class="active">
+					<li>
 						<a data-toggle="collapse" href="#componentsExamples">
 							<i class="ti-ruler-pencil"></i>
 							<p>Tests
 							   <b class="caret"></b>
 							</p>
 						</a>
-						<div class="collapse in" id="componentsExamples">
+						<div class="collapse" id="componentsExamples">
 							<ul class="nav">
 								<li>
 									<a href="create_test.php">
@@ -110,22 +78,22 @@
 										<span class="sidebar-normal">View test</span>
 									</a>
 								</li>
-								<li class="active">
-									<a href="editquestions.php">
+								<li>
+									<a href="start_test.php">
 										<span class="sidebar-mini">ET</span>
 										<span class="sidebar-normal">Edit Test</span>
-									</a>
+									</a
 								</li>
 								<li>
 									<a href="delete_test.php">
 										<span class="sidebar-mini">DT</span>
-										<span class="sidebar-normal">Delete test</span>
+										<span class="sidebar-normal">Delete Test</span>
 									</a>
 								</li>
 							</ul>
 						</div>
 					</li>
-					<li>
+					<li class="active">
 						<a href="produce_result.php">
                 <i class="ti-clipboard"></i>
                 <p>
@@ -140,7 +108,7 @@
 									Change Password
                 </p>
             </a>
-					</li>
+					</li>	
 					<li>
 						<a href="logout.php">
                 <i class="ti-share"></i>
@@ -165,9 +133,10 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="editquestions.php">
-							Edit Questions
+						<a class="navbar-brand" href="produce_result.php">
+							Result
 						</a>
+						
 						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
 							Start Test
 						</a>
@@ -204,102 +173,52 @@
 				</div>
 			</nav>
 			<div class="content">
-				<div style="width: 60%; margin-left: auto; margin-right: auto;">
-				<?php
-				 
-					while($z<=$count)
-					{
-						$x=$z-1;
-					?>
-					<div class="card">
-						<form method="post">
-							<div class="card-header">
-								<h4 class="card-title">
-										Edit Question <?php echo $z ?>
-										
-									</h4>
-							</div>
-							<div class="card-content">
-								<div class="form-group">
-									<label class="control-label">
-											Question Description <star>*</star>
-									</label>
-									<input class="form-control" name="desc" rows="3" value="<?php echo $questions[$x][2] ?>" default="0" type="text" required="true" email="true" autocomplete="off" aria-required="true">
-								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Option 1 <star>*</star>
-									</label>
-									<input class="form-control" name="op1" rows="3" value="<?php echo $questions[$x][3] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">
-								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Option 2 <star>*</star>
-									</label>
-									<input class="form-control" name="op2" rows="3" value="<?php echo $questions[$x][4] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Option 3 <star>*</star>
-									</label>
-                                    <input class="form-control" name="op3" rows="3" value="<?php echo $questions[$x][5] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Option 4 <star>*</star>
-									</label>
-									<input class="form-control" name="op4" rows="3" value="<?php echo $questions[$x][6] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Correct Answer <star>*</star>
-									</label>
-									<input class="form-control" name="curr_ans" rows="3" value="<?php echo $questions[$x][7] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">								</div>
-								<br>
-								<div class="category">
-									<star>*</star> Required fields</div>
-							</div>
-							<div class="card-footer">
-								<button type="submit" name="update" value="<?php echo $questions[$x][0] ?>"class="btn btn-info btn-fill pull-right">Update</button>
-								<div class="clearfix"></div>
-							</div>
-						</form>
-					</div>
+			<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>Test Given By :</h4></div><br>
 					<?php
-						$z=$z+1;
+							$con=mysqli_connect('localhost','root','') or die(mysql_error());
+							mysqli_select_db($con,'online_test') or die("cannot select DB");
+							$query=mysqli_query($con,"SELECT * FROM result WHERE test_id='$id'");
+							$numrows=mysqli_num_rows($query);
+							
+							if($numrows>0)
+							{
+							while ($row=mysqli_fetch_row($query))
+							{
+								$username=$row[2];
+								$marks=$row[3];
+								echo "<div class='card' style='width: 80%; margin-left: auto; margin-right: auto;' >
+									<hr style='margin: 0px;'>
+									<div class='' style='width: 100%;'>
+										<div class='card-body' style='padding: 10px;'><b>User Name :</b> $username </div>
+										<div class='card-body' style='padding: 10px;'><b>Marks : </b> $marks </div>
+									</div>
+								</div>";
+							}}
+							else
+							{
+								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>No Result Stored !!</h6></div>";
+							}
+				?>
+				<form method="post">
+				<button type='submit' name='download' class='btn btn-danger data-active-color btn-fill pull-right'>Download Result</button>
+				</form>
+				<?php
+					if(isset($_POST["download"]))
+					{
+						$con=mysqli_connect('localhost','root','') or die(mysql_error());
+						mysqli_select_db($con,'online_test') or die("cannot select DB");
+						$query=mysqli_query($con,"SELECT * FROM result WHERE test_id='$id'");
+						$numrows=mysqli_num_rows($query);
+						if($numrows>0)
+						{
+							while ($row=mysqli_fetch_row($query))
+							{		
+								
+							}
+						}
 					}
-					?>
-				
-			
-			
-	<?php
-
-		if(isset($_POST["update"]))
-		{	
-			$qid=$_POST["update"];
-			echo $qid;
-		if(!empty($_POST['desc']) || !empty($_POST['op1']) || !empty($_POST['op2']) || !empty($_POST['op3']) || !empty($_POST['op4']) || !empty($_POST['curr_ans']))
-		{
-			
-			$updated="Question updated !!";
-			$des=$_POST['desc'];
-			$opt1=$_POST['op1'];
-			$opt2=$_POST['op2'];
-			$opt3=$_POST['op3'];
-			$opt4=$_POST['op4'];
-			$curr_ans=$_POST['curr_ans'];
-	
-			$con=mysqli_connect('localhost','root','');
-			mysqli_select_db($con,'online_test') or die("cannot select DB");
-			$sql=mysqli_query($con,"UPDATE questions SET ques_desc='$des',opt1='$opt1',opt2='$opt2',opt3='$opt3',opt4='$opt4',curr_ans='$curr_ans' where test_id='$test_id' and ques_id='$qid' ");
-			if($sql)
-			{
-				echo "<script type='text/javascript'>alert('$updated');</script>";
-				echo("<script>location.href = '".editquestions.".php';</script>");
-			}
-			
-		}
-		}
-	?>
-		</div>
-	</div>
+				?>
+			</div>
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
@@ -385,11 +304,6 @@
 		demo.initOverviewDashboard();
 		demo.initCirclePercentage();
 
-	});
-</script>
-<script type="text/javascript">
-	$().ready(function() {
-		demo.initFormExtendedDatetimepickers();
 	});
 </script>
 

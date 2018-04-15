@@ -81,22 +81,22 @@
 									</a>
 								</li>
 								<li class="active">
-									<a href="">
+									<a href="editTest.php">
 										<span class="sidebar-mini">ET</span>
 										<span class="sidebar-normal">Edit Test</span>
 									</a>
 								</li>
 								<li>
-									<a href="components/starttest.php">
-										<span class="sidebar-mini">ST</span>
-										<span class="sidebar-normal">start test</span>
+									<a href="delete_test.php">
+										<span class="sidebar-mini">DT</span>
+										<span class="sidebar-normal">Delete test</span>
 									</a>
 								</li>
 							</ul>
 						</div>
 					</li>
 					<li>
-						<a href="#formsExamples">
+						<a href="produce_result.php">
                 <i class="ti-clipboard"></i>
                 <p>
 									Results
@@ -115,7 +115,7 @@
 						<a href="logout.php">
                 <i class="ti-share"></i>
                 <p>
-									logout
+									Logout
                 </p>
             </a>
 					</li>
@@ -135,8 +135,11 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="#Dashboard">
+						<a class="navbar-brand" href="editTest.php">
 							Edit Test
+						</a>
+						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
+							Start Test
 						</a>
 					</div>
 					<div class="collapse navbar-collapse">
@@ -184,7 +187,7 @@
 									<label class="control-label">
 											Name <star>*</star>
 									</label>
-									<input class="form-control" name="testname" value="<?php echo $row[2] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true" disabled>
+									<input class="form-control" name="testname" value="<?php echo $row[2] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
 								<div class="form-group">
 									<label class="control-label">
@@ -220,13 +223,13 @@
 									<label class="control-label">
 											Start at <star>*</star>
 									</label>
-									<input type="text" name="st_datetime" value="<?php echo $row[5] ?>"class="form-control datetimepicker" placeholder="Start Date and Time" />
+									<input type="text" name="st_datetime" value="<?php $d=strtotime($row[5]); $d=date('m/d/Y h:i A',$d); echo $d ?>"class="form-control datetimepicker" placeholder="Start Date and Time" />
 								</div>
 								<div class="form-group">
 									<label class="control-label">
 											End at <star>*</star>
 									</label>
-									<input type="text" name="end_datetime" value="<?php echo $row[6] ?> "class="form-control datetimepicker" placeholder="End Date and Time" />
+									<input type="text" name="end_datetime" value="<?php $d=strtotime($row[6]); $d=date('m/d/Y h:i A',$d); echo $d ?> "class="form-control datetimepicker" placeholder="End Date and Time" />
 								</div>
 								<br>
 								<div class="category">
@@ -234,7 +237,6 @@
 							</div>
 							<div class="card-footer">
 								<button type="submit" action="editquestions.php" name="update" class="btn btn-info btn-fill pull-right">UPDATE</button>
-								<button type="submit" action="editquestions.php" class="btn btn-info btn-fill pull-right">UPDATE QUESTIONS</button>
 								
 								<div class="clearfix"></div>
 							</div>
@@ -245,9 +247,12 @@
 <?php
 			 if(isset($_POST["update"]))
 			 {
-			 	if(!empty($_POST['testname']) && !empty($_POST['totalq']) && !empty($_POST['st_datetime']) && !empty($_POST['end_datetime']))
+				 $cannot="Change values to update";
+				 $updated="Updated values !!";
+			 	if(!empty($_POST['testname']) || !empty($_POST['category']) || !empty($_POST['totalq']) || !empty($_POST['curr_ans']) || !empty($_POST['wng_ans']) || !empty($_POST['limit']) || !empty($_POST['st_datetime']) || !empty($_POST['end_datetime']))
 			 	{
-					//$test_name=$_POST['testname'];
+					
+					$test_name=$_POST['testname'];
 			 		$category=$_POST['category'];
 			 		$totalq=$_POST['totalq'];
 			 		$st_date=$_POST['st_datetime'];
@@ -262,20 +267,21 @@
 					
 			 		$con=mysqli_connect('localhost','root','') or die(mysql_error());
 			 		mysqli_select_db($con,'online_test') or die("cannot select DB");
-			 		$sql="UPDATE `tests` SET `category`=$category, `total_ques`=$totalq, `startTest_dateTime`=$st_date, `endTest_datetime`=$end_date, `pt_curr`=$curr_ans, `pt_neg`=$wng_ans, `pass_limit`=$limit WHERE test_id=$id";
-					if ($con->query($sql) === TRUE) {
-						echo "UPDATED";
+			 		$sql=mysqli_query($con,"UPDATE `tests` SET test_name='$test_name', category='$category', total_ques='$totalq', startTest_dateTime='$st_date', endTest_datetime='$end_date', pt_curr='$curr_ans', pt_neg='$wng_ans', pass_limit='$limit' WHERE test_id='$id'");
+					if($sql)
+					{
+						echo "<script type='text/javascript'>alert('$updated');</script>";
 						@$_SESSION['sess_test']=$id;
 						@$_SESSION['sess_ques']=$totalq;
 						echo("<script>location.href = '".editquestions.".php';</script>");
 						//<script> location.replace("addquestions.php"); </script>
-						//header('Location: addquestions.php');
+						//header('Location: editquestions.php');
 					}
 			 		
 			 	}
 			 	else
 			 	{
-			 		echo "FILL REQUIRED FIELDS !!";
+			 		echo "<script type='text/javascript'>alert('$cannot');</script>";
 			 	}
 			 }
 ?>
