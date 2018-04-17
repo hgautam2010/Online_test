@@ -3,6 +3,7 @@
 	$user=$_SESSION['sess_user'];
 	$_SESSION["test_id"] = $_GET["id"];
 	$id=$_SESSION['test_id'];
+	date_default_timezone_set('Indian/Comoro');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,17 +80,17 @@
 										<span class="sidebar-normal">Edit Test</span>
 									</a>
 								</li>
-								<li class="active">?
-									<a href="start_test.php" <?php unset($_SESSION["test_id"]);?>>
-										<span class="sidebar-mini">ST</span>
-										<span class="sidebar-normal">Start Test</span>
+								<li>
+									<a href="delete_test.php.php" >
+										<span class="sidebar-mini">DT</span>
+										<span class="sidebar-normal">Delete Test</span>
 									</a>
 								</li>
 							</ul>
 						</div>
 					</li>
 					<li>
-						<a href="#formsExamples">
+						<a href="produce_result.php">
                 <i class="ti-clipboard"></i>
                 <p>
 									Results
@@ -97,10 +98,18 @@
             </a>
 					</li>
 					<li>
+						<a href="changepassword.php">
+                <i class="ti-clipboard"></i>
+                <p>
+									Change Password
+                </p>
+            </a>
+					</li>
+					<li>
 						<a href="logout.php">
                 <i class="ti-share"></i>
                 <p>
-									logout
+									Logout
                 </p>
             </a>
 					</li>
@@ -120,8 +129,8 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="#Dashboard">
-							Start Test
+						<a class="navbar-brand" href="testPage.php">
+							Rules
 						</a>
 					</div>
 					<div class="collapse navbar-collapse">
@@ -172,11 +181,15 @@
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
 							$query=mysqli_query($con,"SELECT * FROM tests WHERE test_id='$id'");
+							$query1=mysqli_query($con,"select now() from DUAL");
+							$val = mysqli_fetch_array($query1);
+							$value=$val[0];
+							printf("%s",$value);
 							$numrows=mysqli_num_rows($query);
 							if($numrows>0)
 							{
 								$row=mysqli_fetch_row($query);
-								$s=time();
+								
 								echo "<p><h4> Test name: $row[2]</h4>
 										<h3>RULES</h3>
 										<ol>
@@ -198,7 +211,10 @@
 											<li>
 												End Time of test: $row[6]
 											</li>
-											$s
+											
+											
+											
+							
 										</ol>
 										</p>";
 							}
@@ -206,13 +222,25 @@
 						<?php
 							if(isset($_POST['start']))
 							{
+								//$query=mysqli_query($con,"select now() from DUAL");
+								//echo "<script>console$query</script>";
+								//$row=mysql_fetch_assoc($query);
+								//echo $row;
+								
 								$sec = strtotime($row[5]);
 								$sec2 =strtotime($row[6]);
-								$sec1 = time();
+								$query1=mysqli_query($con,"select now() from DUAL");
+								$val = mysqli_fetch_array($query1);
+								$sec1=strtotime($val[0]);
+								echo $sec1." ";
+								echo $sec." ";
+								echo $sec2." ";
 								$can="CAN START TEST";
 								$cannot="CANNOT START TEST";
 								if( ($sec1>=$sec) && ($sec1<$sec2))
-									echo "<script type='text/javascript'>alert('$can');</script>";
+								{ @$_SESSION['ques_num']=0;
+									@$_SESSION['test_id']=$id;
+								echo("<script>location.href = '".test.".php';</script>");}
 								else
 									echo "<script type='text/javascript'>alert('$cannot');</script>";
 							}	

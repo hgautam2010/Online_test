@@ -4,8 +4,10 @@
 		header("location:index.php");
 	}
 	$user=$_SESSION['sess_user'];
+	$n=$_SESSION['sess_name'];
 	echo "LOGGED IN USER IS -----";
 	echo $user;
+	
 	/*if(!isset($_GET)) {
 		$topic =$_GET['user_id'];
 		echo "Get". $topic ;
@@ -82,22 +84,22 @@
 									</a>
 								</li>
 								<li>
-									<a href="components/panels.html">
+									<a href="start_test.php">
 										<span class="sidebar-mini">ET</span>
 										<span class="sidebar-normal">Edit Test</span>
-									</a>
+									</a
 								</li>
 								<li>
-									<a href="start_test.php">
-										<span class="sidebar-mini">ST</span>
-										<span class="sidebar-normal">start test</span>
+									<a href="delete_test.php">
+										<span class="sidebar-mini">DT</span>
+										<span class="sidebar-normal">Delete Test</span>
 									</a>
 								</li>
 							</ul>
 						</div>
 					</li>
 					<li>
-						<a href="#formsExamples">
+						<a href="produce_result.php">
                 <i class="ti-clipboard"></i>
                 <p>
 									Results
@@ -105,10 +107,18 @@
             </a>
 					</li>
 					<li>
+						<a href="changepassword.php">
+                <i class="ti-clipboard"></i>
+                <p>
+									Change Password
+                </p>
+            </a>
+					</li>	
+					<li>
 						<a href="logout.php">
                 <i class="ti-share"></i>
                 <p>
-									logout
+									Logout
                 </p>
             </a>
 					</li>
@@ -128,8 +138,11 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="#Dashboard">
+						<a class="navbar-brand" href="home.php">
 							Home
+						</a>
+						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
+							Start Test
 						</a>
 					</div>
 					<div class="collapse navbar-collapse">
@@ -164,14 +177,38 @@
 				</div>
 			</nav>
 			<div class="content">
-
+			<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>WELCOME USER: <?php echo $n ?></h4></div><br>
+			<div class='card-body' style='padding: 10px;'><h5 style='margin: 0px;'>TEST CREATED BY YOU:</h5></div>
+					<?php
+							$con=mysqli_connect('localhost','root','') or die(mysql_error());
+							mysqli_select_db($con,'online_test') or die("cannot select DB");
+							$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
+							$numrows=mysqli_num_rows($query);
+							
+							if($numrows>0)
+							while ($row=mysqli_fetch_row($query))
+							{
+								$id=$row[0];
+								
+								echo "<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
+									 <a href='editTest.php?id=$id'>
+									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
+									<hr style='margin: 0px;'>
+									<div class='' style='width: 100%;'>
+										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
+										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
+										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
+										
+									</div>
+									</a>
+								</div>";
+							}
+							else
+							{
+								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
+							}
+				?>
 			</div>
-			<?php
-		
-		 //$user=$_SESSION['sess_user'];
-		 echo "LOGGED IN USER IS -----";
-		 echo $user;
-?>
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">

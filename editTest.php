@@ -1,6 +1,16 @@
 <?php
-	session_start();
-	$user=$_SESSION['sess_user'];
+		 session_start();
+		 $user=$_SESSION['sess_user'];
+		 $_SESSION['sess_test']=$_GET["id"];
+		 $id=$_GET["id"];
+		 $con=mysqli_connect('localhost','root','');
+		mysqli_select_db($con,'online_test') or die("cannot select DB");
+		$query=mysqli_query($con,"SELECT *FROM tests WHERE test_id='$id'");
+		$numrows=mysqli_num_rows($query);
+		if($numrows>0)
+		{
+			$row=mysqli_fetch_row($query);
+		}			
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +24,6 @@
 
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 	<meta name="viewport" content="width=device-width" />
-
 
 	<!-- Bootstrap core CSS     -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
@@ -50,7 +59,7 @@
 								<p>Home</p>
 	          </a>
 					</li>
-					<li>
+					<li class="active">
 						<a data-toggle="collapse" href="#componentsExamples">
 							<i class="ti-ruler-pencil"></i>
 							<p>Tests
@@ -59,20 +68,20 @@
 						</a>
 						<div class="collapse in" id="componentsExamples">
 							<ul class="nav">
-								<li>
-									<a href="create_test.php">
+								<li >
+									<a href="components/buttons.html">
 										<span class="sidebar-mini">CT</span>
 										<span class="sidebar-normal">Create Test</span>
 									</a>
 								</li>
 								<li>
-									<a href="components/grid.html">
+									<a href="home.php">
 										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View Test</span>
+										<span class="sidebar-normal">View test</span>
 									</a>
 								</li>
-								<li>
-									<a href="components/panels.html">
+								<li class="active">
+									<a href="editTest.php">
 										<span class="sidebar-mini">ET</span>
 										<span class="sidebar-normal">Edit Test</span>
 									</a>
@@ -80,7 +89,7 @@
 								<li>
 									<a href="delete_test.php">
 										<span class="sidebar-mini">DT</span>
-										<span class="sidebar-normal">Delete Test</span>
+										<span class="sidebar-normal">Delete test</span>
 									</a>
 								</li>
 							</ul>
@@ -126,8 +135,8 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="start_test.php">
-							Search Test Name
+						<a class="navbar-brand" href="editTest.php">
+							Edit Test
 						</a>
 						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
 							Start Test
@@ -164,55 +173,119 @@
 					</div>
 				</div>
 			</nav>
-			<div class="content" style="padding-top: 5px; margin-top: 10px;">
-				<form class="navbar-left navbar-search-form" role="search" method="post">
-					<div class="" style="display: flex;">
-						<div class="input-group" style="margin-right: auto; margin-left: auto;">
-							<span class="input-group-addon"><i class="fa fa-search"></i></span>
-							<input type="text" name="test_name" class="form-control" style="margin-right: 10px;" placeholder="Search...">
-						</div>
-						<button type="submit" name="submit" style="margin-left: 10px; height: 40px;" class="btn btn-fill btn-wd ">Search</button>
-					</div>
-				</form>
-				<br><br>
-				<hr>
-				<?php
-					if(isset($_POST["submit"]))
-					{
-						if(!empty($_POST['test_name']))
-						{
-							$name=$_POST['test_name'];
-							$con=mysqli_connect('localhost','root','') or die(mysql_error());
-							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT test_id,total_ques,startTest_dateTime,endTest_datetime FROM tests WHERE test_name='$name'");
-							$numrows=mysqli_num_rows($query);
-							if($numrows>0)
-							while ($row=mysqli_fetch_row($query))
-							{
-								//printf ("%s (%s)\n",$row[0],$row[1]);
-							
-								$id=$row[0];
+			<div class="content">
+				<div style="width: 60%; margin-left: auto; margin-right: auto;">
+					<div class="card">
+						<form method="post">
+							<div class="card-header">
+								<h4 class="card-title">
+										Edit Test
+									</h4>
+							</div>
+							<div class="card-content">
+								<div class="form-group">
+									<label class="control-label">
+											Name <star>*</star>
+									</label>
+									<input class="form-control" name="testname" value="<?php echo $row[2] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">
+								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Category 
+									</label>
+									<input class="form-control" name="category" value="<?php echo $row[3] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">
+								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Total Questions <star>*</star>
+									</label>
+									<input class="form-control" name="totalq" value="<?php echo $row[4] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">
+								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Correct Answers Marks 
+									</label>
+									<input class="form-control" name="curr_ans" value="<?php echo $row[7] ?>" default="1" value="1" type="text" required="true" email="true" autocomplete="off" aria-required="true">
+								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Worng Answers Penalty 
+									</label>
+									<input class="form-control" name="wng_ans" value="<?php echo $row[8] ?>" default="0" value="0" type="text" required="true" email="true" autocomplete="off" aria-required="true">
+								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Passing Marks 
+									</label>
+									<input class="form-control" name="limit" value="<?php echo $row[9] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">
+								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Start at <star>*</star>
+									</label>
+									<input type="text" name="st_datetime" value="<?php $d=strtotime($row[5]); $d=date('m/d/Y h:i A',$d); echo $d ?>"class="form-control datetimepicker" placeholder="Start Date and Time" />
+								</div>
+								<div class="form-group">
+									<label class="control-label">
+											End at <star>*</star>
+									</label>
+									<input type="text" name="end_datetime" value="<?php $d=strtotime($row[6]); $d=date('m/d/Y h:i A',$d); echo $d ?> "class="form-control datetimepicker" placeholder="End Date and Time" />
+								</div>
+								<br>
+								<div class="category">
+									<star>*</star> Required fields</div>
+							</div>
+							<div class="card-footer">
+								<button type="submit" action="editquestions.php" name="update" class="btn btn-info btn-fill pull-right">UPDATE</button>
 								
-								echo "<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
-									 <a href='testPage.php?id=$id'>
-									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$name</h4></div>
-									<hr style='margin: 0px;'>
-									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[2]</div>
-										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[3] </div>
-										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[1] </div>
-										
-									</div>
-									</a>
-								</div>";
-							}
-						}
-					}
-				?>
-				
+								<div class="clearfix"></div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
+<?php
+			 if(isset($_POST["update"]))
+			 {
+				 $cannot="Change values to update";
+				 $updated="Updated values !!";
+			 	if(!empty($_POST['testname']) || !empty($_POST['category']) || !empty($_POST['totalq']) || !empty($_POST['curr_ans']) || !empty($_POST['wng_ans']) || !empty($_POST['limit']) || !empty($_POST['st_datetime']) || !empty($_POST['end_datetime']))
+			 	{
 					
-			<footer class="footer">
+					$test_name=$_POST['testname'];
+			 		$category=$_POST['category'];
+			 		$totalq=$_POST['totalq'];
+			 		$st_date=$_POST['st_datetime'];
+			 		$end_date=$_POST['end_datetime'];
+			 		$curr_ans=$_POST['curr_ans'];
+			 		$wng_ans=$_POST['wng_ans'];
+			 		$limit=$_POST['limit'];
+					$st_date=date("Y-m-d H:i", strtotime($st_date));
+					$st_date=$st_date.":00";
+					$end_date=date("Y-m-d H:i", strtotime($end_date));
+					$end_date=$end_date.":00";
+					
+			 		$con=mysqli_connect('localhost','root','') or die(mysql_error());
+			 		mysqli_select_db($con,'online_test') or die("cannot select DB");
+			 		$sql=mysqli_query($con,"UPDATE `tests` SET test_name='$test_name', category='$category', total_ques='$totalq', startTest_dateTime='$st_date', endTest_datetime='$end_date', pt_curr='$curr_ans', pt_neg='$wng_ans', pass_limit='$limit' WHERE test_id='$id'");
+					if($sql)
+					{
+						echo "<script type='text/javascript'>alert('$updated');</script>";
+						@$_SESSION['sess_test']=$id;
+						@$_SESSION['sess_ques']=$totalq;
+						echo("<script>location.href = '".editquestions.".php';</script>");
+						//<script> location.replace("addquestions.php"); </script>
+						//header('Location: editquestions.php');
+					}
+			 		
+			 	}
+			 	else
+			 	{
+			 		echo "<script type='text/javascript'>alert('$cannot');</script>";
+			 	}
+			 }
+?>
+		<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
 						<ul>
@@ -297,6 +370,11 @@
 		demo.initOverviewDashboard();
 		demo.initCirclePercentage();
 
+	});
+</script>
+<script type="text/javascript">
+	$().ready(function() {
+		demo.initFormExtendedDatetimepickers();
 	});
 </script>
 

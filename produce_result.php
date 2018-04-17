@@ -1,6 +1,17 @@
 <?php
 	session_start();
+	if(!isset($_SESSION["sess_user"])){
+		header("location:index.php");
+	}
 	$user=$_SESSION['sess_user'];
+	$n=$_SESSION['sess_name'];
+	echo "LOGGED IN USER IS -----";
+	echo $user;
+	
+	/*if(!isset($_GET)) {
+		$topic =$_GET['user_id'];
+		echo "Get". $topic ;
+	}*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +32,7 @@
 
 	<!--  Paper Dashboard core CSS    -->
 	<link href="assets/css/paper-dashboard.css" rel="stylesheet" />
+
 
 	<!--  CSS for Demo Purpose, don't include it in your project     -->
 	<link href="assets/css/demo.css" rel="stylesheet" />
@@ -57,7 +69,7 @@
 							   <b class="caret"></b>
 							</p>
 						</a>
-						<div class="collapse in" id="componentsExamples">
+						<div class="collapse" id="componentsExamples">
 							<ul class="nav">
 								<li>
 									<a href="create_test.php">
@@ -68,14 +80,14 @@
 								<li>
 									<a href="components/grid.html">
 										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View Test</span>
+										<span class="sidebar-normal">View test</span>
 									</a>
 								</li>
 								<li>
-									<a href="components/panels.html">
+									<a href="start_test.php">
 										<span class="sidebar-mini">ET</span>
 										<span class="sidebar-normal">Edit Test</span>
-									</a>
+									</a
 								</li>
 								<li>
 									<a href="delete_test.php">
@@ -86,7 +98,7 @@
 							</ul>
 						</div>
 					</li>
-					<li>
+					<li class="active">
 						<a href="produce_result.php">
                 <i class="ti-clipboard"></i>
                 <p>
@@ -101,7 +113,7 @@
 									Change Password
                 </p>
             </a>
-					</li>
+					</li>	
 					<li>
 						<a href="logout.php">
                 <i class="ti-share"></i>
@@ -126,8 +138,8 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="start_test.php">
-							Search Test Name
+						<a class="navbar-brand" href="produce_result.php">
+							Result
 						</a>
 						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
 							Start Test
@@ -164,54 +176,42 @@
 					</div>
 				</div>
 			</nav>
-			<div class="content" style="padding-top: 5px; margin-top: 10px;">
-				<form class="navbar-left navbar-search-form" role="search" method="post">
-					<div class="" style="display: flex;">
-						<div class="input-group" style="margin-right: auto; margin-left: auto;">
-							<span class="input-group-addon"><i class="fa fa-search"></i></span>
-							<input type="text" name="test_name" class="form-control" style="margin-right: 10px;" placeholder="Search...">
-						</div>
-						<button type="submit" name="submit" style="margin-left: 10px; height: 40px;" class="btn btn-fill btn-wd ">Search</button>
-					</div>
-				</form>
-				<br><br>
-				<hr>
-				<?php
-					if(isset($_POST["submit"]))
-					{
-						if(!empty($_POST['test_name']))
-						{
-							$name=$_POST['test_name'];
+			<div class="content">
+			<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>Ended Tests Are:</h4></div><br>
+					<?php
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT test_id,total_ques,startTest_dateTime,endTest_datetime FROM tests WHERE test_name='$name'");
+							$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
 							$numrows=mysqli_num_rows($query);
+							
 							if($numrows>0)
 							while ($row=mysqli_fetch_row($query))
 							{
-								//printf ("%s (%s)\n",$row[0],$row[1]);
-							
 								$id=$row[0];
-								
+								$end=strtotime($row[6]);
+								$query1=mysqli_query($con,"select now() from DUAL");
+								$val = mysqli_fetch_array($query1);
+								$sec1=strtotime($val[0]);
+								if($end<$sec1)
 								echo "<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
-									 <a href='testPage.php?id=$id'>
-									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$name</h4></div>
+									 <a href='view_result.php?id=$id'>
+									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
 									<hr style='margin: 0px;'>
 									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[2]</div>
-										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[3] </div>
-										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[1] </div>
+										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
+										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
+										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
 										
 									</div>
 									</a>
 								</div>";
 							}
-						}
-					}
+							else
+							{
+								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
+							}
 				?>
-				
 			</div>
-					
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">

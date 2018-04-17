@@ -1,7 +1,47 @@
 <?php
-	session_start();
-	$user=$_SESSION['sess_user'];
+		 session_start();
+		 $test_id=$_SESSION['sess_test'];
+		 $count=$_SESSION['sess_ques'];
+		 $z=1;
+		 
+		 $no="SUCCESSFULLY EDITED ALL QUESTIONS !!";
+		/* if($count==0)
+		 {
+			 echo "<script type='text/javascript'>alert('$no');</script>";
+			 echo("<script>location.href = '".home.".php';</script>");
+		 }*/
+		 $con=mysqli_connect('localhost','root','') or die(mysql_error());
+		 mysqli_select_db($con,'online_test') or die("cannot select DB");
+		 $query=mysqli_query($con,"SELECT * FROM questions WHERE test_id='$test_id'");
+		 $numrows=mysqli_num_rows($query);
+		 $noques="NO QUESTIONS ADDED, FIRST ADD QUESTIONS !!";
+		 if($numrows==0)
+		 {
+			 echo "<script type='text/javascript'>alert('$noques');</script>";
+			 echo("<script>location.href = '".addquestions.".php';</script>");
+		 }
+		 $i=1;
+		$j=0;
+		$k=0;
+		$questions=array();
+		if($numrows>0)
+		while ($row=mysqli_fetch_row($query))
+		{
+			$questions[$j]=array();
+			$questions[$j][0]=$row[0];
+			$questions[$j][1]=$row[1];
+			$questions[$j][2]=$row[2];
+			$questions[$j][3]=$row[3];
+			$questions[$j][4]=$row[4];
+			$questions[$j][5]=$row[5];
+			$questions[$j][6]=$row[6];
+			$questions[$j][7]=$row[7];		
+			$i=$i+1;
+			$j=$j+1;
+			
+		}
 ?>
+	
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +54,6 @@
 
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 	<meta name="viewport" content="width=device-width" />
-
 
 	<!-- Bootstrap core CSS     -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
@@ -50,7 +89,7 @@
 								<p>Home</p>
 	          </a>
 					</li>
-					<li>
+					<li class="active">
 						<a data-toggle="collapse" href="#componentsExamples">
 							<i class="ti-ruler-pencil"></i>
 							<p>Tests
@@ -68,11 +107,11 @@
 								<li>
 									<a href="components/grid.html">
 										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View Test</span>
+										<span class="sidebar-normal">View test</span>
 									</a>
 								</li>
-								<li>
-									<a href="components/panels.html">
+								<li class="active">
+									<a href="editquestions.php">
 										<span class="sidebar-mini">ET</span>
 										<span class="sidebar-normal">Edit Test</span>
 									</a>
@@ -80,7 +119,7 @@
 								<li>
 									<a href="delete_test.php">
 										<span class="sidebar-mini">DT</span>
-										<span class="sidebar-normal">Delete Test</span>
+										<span class="sidebar-normal">Delete test</span>
 									</a>
 								</li>
 							</ul>
@@ -126,8 +165,8 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="start_test.php">
-							Search Test Name
+						<a class="navbar-brand" href="editquestions.php">
+							Edit Questions
 						</a>
 						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
 							Start Test
@@ -164,54 +203,103 @@
 					</div>
 				</div>
 			</nav>
-			<div class="content" style="padding-top: 5px; margin-top: 10px;">
-				<form class="navbar-left navbar-search-form" role="search" method="post">
-					<div class="" style="display: flex;">
-						<div class="input-group" style="margin-right: auto; margin-left: auto;">
-							<span class="input-group-addon"><i class="fa fa-search"></i></span>
-							<input type="text" name="test_name" class="form-control" style="margin-right: 10px;" placeholder="Search...">
-						</div>
-						<button type="submit" name="submit" style="margin-left: 10px; height: 40px;" class="btn btn-fill btn-wd ">Search</button>
-					</div>
-				</form>
-				<br><br>
-				<hr>
+			<div class="content">
+				<div style="width: 60%; margin-left: auto; margin-right: auto;">
 				<?php
-					if(isset($_POST["submit"]))
+				 
+					while($z<=$count)
 					{
-						if(!empty($_POST['test_name']))
-						{
-							$name=$_POST['test_name'];
-							$con=mysqli_connect('localhost','root','') or die(mysql_error());
-							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT test_id,total_ques,startTest_dateTime,endTest_datetime FROM tests WHERE test_name='$name'");
-							$numrows=mysqli_num_rows($query);
-							if($numrows>0)
-							while ($row=mysqli_fetch_row($query))
-							{
-								//printf ("%s (%s)\n",$row[0],$row[1]);
-							
-								$id=$row[0];
-								
-								echo "<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
-									 <a href='testPage.php?id=$id'>
-									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$name</h4></div>
-									<hr style='margin: 0px;'>
-									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[2]</div>
-										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[3] </div>
-										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[1] </div>
+						$x=$z-1;
+					?>
+					<div class="card">
+						<form method="post">
+							<div class="card-header">
+								<h4 class="card-title">
+										Edit Question <?php echo $z ?>
 										
-									</div>
-									</a>
-								</div>";
-							}
-						}
+									</h4>
+							</div>
+							<div class="card-content">
+								<div class="form-group">
+									<label class="control-label">
+											Question Description <star>*</star>
+									</label>
+									<input class="form-control" name="desc" rows="3" value="<?php echo $questions[$x][2] ?>" default="0" type="text" required="true" email="true" autocomplete="off" aria-required="true">
+								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Option 1 <star>*</star>
+									</label>
+									<input class="form-control" name="op1" rows="3" value="<?php echo $questions[$x][3] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">
+								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Option 2 <star>*</star>
+									</label>
+									<input class="form-control" name="op2" rows="3" value="<?php echo $questions[$x][4] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Option 3 <star>*</star>
+									</label>
+                                    <input class="form-control" name="op3" rows="3" value="<?php echo $questions[$x][5] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Option 4 <star>*</star>
+									</label>
+									<input class="form-control" name="op4" rows="3" value="<?php echo $questions[$x][6] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">								</div>
+								<div class="form-group">
+									<label class="control-label">
+											Correct Answer <star>*</star>
+									</label>
+									<input class="form-control" name="curr_ans" rows="3" value="<?php echo $questions[$x][7] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">								</div>
+								<br>
+								<div class="category">
+									<star>*</star> Required fields</div>
+							</div>
+							<div class="card-footer">
+								<button type="submit" name="update" value="<?php echo $questions[$x][0] ?>"class="btn btn-info btn-fill pull-right">Update</button>
+								<div class="clearfix"></div>
+							</div>
+						</form>
+					</div>
+					<?php
+						$z=$z+1;
 					}
-				?>
+					?>
 				
-			</div>
-					
+			
+			
+	<?php
+
+		if(isset($_POST["update"]))
+		{	
+			$qid=$_POST["update"];
+			echo $qid;
+		if(!empty($_POST['desc']) || !empty($_POST['op1']) || !empty($_POST['op2']) || !empty($_POST['op3']) || !empty($_POST['op4']) || !empty($_POST['curr_ans']))
+		{
+			
+			$updated="Question updated !!";
+			$des=$_POST['desc'];
+			$opt1=$_POST['op1'];
+			$opt2=$_POST['op2'];
+			$opt3=$_POST['op3'];
+			$opt4=$_POST['op4'];
+			$curr_ans=$_POST['curr_ans'];
+	
+			$con=mysqli_connect('localhost','root','');
+			mysqli_select_db($con,'online_test') or die("cannot select DB");
+			$sql=mysqli_query($con,"UPDATE questions SET ques_desc='$des',opt1='$opt1',opt2='$opt2',opt3='$opt3',opt4='$opt4',curr_ans='$curr_ans' where test_id='$test_id' and ques_id='$qid' ");
+			if($sql)
+			{
+				echo "<script type='text/javascript'>alert('$updated');</script>";
+				echo("<script>location.href = '".editquestions.".php';</script>");
+			}
+			
+		}
+		}
+	?>
+		</div>
+	</div>
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
@@ -297,6 +385,11 @@
 		demo.initOverviewDashboard();
 		demo.initCirclePercentage();
 
+	});
+</script>
+<script type="text/javascript">
+	$().ready(function() {
+		demo.initFormExtendedDatetimepickers();
 	});
 </script>
 

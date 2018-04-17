@@ -1,6 +1,45 @@
 <?php
 	session_start();
 	$user=$_SESSION['sess_user'];
+	$n=$_SESSION['sess_name'];
+	$id=$_SESSION['test_id'];
+	//$id=44;
+	$con=mysqli_connect('localhost','root','') or die(mysql_error());
+	mysqli_select_db($con,'online_test') or die("cannot select DB");
+	$query=mysqli_query($con,"SELECT * FROM tests WHERE test_id='$id'");
+	$row=mysqli_fetch_row($query);
+	$pt_curr=$row[7];
+	$pt_neg=$row[8];
+	$limit=$row[9];
+	$totalq=$row[4];
+	$c=0;
+	$correct=0;
+	$wrong=0;
+	$flag=0;
+	$n=$_SESSION['sess_name'];
+	$query1=mysqli_query($con,"SELECT * FROM useranswer WHERE test_id='$id' and user_id='$user'");
+	$numrows=mysqli_num_rows($query1);
+	if($numrows>0)
+	{
+		while ($row=mysqli_fetch_row($query1))
+		{
+			if($row[3]==$row[4])
+			{
+					$c=$c+$pt_curr;
+					$correct=$correct+1;
+			}
+			else
+			{
+				$c=$c-$pt_neg;
+				$wrong=$wrong+1;
+			}
+		}
+		if($c>=$limit)
+			$flag=1;
+	}
+	$query2=mysqli_query($con,"insert into result (`user_id`, `test_id`, `username`, `result`) values ('$user','$id','$n','$c')")
+	if($query2)
+		echo "inserted!!"; 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +89,7 @@
 								<p>Home</p>
 	          </a>
 					</li>
-					<li>
+					<li class="active">
 						<a data-toggle="collapse" href="#componentsExamples">
 							<i class="ti-ruler-pencil"></i>
 							<p>Tests
@@ -77,7 +116,7 @@
 										<span class="sidebar-normal">Edit Test</span>
 									</a>
 								</li>
-								<li>
+								<li class="active">
 									<a href="delete_test.php">
 										<span class="sidebar-mini">DT</span>
 										<span class="sidebar-normal">Delete Test</span>
@@ -87,18 +126,10 @@
 						</div>
 					</li>
 					<li>
-						<a href="produce_result.php">
+						<a href="#formsExamples">
                 <i class="ti-clipboard"></i>
                 <p>
 									Results
-                </p>
-            </a>
-					</li>
-					<li>
-						<a href="changepassword.php">
-                <i class="ti-clipboard"></i>
-                <p>
-									Change Password
                 </p>
             </a>
 					</li>
@@ -126,10 +157,10 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="start_test.php">
-							Search Test Name
+						<a class="navbar-brand" href="user_result.php">
+							Your Result
 						</a>
-						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
+						<a class="navbar-brand" href="start_test.php">
 							Start Test
 						</a>
 					</div>
@@ -165,51 +196,37 @@
 				</div>
 			</nav>
 			<div class="content" style="padding-top: 5px; margin-top: 10px;">
-				<form class="navbar-left navbar-search-form" role="search" method="post">
-					<div class="" style="display: flex;">
-						<div class="input-group" style="margin-right: auto; margin-left: auto;">
-							<span class="input-group-addon"><i class="fa fa-search"></i></span>
-							<input type="text" name="test_name" class="form-control" style="margin-right: 10px;" placeholder="Search...">
+						<div style="width: 60%; margin-left: auto; margin-right: auto;">
+							<div class="card">
+							<div class="card-header">
+								<h4 class="card-title">
+										<?php 
+											if($flag==1)
+											{
+												echo $n." you passed this test !!";
+											}
+											else
+											{
+												echo $n." you didn't pass this test !!";
+											}
+										?>
+									</h4>
+							</div>
+							<div class="card-content">
+								<div class='' style='width: 100%;'>
+										<div class='card-body' style='padding: 10px;'><b>Your Score :</b> <?php echo $c ?></div>
+										<div class='card-body' style='padding: 10px;'><b>Passing Limit :</b> <?php echo $limit ?> </div>
+										<div class='card-body' style='padding: 10px;'><b>Total Questions : </b> <?php echo $totalq ?> </div>
+										<div class='card-body' style='padding: 10px;'><b>Attempted Questions : </b> <?php echo $numrows ?> </div>
+										<div class='card-body' style='padding: 10px;'><b>Correct Answers : </b> <?php echo $correct ?> </div>
+										<div class='card-body' style='padding: 10px;'><b>Wrong Answers : </b> <?php echo $wrong ?> </div>
+								</div>
+							</div>
+							</div>
 						</div>
-						<button type="submit" name="submit" style="margin-left: 10px; height: 40px;" class="btn btn-fill btn-wd ">Search</button>
-					</div>
-				</form>
+				</div>
 				<br><br>
 				<hr>
-				<?php
-					if(isset($_POST["submit"]))
-					{
-						if(!empty($_POST['test_name']))
-						{
-							$name=$_POST['test_name'];
-							$con=mysqli_connect('localhost','root','') or die(mysql_error());
-							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT test_id,total_ques,startTest_dateTime,endTest_datetime FROM tests WHERE test_name='$name'");
-							$numrows=mysqli_num_rows($query);
-							if($numrows>0)
-							while ($row=mysqli_fetch_row($query))
-							{
-								//printf ("%s (%s)\n",$row[0],$row[1]);
-							
-								$id=$row[0];
-								
-								echo "<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
-									 <a href='testPage.php?id=$id'>
-									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$name</h4></div>
-									<hr style='margin: 0px;'>
-									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[2]</div>
-										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[3] </div>
-										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[1] </div>
-										
-									</div>
-									</a>
-								</div>";
-							}
-						}
-					}
-				?>
-				
 			</div>
 					
 			<footer class="footer">

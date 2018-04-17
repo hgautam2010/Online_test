@@ -2,6 +2,12 @@
 		 session_start();
 		 $test_id=$_SESSION['sess_test'];
 		 $count=$_SESSION['sess_ques'];
+		 if($count==0)
+		 {
+			 unset($_SESSION['sess_test']);
+				unset($_SESSION['sess_ques']);
+			header("Location: index.php");
+		 }
 		?>
 	
 <!DOCTYPE html>
@@ -79,16 +85,16 @@
 									</a>
 								</li>
 								<li>
-									<a href="startTest.php">
-										<span class="sidebar-mini">ST</span>
-										<span class="sidebar-normal">start test</span>
+									<a href="delete_test.php">
+										<span class="sidebar-mini">DT</span>
+										<span class="sidebar-normal">Delete test</span>
 									</a>
 								</li>
 							</ul>
 						</div>
 					</li>
 					<li>
-						<a href="#formsExamples">
+						<a href="produce_result.php">
                 <i class="ti-clipboard"></i>
                 <p>
 									Results
@@ -96,10 +102,18 @@
             </a>
 					</li>
 					<li>
+						<a href="changepassword.php">
+                <i class="ti-clipboard"></i>
+                <p>
+									Change Password
+                </p>
+            </a>
+					</li>
+					<li>
 						<a href="logout.php">
                 <i class="ti-share"></i>
                 <p>
-									logout
+									Logout
                 </p>
             </a>
 					</li>
@@ -119,8 +133,11 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="#Dashboard">
+						<a class="navbar-brand" href="addquestions.php">
 							Add Questions
+						</a>
+						<a class="navbar-brand" href="start_test.php" style="margin-left: 600px;">
+							Start Test
 						</a>
 					</div>
 					<div class="collapse navbar-collapse">

@@ -49,8 +49,13 @@
 	           </a>
 					</li>
 					<li>
-						<a href="about.php">
+						<a href="new.html">
                 About
+            </a>
+					</li>
+					<li>
+						<a href="feedback.php">
+                Feedback
             </a>
 					</li>
 				</ul>
@@ -91,9 +96,11 @@
 			</div>
 			<?php
 	if(isset($_POST["submit"])){
+		$not="Fill all fields !!";
 	if(!empty($_POST['username']) && !empty($_POST['password'])) {
 		$user=$_POST['username'];
 		$pass=$_POST['password'];
+		$confrm="Incorrect username or password !!";
 		$con=mysqli_connect('localhost','root','') or die(mysql_error());
 		mysqli_select_db($con,'online_test') or die("cannot select DB");
 		$result=mysqli_query($con,"SELECT * FROM register WHERE username='".$user."' AND password='".$pass."'");
@@ -111,15 +118,16 @@
 				$row=mysqli_fetch_assoc($result);
 				session_start();
 				@$_SESSION['sess_user']=$row['user_id'];
+				@$_SESSION['sess_name']=$user;
 				echo "logged in session started";
 				
 				header("Location: home.php");
 			}
 		} else {
-			echo "Invalid username or password!";
+			echo "<script type='text/javascript'>alert('$confrm');</script>";
 		}
 		} else {
-			echo "All fields are required!";
+			echo "<script type='text/javascript'>alert('$not');</script>";
 		}
 	}
 ?>
