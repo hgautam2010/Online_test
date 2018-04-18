@@ -5,9 +5,9 @@
 	}
 	$user=$_SESSION['sess_user'];
 	$n=$_SESSION['sess_name'];
-	echo "LOGGED IN USER IS -----";
-	echo $user;
-	
+	// echo "LOGGED IN USER IS -----";
+	// echo $user;
+
 	/*if(!isset($_GET)) {
 		$topic =$_GET['user_id'];
 		echo "Get". $topic ;
@@ -36,6 +36,24 @@
 
 	<!--  CSS for Demo Purpose, don't include it in your project     -->
 	<link href="assets/css/demo.css" rel="stylesheet" />
+	<style media="">
+		.responsive-cards {
+				float: left;
+
+				width: 31.5%;
+				padding: 10px 10px 10px;
+		}
+		@media only screen and (max-width: 653px){
+	    .responsive-cards {
+	        width: 48%;
+	    }
+		}
+		@media only screen and (max-width: 599px){
+	    .responsive-cards {
+	        width: 95%;
+	    }
+		}
+	</style>
 
 	<!--  Fonts and icons     -->
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -108,12 +126,12 @@
 					</li>
 					<li>
 						<a href="changepassword.php">
-                <i class="ti-clipboard"></i>
+                <i class="ti-key"></i>
                 <p>
 									Change Password
                 </p>
             </a>
-					</li>	
+					</li>
 					<li>
 						<a href="logout.php">
                 <i class="ti-share"></i>
@@ -138,15 +156,20 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="home.php">
-							Home
-						</a>
-						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
+						<p class="navbar-brand">
+							<b>WELCOME <?php echo $n ?></b>
+						</p>
+						<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-md hidden-lg">
 							Start Test
-						</a>
+						</button>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
+							<li>
+								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
+									Start Test
+                </button>
+							</li>
 							<li class="dropdown">
 								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
 	                <i class="ti-bell"></i>
@@ -176,21 +199,20 @@
 					</div>
 				</div>
 			</nav>
-			<div class="content">
-			<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>WELCOME USER: <?php echo $n ?></h4></div><br>
-			<div class='card-body' style='padding: 10px;'><h5 style='margin: 0px;'>TEST CREATED BY YOU:</h5></div>
+			<div class="content" style="padding-top: 0px;">
+			<div class='card-body' style='padding: 10px;'><h3>Comming Soon Tests:</h3></div>
 					<?php
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
 							$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
 							$numrows=mysqli_num_rows($query);
-							
+
 							if($numrows>0)
 							while ($row=mysqli_fetch_row($query))
 							{
 								$id=$row[0];
-								
-								echo "<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
+
+								echo "<div class='card responsive-cards' style='margin: 6px;' >
 									 <a href='editTest.php?id=$id'>
 									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
 									<hr style='margin: 0px;'>
@@ -198,7 +220,6 @@
 										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
 										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
 										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
-										
 									</div>
 									</a>
 								</div>";
@@ -208,8 +229,40 @@
 								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
 							}
 				?>
+				<!-- Don't touch this line -->
+				<h3 style='padding: 10px; visibility: hidden;'>Dont bother it</h3>
+
+				<h3 style='padding: 10px;'>Test Create By You:</h3>
+						<?php
+								$con=mysqli_connect('localhost','root','') or die(mysql_error());
+								mysqli_select_db($con,'online_test') or die("cannot select DB");
+								$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
+								$numrows=mysqli_num_rows($query);
+
+								if($numrows>0)
+								while ($row=mysqli_fetch_row($query))
+								{
+									$id=$row[0];
+
+									echo "<div class='card responsive-cards' style='margin: 6px;' >
+										 <a href='editTest.php?id=$id'>
+										<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
+										<hr style='margin: 0px;'>
+										<div class='' style='width: 100%;'>
+											<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
+											<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
+											<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
+										</div>
+										</a>
+									</div>";
+								}
+								else
+								{
+									echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
+								}
+					?>
 			</div>
-			<footer class="footer">
+			<footer class="footer" style="border: 0px;">
 				<div class="container-fluid">
 					<nav class="pull-left">
 						<ul>
