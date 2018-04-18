@@ -37,18 +37,10 @@
 	<!--  CSS for Demo Purpose, don't include it in your project     -->
 	<link href="assets/css/demo.css" rel="stylesheet" />
 	<style media="">
-		.responsive-cards {
-				float: left;
-
-				width: 31.5%;
-				padding: 10px 10px 10px;
-		}
-		@media only screen and (max-width: 653px){
-	    .responsive-cards {
-	        width: 48%;
-	    }
-		}
-		@media only screen and (max-width: 599px){
+	.responsive-cards {
+		width: 47.4%;
+	}
+		@media only screen and (max-width: 540px){
 	    .responsive-cards {
 	        width: 95%;
 	    }
@@ -199,40 +191,10 @@
 					</div>
 				</div>
 			</nav>
-			<div class="content" style="padding-top: 0px;">
-			<div class='card-body' style='padding: 10px;'><h3>Comming Soon Tests:</h3></div>
-					<?php
-							$con=mysqli_connect('localhost','root','') or die(mysql_error());
-							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
-							$numrows=mysqli_num_rows($query);
+			<div class="content" style="margin-top: 0px; padding-top: 0px;padding-left: 0px;">
 
-							if($numrows>0)
-							while ($row=mysqli_fetch_row($query))
-							{
-								$id=$row[0];
-
-								echo "<div class='card responsive-cards' style='margin: 6px;' >
-									 <a href='editTest.php?id=$id'>
-									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
-									<hr style='margin: 0px;'>
-									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
-										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
-										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
-									</div>
-									</a>
-								</div>";
-							}
-							else
-							{
-								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
-							}
-				?>
-				<!-- Don't touch this line -->
-				<h3 style='padding: 10px; visibility: hidden;'>Dont bother it</h3>
-
-				<h3 style='padding: 10px;'>Test Create By You:</h3>
+			<div class="responsive-cards" style="float: left; margin: 7px;">
+				<h3 style="padding: 10px;">Comming Soon Tests:</h3>
 						<?php
 								$con=mysqli_connect('localhost','root','') or die(mysql_error());
 								mysqli_select_db($con,'online_test') or die("cannot select DB");
@@ -244,7 +206,7 @@
 								{
 									$id=$row[0];
 
-									echo "<div class='card responsive-cards' style='margin: 6px;' >
+									echo "<div class='card' style='margin: 6px; margin-bottom: 15px;' >
 										 <a href='editTest.php?id=$id'>
 										<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
 										<hr style='margin: 0px;'>
@@ -261,6 +223,38 @@
 									echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
 								}
 					?>
+				</div>
+				<div class="responsive-cards" style="float: left; margin: 7px;">
+					<h3 style="padding: 10px;">Tests created by you:</h3>
+							<?php
+									$con=mysqli_connect('localhost','root','') or die(mysql_error());
+									mysqli_select_db($con,'online_test') or die("cannot select DB");
+									$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
+									$numrows=mysqli_num_rows($query);
+
+									if($numrows>0)
+									while ($row=mysqli_fetch_row($query))
+									{
+										$id=$row[0];
+
+										echo "<div class='card' style='margin: 6px;margin-bottom: 15px;' >
+											 <a href='editTest.php?id=$id'>
+											<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
+											<hr style='margin: 0px;'>
+											<div class='' style='width: 100%;'>
+												<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
+												<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
+												<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
+											</div>
+											</a>
+										</div>";
+									}
+									else
+									{
+										echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
+									}
+						?>
+					</div>
 			</div>
 			<footer class="footer" style="border: 0px;">
 				<div class="container-fluid">
