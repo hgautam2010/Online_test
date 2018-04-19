@@ -87,7 +87,7 @@ return true;
                                 <p>Home</p>
               </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a data-toggle="collapse" href="#componentsExamples">
                             <i class="ti-ruler-pencil"></i>
                             <p>Tests
@@ -97,41 +97,35 @@ return true;
                         <div class="collapse in" id="componentsExamples">
                             <ul class="nav">
                                 <li >
-                                    <a href="components/buttons.html">
+                                    <a href="create_test.php">
                                         <span class="sidebar-mini">CT</span>
                                         <span class="sidebar-normal">Create Test</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="home.php">
+                                    <a href="view_test.php">
                                         <span class="sidebar-mini">VT</span>
-                                        <span class="sidebar-normal">View test</span>
-                                    </a>
-                                </li>
-                                <li class="active">
-                                    <a href="">
-                                        <span class="sidebar-mini">ET</span>
-                                        <span class="sidebar-normal">Edit Test</span>
+                                        <span class="sidebar-normal">View/Edit test</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="components/starttest.php">
+                                    <a href="delete_test.php">
                                         <span class="sidebar-mini">ST</span>
-                                        <span class="sidebar-normal">start test</span>
+                                        <span class="sidebar-normal">Delete test</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li>
-                        <a href="#formsExamples">
+                        <a href="produce_result.php">
                 <i class="ti-clipboard"></i>
                 <p>
                                     Results
                 </p>
             </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="changepassword.php">
                 <i class="ti-clipboard"></i>
                 <p>
@@ -170,6 +164,11 @@ return true;
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
+						<li>
+								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
+									Start Test
+                </button>
+							</li>
                             <li class="dropdown">
                                 <a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
                     <i class="ti-bell"></i>

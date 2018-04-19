@@ -88,16 +88,10 @@
 									</a>
 								</li>
 								<li>
-									<a href="components/grid.html">
+									<a href="view_test.php">
 										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View test</span>
+										<span class="sidebar-normal">View/Edit test</span>
 									</a>
-								</li>
-								<li>
-									<a href="start_test.php">
-										<span class="sidebar-mini">ET</span>
-										<span class="sidebar-normal">Edit Test</span>
-									</a
 								</li>
 								<li>
 									<a href="delete_test.php">
@@ -151,9 +145,7 @@
 						<p class="navbar-brand">
 							<b>WELCOME <?php echo $n ?></b>
 						</p>
-						<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-md hidden-lg">
-							Start Test
-						</button>
+						
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -196,9 +188,10 @@
 			<div class="responsive-cards" style="float: left; margin: 7px;">
 				<h3 style="padding: 10px;">Comming Soon Tests:</h3>
 						<?php
+								$pub=1;
 								$con=mysqli_connect('localhost','root','') or die(mysql_error());
 								mysqli_select_db($con,'online_test') or die("cannot select DB");
-								$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
+								$query=mysqli_query($con,"SELECT * FROM tests WHERE type='$pub' order by StartTest_dateTime desc");
 								$numrows=mysqli_num_rows($query);
 
 								if($numrows>0)

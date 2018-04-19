@@ -68,15 +68,9 @@
 									</a>
 								</li>
 								<li>
-									<a href="components/grid.html">
+									<a href="view_test.php">
 										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View test</span>
-									</a>
-								</li>
-								<li>
-									<a href="components/panels.html">
-										<span class="sidebar-mini">ET</span>
-										<span class="sidebar-normal">Edit Test</span>
+										<span class="sidebar-normal">View/Edit test</span>
 									</a>
 								</li>
 								<li>
@@ -131,12 +125,15 @@
 						<a class="navbar-brand" href="create_test.php">
 							Create Test
 						</a>
-						<a class="navbar-brand" href="start_test.php" style="margin-left: 600px;">
-							Start Test
-						</a>
+						
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
+						<li>
+								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
+									Start Test
+                </button>
+							</li>
 							<li class="dropdown">
 								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
 	                <i class="ti-bell"></i>
@@ -229,8 +226,8 @@
 											Test type <star>*</star>
 									</label>
 									<br>
-									<span style="margin-right: 20%;"><input type="radio" name="testType" value="private" > Private</span>
-								  <input type="radio" name="testType" value="public"> Public
+									<span style="margin-right: 20%;"><input type="radio" name="testType" value="0" > Private</span>
+								  <input type="radio" name="testType" value="1"> Public
 								</div>
 								<br>
 								<div class="category">
@@ -248,8 +245,9 @@
 <?php
 			 if(isset($_POST["submit"]))
 			 {
-			 	if(!empty($_POST['testname']) && !empty($_POST['totalq']) && !empty($_POST['st_datetime']) && !empty($_POST['end_datetime']))
+			 	if(!empty($_POST['testname']) && !empty($_POST['totalq']) && !empty($_POST['st_datetime']) && !empty($_POST['end_datetime']) && !empty($_POST['testType']))
 			 	{
+					$type=$_POST['testType'];
 					$test_name=$_POST['testname'];
 			 		$category=$_POST['category'];
 			 		$totalq=$_POST['totalq'];
@@ -265,7 +263,7 @@
 					
 			 		$con=mysqli_connect('localhost','root','') or die(mysql_error());
 			 		mysqli_select_db($con,'online_test') or die("cannot select DB");
-			 		$sql="INSERT INTO `tests`(`user_id`, `test_name`, `category`, `total_ques`, `startTest_dateTime`, `endTest_datetime`, `pt_curr`, `pt_neg`, `pass_limit`) VALUES  ('$user','$test_name','$category','$totalq','$st_date','$end_date','$curr_ans','$wng_ans','$limit')";
+			 		$sql="INSERT INTO `tests`(`user_id`, `test_name`, `category`, `total_ques`, `startTest_dateTime`, `endTest_datetime`, `pt_curr`, `pt_neg`, `pass_limit`,  `type`) VALUES  ('$user','$test_name','$category','$totalq','$st_date','$end_date','$curr_ans','$wng_ans','$limit', '$type')";
 					if ($con->query($sql) === TRUE) {
 						$last_id = mysqli_insert_id($con);
 						@$_SESSION['sess_test']=$last_id;
