@@ -238,7 +238,7 @@
 								$can="CAN START TEST";
 								$cannot="CANNOT START TEST";
 								if( ($sec1>=$sec) && ($sec1<$sec2))
-								{ @$_SESSION['ques_num']=0;
+								{ @$_SESSION['ques_num']=$row[4];
 									@$_SESSION['test_id']=$id;
 								echo("<script>location.href = '".test.".php';</script>");}
 								else

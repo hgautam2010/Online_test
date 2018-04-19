@@ -78,16 +78,10 @@
 									</a>
 								</li>
 								<li>
-									<a href="components/grid.html">
+									<a href="view_test.php">
 										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View test</span>
+										<span class="sidebar-normal">View/Edit test</span>
 									</a>
-								</li>
-								<li>
-									<a href="start_test.php">
-										<span class="sidebar-mini">ET</span>
-										<span class="sidebar-normal">Edit Test</span>
-									</a
 								</li>
 								<li>
 									<a href="delete_test.php">
@@ -141,12 +135,15 @@
 						<a class="navbar-brand" href="produce_result.php">
 							Result
 						</a>
-						<a class="navbar-brand" href="start_test.php" style="margin-left: 700px;">
-							Start Test
-						</a>
+						
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
+						<li>
+								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
+									Start Test
+                </button>
+							</li>
 							<li class="dropdown">
 								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
 	                <i class="ti-bell"></i>

@@ -7,39 +7,42 @@
 	$con=mysqli_connect('localhost','root','') or die(mysql_error());
 	mysqli_select_db($con,'online_test') or die("cannot select DB");
 	$query=mysqli_query($con,"SELECT * FROM tests WHERE test_id='$id'");
-	$row=mysqli_fetch_row($query);
-	$pt_curr=$row[7];
-	$pt_neg=$row[8];
-	$limit=$row[9];
-	$totalq=$row[4];
-	$c=0;
-	$correct=0;
-	$wrong=0;
-	$flag=0;
-	$n=$_SESSION['sess_name'];
-	$query1=mysqli_query($con,"SELECT * FROM useranswer WHERE test_id='$id' and user_id='$user'");
-	$numrows=mysqli_num_rows($query1);
-	if($numrows>0)
+	if($query)
 	{
-		while ($row=mysqli_fetch_row($query1))
+		$row=mysqli_fetch_row($query);
+		$pt_curr=$row[7];
+		$pt_neg=$row[8];
+		$limit=$row[9];
+		$totalq=$row[4];
+		$c=0;
+		$correct=0;
+		$wrong=0;
+		$flag=0;
+		$n=$_SESSION['sess_name'];
+		$query1=mysqli_query($con,"SELECT * FROM useranswer WHERE test_id='$id' and user_id='$user'");
+		$numrows=mysqli_num_rows($query1);
+		if($numrows>0)
 		{
-			if($row[3]==$row[4])
+			while ($row=mysqli_fetch_row($query1))
 			{
+				if($row[3]==$row[4])
+				{
 					$c=$c+$pt_curr;
 					$correct=$correct+1;
+				}
+				else
+				{
+					$c=$c-$pt_neg;
+					$wrong=$wrong+1;
+				}
 			}
-			else
-			{
-				$c=$c-$pt_neg;
-				$wrong=$wrong+1;
-			}
+			if($c>=$limit)
+				$flag=1;
 		}
-		if($c>=$limit)
-			$flag=1;
-	}
-	$query2=mysqli_query($con,"insert into result (`user_id`, `test_id`, `username`, `result`) values ('$user','$id','$n','$c')")
-	if($query2)
+		$query2=mysqli_query($con,"insert into result (`user_id`, `test_id`, `username`, `result`) values ('$user','$id','$n','$c')");
+		if($query2)
 		echo "inserted!!"; 
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,15 +108,9 @@
 									</a>
 								</li>
 								<li>
-									<a href="components/grid.html">
+									<a href="view_test.php">
 										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View Test</span>
-									</a>
-								</li>
-								<li>
-									<a href="components/panels.html">
-										<span class="sidebar-mini">ET</span>
-										<span class="sidebar-normal">Edit Test</span>
+										<span class="sidebar-normal">View/Edit Test</span>
 									</a>
 								</li>
 								<li class="active">
@@ -126,7 +123,7 @@
 						</div>
 					</li>
 					<li>
-						<a href="#formsExamples">
+						<a href="produce_result.php">
                 <i class="ti-clipboard"></i>
                 <p>
 									Results
@@ -160,12 +157,15 @@
 						<a class="navbar-brand" href="user_result.php">
 							Your Result
 						</a>
-						<a class="navbar-brand" href="start_test.php">
-							Start Test
-						</a>
+						
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
+						<li>
+								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
+									Start Test
+                </button>
+							</li>
 							<li class="dropdown">
 								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
 	                <i class="ti-bell"></i>

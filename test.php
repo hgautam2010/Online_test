@@ -6,6 +6,7 @@
 	//$user=4;
 	//$id=44;
 	//$num=4;
+	
 	$qid=0;
 	$x=1;
 	$con=mysqli_connect('localhost','root','') or die(mysql_error());
@@ -135,9 +136,11 @@
 				{
 					$num=$_POST["select"];
 					$num1=$num+1;*/
+					$x=1;
 					while($x<=$num)
 					{
 						$z=$x-1;
+						
 				?>
 				<div style="width: 70%; margin-left: auto; margin-right: auto;">
 				<div class="card">
