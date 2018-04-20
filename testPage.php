@@ -99,7 +99,7 @@
 					</li>
 					<li>
 						<a href="changepassword.php">
-                <i class="ti-clipboard"></i>
+                <i class="ti-key"></i>
                 <p>
 									Change Password
                 </p>
@@ -189,7 +189,7 @@
 							if($numrows>0)
 							{
 								$row=mysqli_fetch_row($query);
-								
+
 								echo "<p><h4> Test name: $row[2]</h4>
 										<h3>RULES</h3>
 										<ol>
@@ -211,10 +211,10 @@
 											<li>
 												End Time of test: $row[6]
 											</li>
-											
-											
-											
-							
+
+
+
+
 										</ol>
 										</p>";
 							}
@@ -226,7 +226,7 @@
 								//echo "<script>console$query</script>";
 								//$row=mysql_fetch_assoc($query);
 								//echo $row;
-								
+
 								$sec = strtotime($row[5]);
 								$sec2 =strtotime($row[6]);
 								$query1=mysqli_query($con,"select now() from DUAL");
@@ -243,8 +243,8 @@
 								echo("<script>location.href = '".test.".php';</script>");}
 								else
 									echo "<script type='text/javascript'>alert('$cannot');</script>";
-							}	
-					
+							}
+
 					?>
 					<br>
 			</div>

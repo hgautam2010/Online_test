@@ -40,7 +40,7 @@
 	.responsive-cards {
 		width: 47.4%;
 	}
-		@media only screen and (max-width: 540px){
+		@media only screen and (max-width: 700px){
 	    .responsive-cards {
 	        width: 95%;
 	    }
@@ -57,10 +57,10 @@
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text logo-mini">
+				<a href="javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://www.creative-tim.com" class="simple-text logo-normal">
+				<a href="javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -145,7 +145,9 @@
 						<p class="navbar-brand">
 							<b>WELCOME <?php echo $n ?></b>
 						</p>
-						
+						<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px; margin-right: 20px;padding: 10px 15px;" class="btn btn-success hidden-md hidden-lg pull-right">
+							Start Test
+						</button>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -154,106 +156,82 @@
 									Start Test
                 </button>
 							</li>
-							<li class="dropdown">
-								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
-	                <i class="ti-bell"></i>
-	                <span class="notification">5</span>
-									<p class="hidden-md hidden-lg">
-										Notifications
-										<b class="caret"></b>
-									</p>
-                </a>
-								<ul class="dropdown-menu">
-									<li><a href="#not1">Notification 1</a></li>
-									<li><a href="#not2">Notification 2</a></li>
-									<li><a href="#not3">Notification 3</a></li>
-									<li><a href="#not4">Notification 4</a></li>
-									<li><a href="#another">Another notification</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#settings" class="btn-rotate">
-									<i class="ti-settings"></i>
-									<p class="hidden-md hidden-lg">
-										Settings
-									</p>
-                </a>
-							</li>
 						</ul>
 					</div>
 				</div>
 			</nav>
 			<div class="content" style="margin-top: 0px; padding-top: 0px;padding-left: 0px;">
 
-			<div class="responsive-cards" style="float: left; margin: 7px;">
+			<div class="responsive-cards" style="float: left; margin: 7px; margin-left: 2%; background-color: #BDCFB7; border-radius: 7px;">
 				<h3 style="padding: 10px;">Comming Soon Tests:</h3>
-						<?php
-								$pub=1;
-								$con=mysqli_connect('localhost','root','') or die(mysql_error());
-								mysqli_select_db($con,'online_test') or die("cannot select DB");
-								$query1=mysqli_query($con,"select now() from DUAL");
+				<?php
+						$pub=1;
+						$con=mysqli_connect('localhost','root','') or die(mysql_error());
+						mysqli_select_db($con,'online_test') or die("cannot select DB");
+						$query1=mysqli_query($con,"select now() from DUAL");
 								$val = mysqli_fetch_array($query1);
 								$sec1=$val[0];
 								$query=mysqli_query($con,"SELECT * FROM tests WHERE type='$pub' and endTest_datetime>'$sec1' and user_id<>'$user'");
-								
+
 								if($query)
 								{
 									$numrows=mysqli_num_rows($query);
 									if($numrows>0)
 									{
-								while ($row=mysqli_fetch_row($query))
-								{
-									$id=$row[0];
+						while ($row=mysqli_fetch_row($query))
+						{
+							$id=$row[0];
 
-									echo "<div class='card' style='margin: 6px; margin-bottom: 15px;' >
-										 <a href='testPage.php?id=$id'>
-										<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
-										<hr style='margin: 0px;'>
-										<div class='' style='width: 100%;'>
-											<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
-											<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
-											<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
-										</div>
-										</a>
-									</div>";
-								}
-								}
-								else
-								{
-									echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO UPCOMING PUBLIC TEST </h6></div>";
-								}}
-					?>
+							echo "<div class='card' style='margin: 6px; margin-bottom: 15px;' >
+								 <a href='testPage.php?id=$id'>
+								<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
+								<hr style='margin: 0px;'>
+								<div class='' style='width: 100%;'>
+									<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
+									<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
+									<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
+								</div>
+								</a>
+							</div>";
+						}
+					}
+						else
+						{
+							echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO UPCOMING PUBLIC TEST </h6></div>";
+						}
+					}
+			?>
 				</div>
-				<div class="responsive-cards" style="float: left; margin: 7px;">
+				<div class="responsive-cards" style="float: left; margin: 7px; background-color: #F3EBD6; border-radius: 7px;">
 					<h3 style="padding: 10px;">Tests created by you:</h3>
-							<?php
-									$con=mysqli_connect('localhost','root','') or die(mysql_error());
-									mysqli_select_db($con,'online_test') or die("cannot select DB");
-									$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
-									$numrows=mysqli_num_rows($query);
+					<?php
+							$con=mysqli_connect('localhost','root','') or die(mysql_error());
+							mysqli_select_db($con,'online_test') or die("cannot select DB");
+							$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
+							$numrows=mysqli_num_rows($query);
 
-									if($numrows>0)
-									while ($row=mysqli_fetch_row($query))
-									{
-										$id=$row[0];
+							if($numrows>0)
+							while ($row=mysqli_fetch_row($query))
+							{
+								$id=$row[0];
 
-										echo "<div class='card' style='margin: 6px;margin-bottom: 15px;' >
-											 <a href='editTest.php?id=$id'>
-											<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
-											<hr style='margin: 0px;'>
-											<div class='' style='width: 100%;'>
-												<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
-												<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
-												<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
-											</div>
-											</a>
-										</div>";
-									}
-									else
-									{
-										echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
-									}
-						?>
+								echo "<div class='card' style='margin: 6px;margin-bottom: 15px;' >
+									 <a href='editTest.php?id=$id'>
+									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
+									<hr style='margin: 0px;'>
+									<div class='' style='width: 100%;'>
+										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
+										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
+										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
+									</div>
+									</a>
+								</div>";
+							}
+							else
+							{
+								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
+							}
+				?>
 					</div>
 			</div>
 			<footer class="footer" style="border: 0px;">
@@ -261,7 +239,7 @@
 					<nav class="pull-left">
 						<ul>
 							<li>
-								<a href="http://www.creative-tim.com">
+								<a href="new.html">
                     About
                 </a>
 							</li>

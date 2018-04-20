@@ -6,7 +6,7 @@
 	//$user=4;
 	//$id=44;
 	//$num=4;
-	
+
 	$qid=0;
 	$x=1;
 	$con=mysqli_connect('localhost','root','') or die(mysql_error());
@@ -16,7 +16,7 @@
 	$query1=mysqli_query($con,"SELECT test_name FROM tests WHERE test_id='$id'");
 	$row=mysqli_fetch_row($query1);
 	$nam=$row[0];
-		
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,8 +49,8 @@
 </head>
 
 <body>
-	<div class="wrapper">
-		<div class="sidebar" data-background-color="brown" data-active-color="danger">
+	<div class="wrapper" >
+		<div class="sidebar" data-background-color="brown" style="display: none;" data-active-color="danger">
 			<div class="logo">
 				<a href="http://www.creative-tim.com" class="simple-text logo-mini">
 					OQ
@@ -84,11 +84,11 @@
 				echo "<form method='post'><li>
 				<button id=$j style='margin-top: 0px; width: 100px' name='select' value=$j >
 							<i class='nav' style='font-style: normal;'>$i:</i>
-								<p style='max-width: 200px; height: 32px; text-transform: none;overflow: hidden; margin: 0px; white-space: normal; word-wrap: normal; line-height: normal;font-size: 12px;'>$row[2]	
+								<p style='max-width: 200px; height: 32px; text-transform: none;overflow: hidden; margin: 0px; white-space: normal; word-wrap: normal; line-height: normal;font-size: 12px;'>$row[2]
 								 </p></button>
 						</li></form>
 					";
-					
+
 					$i=$i+1;
 					$j=$j+1;
 				}
@@ -96,27 +96,21 @@
 					</ul>
 			</div>
 		</div>
-		<div class="main-panel">
-			<nav class="navbar navbar-default">
-				<div class="container-fluid">
-					<div class="navbar-minimize">
+		<div class="main-panel" style="width: 100%;">
+			<nav class="navbar navbar-default" style="width: 100%; position: fixed; z-index: 1;">
+				<div class="container-fluid" >
+					<div class="navbar-minimize" style="display: none;">
 						<button id="minimizeSidebar" class="btn btn-fill btn-icon"><i class="ti-more-alt"></i></button>
 					</div>
 					<div class="navbar-header">
-						<button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar bar1"></span>
-                <span class="icon-bar bar2"></span>
-                <span class="icon-bar bar3"></span>
-            </button>
 						<p class="navbar-brand">
 							Test Name : <?php echo $nam ?>
 						</p>
 					</div>
-					<div class="collapse navbar-collapse">
+					<div class="navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
 							<li>
-								<p style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px; margin-bottom: 16px; margin-left: 0px; padding: 10px 15px;">Time goes here</p>
+								<p style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 20px; margin-bottom: 16px; margin-left: 0px; padding: 10px 15px;" class="btn btn-info btn-fill displayArea">Time goes here</p>
 							</li>
 							<li>
 								<button onclick="location.href = 'user_result.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-danger">
@@ -127,10 +121,10 @@
 					</div>
 				</div>
 			</nav>
-			<div class="content">
-				
-				
-				
+			<div class="content" style="margin-top: 90px;">
+
+
+
 				<?php
 				/*if(isset($_POST["select"]))
 				{
@@ -140,52 +134,38 @@
 					while($x<=$num)
 					{
 						$z=$x-1;
-						
+
 				?>
 				<div style="width: 70%; margin-left: auto; margin-right: auto;">
-				<div class="card">
-				<h3 style='margin-top: 0px;'>Question: <?php echo $x ?></h3>
+				<div class="card" style="padding: 30px;">
+				<h3 style='margin: 0px;'>Question: <?php echo $x ?></h3>
 					<hr style='color: black; height: 1px; background-color: black;'>
 					<p style='margin-bottom: 20px; font-size: 1.2em;'><?php echo $questions[$z][2]?></p>
 					<form method='post'>
 					<div class="card-content">
-					<label class="control-label">
-						Option 1 
-					</label>
 						<div style='margin: 10px 0px; padding: 10px; padding-left: 20px; border: 1px solid grey; border-radius: 10px;'>
 							<input type='radio' name='answer' value='1'>
 							<?php echo $questions[$z][3]?><br>
 						</div>
-						<label class="control-label">
-							Option 2 
-						</label>
 					  <div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
 					  	<input type='radio' name='answer' value='2'> <?php echo $questions[$z][4]?><br>
 					  </div>
-					  <label class="control-label">
-							Option 3 
-						</label>
 					  <div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
 					  	<input type='radio' name='answer' value='3'><?php echo $questions[$z][5]?> <br>
 					  </div>
-					  <label class="control-label">
-							Option 4 
-						</label>
 						<div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
 							<input type='radio' name='answer' value='4'><?php echo $questions[$z][6]?><br>
 						</div>
 						<div class="card-footer">
-								<button type="submit" name="submit" value="<?php echo $z ?>"class="btn btn-info btn-fill pull-right">Submit</button>
-								<button type="reset" name="reset" class="btn btn-warning pull-right">Reset</button>
+								<button type="reset" style="margin-top: 20px;" name="reset" class="btn btn-warning pull-right">Reset</button>
 								<div class="clearfix"></div>
-
 							</div>
 							</form>
 							</div>
 					</div>
 				</div>
 				<br>
-				<?php 
+				<?php
 					$x=$x+1;
 					}
 					?>
@@ -224,7 +204,7 @@
 					echo "<script type='text/javascript'>alert('$cannot');</script>";
 				}
 				?>
-				
+
 			</div>
 			<footer class="footer">
 				<div class="container-fluid">
@@ -248,6 +228,33 @@
 		</div>
 	</div>
 </body>
+
+<script>
+	var duration = 10;
+	var displayArea = document.querySelector('.displayArea');
+	displayArea.innerHTML = `Remaining ${duration}M`
+	function decminute(){
+		duration = duration - 1;
+		var tt = setInterval(function(){
+			var sec = 60;
+			var ss = setInterval(function() {
+				displayArea.innerHTML = `Test will be end in ${duration} min ${sec} sec`;
+				sec = sec - 1;
+				if(sec == 0)
+				{
+					clearInterval(ss);
+				}
+			},1000);
+			duration = duration - 1;
+			if (duration == 0) {
+				console.log('Form Submit');
+				clearInterval(tt);
+			}
+		},60000);
+	}
+	decminute();
+
+</script>
 
 <!--   Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js   -->
 <script src="assets/js/jquery-3.1.1.min.js" type="text/javascript"></script>
