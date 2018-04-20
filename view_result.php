@@ -98,12 +98,12 @@ $id=44;
 					</li>
 					<li>
 						<a href="changepassword.php">
-                <i class="ti-clipboard"></i>
+                <i class="ti-key"></i>
                 <p>
 									Change Password
                 </p>
             </a>
-					</li>	
+					</li>
 					<li>
 						<a href="logout.php">
                 <i class="ti-share"></i>
@@ -131,77 +131,61 @@ $id=44;
 						<a class="navbar-brand" href="produce_result.php">
 							Result
 						</a>
-						
-					</div>
-					<div class="collapse navbar-collapse">
+						<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px; margin-right: 20px;padding: 10px 15px;" class="btn btn-success hidden-md hidden-lg pull-right">
+							Start Test
+						</button>
+						</div>
+						<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
-						<li>
+							<li>
 								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
 									Start Test
-                </button>
-							</li>
-							<li class="dropdown">
-								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
-	                <i class="ti-bell"></i>
-	                <span class="notification">5</span>
-									<p class="hidden-md hidden-lg">
-										Notifications
-										<b class="caret"></b>
-									</p>
-                </a>
-								<ul class="dropdown-menu">
-									<li><a href="#not1">Notification 1</a></li>
-									<li><a href="#not2">Notification 2</a></li>
-									<li><a href="#not3">Notification 3</a></li>
-									<li><a href="#not4">Notification 4</a></li>
-									<li><a href="#another">Another notification</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#settings" class="btn-rotate">
-									<i class="ti-settings"></i>
-									<p class="hidden-md hidden-lg">
-										Settings
-									</p>
-                </a>
+								</button>
 							</li>
 						</ul>
-					</div>
+						</div>
 				</div>
 			</nav>
 			<div class="content">
-			<div class='card-body' style='padding: 10px;'>
-			<h4 style='margin: 0px;'>Test Name :<?php echo $test_n ?></h4>
-			<h4 style='margin: 0px; '>Total Marks :<?php echo $total_marks ?></h4>
-			</div><br>
-			<div class='card' style='width: 80%; margin-left: auto; margin-right: auto;' >
-							
-							 <div class='table-responsive'>   
-								<table class='table table-bordered'>
-								<tr>
-									<th>Username</th>
-									<th>Marks</th>
-								</tr>
-<?php
-							while($row = mysqli_fetch_array($query))  
-							{  
-								echo '  
-								<tr>  
-									<td>'.$row[2].'</td>  
-									<td>'.$row[3].'</td>  
-								</tr>  
-								';  
-							}
-?>
-							</table>
-							</div>
-			</div>
-			<div class='active' style='width: 50%; margin-left: 500px; margin-right: auto;' >
-			<a href="export.php">Download</a>
-			</div>
-				<!--form method="post">
-				<button type='submit' action="export.php" name='download' class='btn btn-danger data-active-color btn-fill pull-right'>Download Result</button>
-				</form-->
+				<div class='card-body' style='padding: 10px;'>
+				<h2 style='text-align: center;'><?php echo $test_n ?></h2>
+				<h5 style='text-align: center;'>Total Marks :<?php echo $total_marks ?></h5>
+				</div><br>
+				<div class='card' style='width: 60%; margin-left: auto; margin-right: auto;' >
+								<div class="table-responsive">
+									<table class="table">
+									    <thead>
+									        <tr>
+									            <th class="text-center">#</th>
+									            <th>Name</th>
+									            <th>Marks</th>
+									        </tr>
+									    </thead>
+									    <tbody>
+													<?php
+														while($row = mysqli_fetch_array($query))
+														{
+															echo '
+															<tr>
+																<td class="text-center">'.$id.'</td>
+																<td>'.$row[2].'</td>
+																<td>'.$row[3].'</td>
+															</tr>
+															';
+														}
+													?>
+									    </tbody>
+									</table>
+								</div>
+				</div>
+				<div style="text-align: center;">
+					<button onclick="location.href='export.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: auto;margin-bottom: 16px;margin-left: auto; padding: 10px 15px;" class="btn btn-info">
+						Download
+					</button>
+				</div>
+					<!--form method="post">
+					<button type='submit' action="export.php" name='download' class='btn btn-danger data-active-color btn-fill pull-right'>Download Result</button>
+					</form-->
 				</div>
 <!--?php
 					if(isset($_POST["download"]))
@@ -212,50 +196,50 @@ $id=44;
 						$numrows=mysqli_num_rows($query);
 						$output='';
 						/*$output .= '
-							<table class="table" bordered="1">  
-							<tr> 
+							<table class="table" bordered="1">
+							<tr>
 								<th>Test Name : $test_n</th>
 								<th>Total Marks : $total_marks</th>
 							</tr>
 							<tr></tr>';*/
-							$columnHeader = ''; 
-							$columnHeader = "Username" . "\t" . "Marks" ."\t"; 
-							$setData = ''; 
-							while ($rec = mysqli_fetch_row($query)) { 
-							$rowData = ''; 
-							foreach ($rec as $value) { 
-							$value = '"' . $value . '"' . "\t"; 
-							$rowData .= $value; 
-							} 
-							$setData .= trim($rowData) . "\n"; 
-							} 
+							$columnHeader = '';
+							$columnHeader = "Username" . "\t" . "Marks" ."\t";
+							$setData = '';
+							while ($rec = mysqli_fetch_row($query)) {
+							$rowData = '';
+							foreach ($rec as $value) {
+							$value = '"' . $value . '"' . "\t";
+							$rowData .= $value;
+							}
+							$setData .= trim($rowData) . "\n";
+							}
 						/*if($numrows > 0)
 						{
-							$output .= '<table class="table" bordered="1"> 
-							<tr>  
-								<th>Username</th>  
-								<th>Marks</th>  
-                         
+							$output .= '<table class="table" bordered="1">
+							<tr>
+								<th>Username</th>
+								<th>Marks</th>
+
 							</tr>';
 						while($row = mysqli_fetch_array($query))
 						{
 							$output .= '
-							<tr>  
-								<td>'.$row["2"].'</td>  
-								<td>'.$row["3"].'</td>  
+							<tr>
+								<td>'.$row["2"].'</td>
+								<td>'.$row["3"].'</td>
 							</tr>';
 						}
 						$output .= '</table>';*/
 						header('Content-Type: application/octet-stream');
 						header('Content-Disposition: attachment; filename=download.xls');
-						header("Pragma: no-cache"); 
-						header("Expires: 0"); 
-						echo ucwords($columnHeader) . "\n" . $setData . "\n"; 
+						header("Pragma: no-cache");
+						header("Expires: 0");
+						echo ucwords($columnHeader) . "\n" . $setData . "\n";
 						//echo $output;
 						}
-					
+
 ?-->
-			
+
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">

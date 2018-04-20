@@ -5,7 +5,7 @@
 	}
 	$user=$_SESSION['sess_user'];
 	$n=$_SESSION['sess_name'];
-	
+
 	/*if(!isset($_GET)) {
 		$topic =$_GET['user_id'];
 		echo "Get". $topic ;
@@ -60,14 +60,14 @@
 								<p>Home</p>
 	          </a>
 					</li>
-					<li>
+					<li class="active">
 						<a data-toggle="collapse" href="#componentsExamples">
 							<i class="ti-ruler-pencil"></i>
 							<p>Tests
 							   <b class="caret"></b>
 							</p>
 						</a>
-						<div class="collapse" id="componentsExamples">
+						<div class="collapse in" id="componentsExamples">
 							<ul class="nav">
 								<li>
 									<a href="create_test.php">
@@ -78,7 +78,7 @@
 								<li>
 									<a href="view_test.php">
 										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View/Edit test</span>
+										<span class="sidebar-normal">View/Edit Test</span>
 									</a>
 								</li>
 								<li class="active">
@@ -100,7 +100,7 @@
 					</li>
 					<li>
 						<a href="changepassword.php">
-                <i class="ti-clipboard"></i>
+                <i class="ti-key"></i>
                 <p>
 									Change Password
                 </p>
@@ -133,74 +133,51 @@
 						<a class="navbar-brand" href="delete_test.php">
 							Delete Test
 						</a>
-						
-					</div>
-					<div class="collapse navbar-collapse">
+						<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px; margin-right: 20px;padding: 10px 15px;" class="btn btn-success hidden-md hidden-lg pull-right">
+							Start Test
+						</button>
+						</div>
+						<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
-						<li>
+							<li>
 								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
 									Start Test
-                </button>
-							</li>
-							<li class="dropdown">
-								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
-	                <i class="ti-bell"></i>
-	                <span class="notification">5</span>
-									<p class="hidden-md hidden-lg">
-										Notifications
-										<b class="caret"></b>
-									</p>
-                </a>
-								<ul class="dropdown-menu">
-									<li><a href="#not1">Notification 1</a></li>
-									<li><a href="#not2">Notification 2</a></li>
-									<li><a href="#not3">Notification 3</a></li>
-									<li><a href="#not4">Notification 4</a></li>
-									<li><a href="#another">Another notification</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#settings" class="btn-rotate">
-									<i class="ti-settings"></i>
-									<p class="hidden-md hidden-lg">
-										Settings
-									</p>
-                </a>
+								</button>
 							</li>
 						</ul>
-					</div>
+						</div>
 				</div>
 			</nav>
 			<div class="content">
-			<div class='card-body' style='padding: 10px;'><h5 style='margin: 0px;'>TEST CREATED BY YOU:</h5></div>
+			<div class='card-body' style='padding: 10px;'>
 					<?php
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
 							$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
 							$numrows=mysqli_num_rows($query);
-							
+
 							if($numrows>0)
 							while ($row=mysqli_fetch_row($query))
 							{
 								$id=$row[0];
-								
+
 								echo "<form method='post'>
 								<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
-									<div class='card-body card-danger' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
+									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;color: #50C1E9; text-shadow: none;'>$row[2]</h4></div>
 									<hr style='margin: 0px;'>
 									<div class='' style='width: 100%;'>
 										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
 										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
 										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
-										
+
 									</div>
-									<div class='card-footer' style='padding: 10px;'>
+									<div style='padding: 15px; text-align: center; margin-right: 20px;'>
 											<button type='submit' name='delete' value='$row[0]' class='btn btn-danger data-active-color btn-fill pull-right'>Delete Test</button>
 										<div class='clearfix'></div>
 									</div>
 								</div>
 								</form>";
-								
+
 							}
 							else
 							{
@@ -219,7 +196,7 @@
 						echo "<script type='text/javascript'>alert('$confrm');</script>";
 						echo("<script>location.href = '".delete_test.".php';</script>");
 					}
-						
+
 				}
 				?>
 			</div>

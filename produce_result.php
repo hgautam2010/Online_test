@@ -5,9 +5,9 @@
 	}
 	$user=$_SESSION['sess_user'];
 	$n=$_SESSION['sess_name'];
-	echo "LOGGED IN USER IS -----";
-	echo $user;
-	
+	// echo "LOGGED IN USER IS -----";
+	// echo $user;
+
 	/*if(!isset($_GET)) {
 		$topic =$_GET['user_id'];
 		echo "Get". $topic ;
@@ -102,12 +102,12 @@
 					</li>
 					<li>
 						<a href="changepassword.php">
-                <i class="ti-clipboard"></i>
+                <i class="ti-key"></i>
                 <p>
 									Change Password
                 </p>
             </a>
-					</li>	
+					</li>
 					<li>
 						<a href="logout.php">
                 <i class="ti-share"></i>
@@ -135,52 +135,29 @@
 						<a class="navbar-brand" href="produce_result.php">
 							Result
 						</a>
-						
-					</div>
-					<div class="collapse navbar-collapse">
+						<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px; margin-right: 20px;padding: 10px 15px;" class="btn btn-success hidden-md hidden-lg pull-right">
+							Start Test
+						</button>
+						</div>
+						<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
-						<li>
+							<li>
 								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
 									Start Test
-                </button>
-							</li>
-							<li class="dropdown">
-								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
-	                <i class="ti-bell"></i>
-	                <span class="notification">5</span>
-									<p class="hidden-md hidden-lg">
-										Notifications
-										<b class="caret"></b>
-									</p>
-                </a>
-								<ul class="dropdown-menu">
-									<li><a href="#not1">Notification 1</a></li>
-									<li><a href="#not2">Notification 2</a></li>
-									<li><a href="#not3">Notification 3</a></li>
-									<li><a href="#not4">Notification 4</a></li>
-									<li><a href="#another">Another notification</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#settings" class="btn-rotate">
-									<i class="ti-settings"></i>
-									<p class="hidden-md hidden-lg">
-										Settings
-									</p>
-                </a>
+								</button>
 							</li>
 						</ul>
-					</div>
+						</div>
 				</div>
 			</nav>
 			<div class="content">
-			<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>Ended Tests Are:</h4></div><br>
+			<div class='card-body' style='padding: 10px;'>
 					<?php
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
 							$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
 							$numrows=mysqli_num_rows($query);
-							
+
 							if($numrows>0)
 							while ($row=mysqli_fetch_row($query))
 							{
@@ -198,7 +175,7 @@
 										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
 										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
 										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
-										
+
 									</div>
 									</a>
 								</div>";

@@ -71,7 +71,7 @@
 										<span class="sidebar-normal">View/Edit Test</span>
 									</a>
 								</li>
-								
+
 								<li>
 									<a href="delete_test.php">
 										<span class="sidebar-mini">DT</span>
@@ -124,39 +124,16 @@
 						<a class="navbar-brand" href="start_test.php">
 							Search Test Name
 						</a>
-						
+						<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px; margin-right: 20px;padding: 10px 15px;" class="btn btn-success hidden-md hidden-lg pull-right">
+							Start Test
+						</button>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
-						<li>
+							<li>
 								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
 									Start Test
                 </button>
-							</li>
-							<li class="dropdown">
-								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
-	                <i class="ti-bell"></i>
-	                <span class="notification">5</span>
-									<p class="hidden-md hidden-lg">
-										Notifications
-										<b class="caret"></b>
-									</p>
-                </a>
-								<ul class="dropdown-menu">
-									<li><a href="#not1">Notification 1</a></li>
-									<li><a href="#not2">Notification 2</a></li>
-									<li><a href="#not3">Notification 3</a></li>
-									<li><a href="#not4">Notification 4</a></li>
-									<li><a href="#another">Another notification</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#settings" class="btn-rotate">
-									<i class="ti-settings"></i>
-									<p class="hidden-md hidden-lg">
-										Settings
-									</p>
-                </a>
 							</li>
 						</ul>
 					</div>
@@ -182,15 +159,15 @@
 							$name=$_POST['test_name'];
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT test_id,total_ques,startTest_dateTime,endTest_datetime FROM tests WHERE test_name='$name' and user_id<>'$user'");
+							$query=mysqli_query($con,"SELECT test_id,total_ques,startTest_dateTime,endTest_datetime FROM tests WHERE test_name='$name'");
 							$numrows=mysqli_num_rows($query);
 							if($numrows>0)
 							while ($row=mysqli_fetch_row($query))
 							{
 								//printf ("%s (%s)\n",$row[0],$row[1]);
-							
+
 								$id=$row[0];
-								
+
 								echo "<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
 									 <a href='testPage.php?id=$id'>
 									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$name</h4></div>
@@ -199,7 +176,7 @@
 										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[2]</div>
 										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[3] </div>
 										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[1] </div>
-										
+
 									</div>
 									</a>
 								</div>";
@@ -207,9 +184,9 @@
 						}
 					}
 				?>
-				
+
 			</div>
-					
+
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
