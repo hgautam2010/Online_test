@@ -191,16 +191,22 @@
 								$pub=1;
 								$con=mysqli_connect('localhost','root','') or die(mysql_error());
 								mysqli_select_db($con,'online_test') or die("cannot select DB");
-								$query=mysqli_query($con,"SELECT * FROM tests WHERE type='$pub' order by StartTest_dateTime desc");
-								$numrows=mysqli_num_rows($query);
-
-								if($numrows>0)
+								$query1=mysqli_query($con,"select now() from DUAL");
+								$val = mysqli_fetch_array($query1);
+								$sec1=$val[0];
+								$query=mysqli_query($con,"SELECT * FROM tests WHERE type='$pub' and endTest_datetime>'$sec1' and user_id<>'$user'");
+								
+								if($query)
+								{
+									$numrows=mysqli_num_rows($query);
+									if($numrows>0)
+									{
 								while ($row=mysqli_fetch_row($query))
 								{
 									$id=$row[0];
 
 									echo "<div class='card' style='margin: 6px; margin-bottom: 15px;' >
-										 <a href='editTest.php?id=$id'>
+										 <a href='testPage.php?id=$id'>
 										<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
 										<hr style='margin: 0px;'>
 										<div class='' style='width: 100%;'>
@@ -211,10 +217,11 @@
 										</a>
 									</div>";
 								}
+								}
 								else
 								{
-									echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
-								}
+									echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO UPCOMING PUBLIC TEST </h6></div>";
+								}}
 					?>
 				</div>
 				<div class="responsive-cards" style="float: left; margin: 7px;">
