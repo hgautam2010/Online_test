@@ -5,6 +5,7 @@
 	}
 	$user=$_SESSION['sess_user'];
 	$n=$_SESSION['sess_name'];
+	echo "logged in user-----------".$user;
 	// echo "LOGGED IN USER IS -----";
 	// echo $user;
 
@@ -47,10 +48,10 @@
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text logo-mini">
+				<a href="http://javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://www.creative-tim.com" class="simple-text logo-normal">
+				<a href="http://javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -159,6 +160,7 @@
 							$numrows=mysqli_num_rows($query);
 
 							if($numrows>0)
+							{
 							while ($row=mysqli_fetch_row($query))
 							{
 								$id=$row[0];
@@ -166,7 +168,7 @@
 								$query1=mysqli_query($con,"select now() from DUAL");
 								$val = mysqli_fetch_array($query1);
 								$sec1=strtotime($val[0]);
-								if($end<$sec1)
+								//if($end<$sec1)
 								echo "<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
 									 <a href='view_result.php?id=$id'>
 									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
@@ -180,6 +182,7 @@
 									</a>
 								</div>";
 							}
+							}
 							else
 							{
 								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
@@ -191,7 +194,7 @@
 					<nav class="pull-left">
 						<ul>
 							<li>
-								<a href="http://www.creative-tim.com">
+								<a href="new.html">
                     About
                 </a>
 							</li>

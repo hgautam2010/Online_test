@@ -1,4 +1,6 @@
-
+<?php
+ob_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,14 +96,14 @@
 											<input type="text" name="user" placeholder="Username" class="form-control">
 										</div>
 										<div class="form-group">
-											<input type="password" name="pass" placeholder="Password" class="form-control">
+											<input type="password" name="pass" placeholder="Password" class="form-control" pattern=".{5-15}">
 										</div>
 										<div class="form-group">
 											<input type="password" name="conpass" placeholder="Password Confirmation" class="form-control">
 										</div>
 									</div>
 									<div class="footer text-center">
-										<button type="submit" name="submit" id="name" class="btn btn-fill btn-danger btn-wd">Create Free Account</button>
+										<button type="submit" name="submit" id="name" class="btn btn-fill btn-danger btn-wd">Create Account</button>
 									</div>
 								</div>
 							</form>
@@ -114,8 +116,15 @@
 		if(!empty($_POST['user']) && !empty($_POST['pass']) && !empty($_POST['conpass'])) {
 			$user=$_POST['user'];
 			$pass=$_POST['pass'];
+			//$len=preg_match("@^.{5-15}$@",$pass);
+			//echo $len;
+			//if(!$len)
+				//echo "<script type='text/javascript'>alert('Length should be graeter than 5!')</script>";
+			//else
+			//{
 			$cpass=$_POST['conpass'];
-			print "<span style='color:=#e53d37'>username/email already used.</span>";
+			if($pass==$cpass)
+				echo "<script type='text/javascript'>alert('Password doesnt matched!')</script>";
 			$count=0;
 				$con=mysqli_connect('localhost','root','');
 				mysqli_select_db($con,'online_test') or die("cannot select DB");
@@ -132,10 +141,11 @@
 						//echo "<script type='text/javascript'>alert('Failure!')</script>";
 					}
 				} else {
-					//echo "<script type='text/javascript'>alert('username already exists! Please try again with another!')</script>";
+					echo "<script type='text/javascript'>alert('username already exists! Please try again with another!')</script>";
 				}
-		}else {
-			//echo "<script type='text/javascript'>alert('All fields are required!')</script>";
+			//}
+			}else {
+			echo "<script type='text/javascript'>alert('All fields are required!')</script>";
 		}
 	}
 ?>

@@ -42,10 +42,10 @@
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text logo-mini">
+				<a href="http://javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://www.creative-tim.com" class="simple-text logo-normal">
+				<a href="http://javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -97,7 +97,7 @@
 					</li>
 					<li>
 						<a href="changepassword.php">
-                <i class="ti-clipboard"></i>
+                <i class="ti-key"></i>
                 <p>
 									Change Password
                 </p>
@@ -280,7 +280,7 @@
 					<nav class="pull-left">
 						<ul>
 							<li>
-								<a href="http://www.creative-tim.com">
+								<a href="new.html">
                     About
                 </a>
 							</li>

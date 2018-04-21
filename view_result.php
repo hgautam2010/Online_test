@@ -1,6 +1,8 @@
 <?php
 ob_start();
-$id=44;
+session_start();
+$id=$_GET['id'];
+@$_SESSION["tn"]=$id;
 			$con=mysqli_connect('localhost','root','') or die(mysql_error());
 			mysqli_select_db($con,'online_test') or die("cannot select DB");
 			$query5=mysqli_query($con,"select * from tests where test_id='$id'");
@@ -43,10 +45,10 @@ $id=44;
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text logo-mini">
+				<a href="http://javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://www.creative-tim.com" class="simple-text logo-normal">
+				<a href="http://javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -245,7 +247,7 @@ $id=44;
 					<nav class="pull-left">
 						<ul>
 							<li>
-								<a href="http://www.creative-tim.com">
+								<a href="new.html">
                     About
                 </a>
 							</li>

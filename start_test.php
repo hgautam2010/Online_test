@@ -35,10 +35,10 @@
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text logo-mini">
+				<a href="http://javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://www.creative-tim.com" class="simple-text logo-normal">
+				<a href="http://javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -50,14 +50,14 @@
 								<p>Home</p>
 	          </a>
 					</li>
-					<li>
+					<li class="active">
 						<a data-toggle="collapse" href="#componentsExamples">
 							<i class="ti-ruler-pencil"></i>
 							<p>Tests
 							   <b class="caret"></b>
 							</p>
 						</a>
-						<div class="collapse in" id="componentsExamples">
+						<div class="collapse" id="componentsExamples">
 							<ul class="nav">
 								<li>
 									<a href="create_test.php">
@@ -91,7 +91,7 @@
 					</li>
 					<li>
 						<a href="changepassword.php">
-                <i class="ti-clipboard"></i>
+                <i class="ti-key"></i>
                 <p>
 									Change Password
                 </p>
@@ -159,7 +159,7 @@
 							$name=$_POST['test_name'];
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT test_id,total_ques,startTest_dateTime,endTest_datetime FROM tests WHERE test_name='$name'");
+							$query=mysqli_query($con,"SELECT test_id,total_ques,startTest_dateTime,endTest_datetime FROM tests WHERE test_name='$name' and user_id<>'$user'");
 							$numrows=mysqli_num_rows($query);
 							if($numrows>0)
 							while ($row=mysqli_fetch_row($query))
@@ -192,7 +192,7 @@
 					<nav class="pull-left">
 						<ul>
 							<li>
-								<a href="http://www.creative-tim.com">
+								<a href="new.html">
                     About
                 </a>
 							</li>
