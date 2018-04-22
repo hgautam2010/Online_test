@@ -1,12 +1,21 @@
 <?php
+ob_start();
 	session_start();
+	
 	$user=$_SESSION['sess_user'];
 	$id=$_SESSION['test_id'];
 	$num=$_SESSION["ques_num"];
+	if(isset($_GET['id']))
+		$z=$_GET['id'];
+	else
+		$z=$_SESSION['start_num'];
 	//$user=4;
-	//$id=44;
+	//$id=48;
 	//$num=4;
-
+	if($z>=$num)
+		$z=0;
+	if($z<0)
+		$z=$num-1;
 	$qid=0;
 	$x=1;
 	$con=mysqli_connect('localhost','root','') or die(mysql_error());
@@ -16,11 +25,30 @@
 	$query1=mysqli_query($con,"SELECT test_name FROM tests WHERE test_id='$id'");
 	$row=mysqli_fetch_row($query1);
 	$nam=$row[0];
-
+	$query1=mysqli_query($con,"SELECT startTest_dateTime , endTest_datetime FROM tests WHERE test_id='$id'");
+	$row=mysqli_fetch_row($query1);
+	$start=$row[0];
+	$endt=strtotime($row[1]);
+	$query1=mysqli_query($con,"select now() from DUAL");
+	$val = mysqli_fetch_array($query1);
+	$sec1=strtotime($val[0]);
+	$final=$endt-$sec1;
+	$final=$final/60;
+	$final=ceil($final);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<!--script language="javascript">
+function forceFullscreen()
+{
+	top.resizeTo(window.screen.availwidth,window.screen.avialHeight);
+	top.moveTo(0,0);
+	setTimeout("forceFullscreen()",250);
+}
+</script-->
+
 	<meta charset="utf-8" />
 	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" href="assets/ot.png">
@@ -50,22 +78,26 @@
 
 <body>
 	<div class="wrapper" >
-		<div class="sidebar" data-background-color="brown" style="display: none;" data-active-color="danger">
+		<div class="sidebar" data-background-color="brown" style="display: ;" data-active-color="danger">
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text logo-mini">
+				<a href="http://javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://www.creative-tim.com" class="simple-text logo-normal">
+				<a href="http://javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
-			<div id='select' class="sidebar-wrapper">
+			<div class="sidebar-wrapper">
 			<ul class='nav'>
 				<?php
 				$i=1;
 				$j=0;
 				$k=0;
-				$p=array();
+				$answer=0;
+						$con=mysqli_connect('localhost','root','') or die(mysql_error());
+						mysqli_select_db($con,'online_test') or die("cannot select DB");
+						
+						
 				$questions=array();
 				if($numrows>0)
 				while ($row=mysqli_fetch_row($query))
@@ -79,15 +111,24 @@
 					$questions[$j][5]=$row[5];
 					$questions[$j][6]=$row[6];
 					$questions[$j][7]=$row[7];
-					//$questions[]=array($row[0],$row[1],$row[2],$row[3],$row[4],$row[5],$row[6],$row[7]);
-				//echo //"<p id=$i>$row[2]</p>";
-				echo "<form method='post'><li>
-				<button id=$j style='margin-top: 0px; width: 100px' name='select' value=$j >
-							<i class='nav' style='font-style: normal;'>$i:</i>
-								<p style='max-width: 200px; height: 32px; text-transform: none;overflow: hidden; margin: 0px; white-space: normal; word-wrap: normal; line-height: normal;font-size: 12px;'>$row[2]
-								 </p></button>
-						</li></form>
-					";
+					$num3=$questions[$j][0];
+					$query8=mysqli_query($con,"SELECT user_ans FROM useranswer WHERE user_id='$user' and test_id='$id' and que_id='$num3'");
+					$numrows=mysqli_num_rows($query8);
+					if($numrows>0)
+					{
+						$sql=mysqli_fetch_row($query8);
+						$answer=$sql[0];
+					}
+					?>
+					<div>
+				<form method='post'><li>
+				<br><br>
+				<button id=$j style='margin-top: 0px; width: 100px' name='select' value=$j style="background-color:#4CAF50"<?php if($answer) echo "white";?> style="margin-top: 20px; margin-right: 20px;" class="btn btn-warning pull-left">
+							<i class='nav' style='font-style: normal;'><?php echo $i;?> </i>
+								<p style='max-width: 200px; height: 32px; text-transform: none;overflow: hidden; margin: 0px; white-space: normal; word-wrap: normal; line-height: normal;font-size: 12px;'><?php echo $row[2]; ?>
+								 </p></button> <div style="color:white"><?php if($answer){echo "Answered !!";}else{echo "<br>";}?></div>
+						</li></form></div>
+					<?php
 
 					$i=$i+1;
 					$j=$j+1;
@@ -96,13 +137,13 @@
 					</ul>
 			</div>
 		</div>
-		<div class="main-panel" style="width: 100%;">
-			<nav class="navbar navbar-default" style="width: 100%; position: fixed; z-index: 1;">
+		<div class="main-panel" style="width: 85%;">
+			<nav class="navbar navbar-default" style="width: 85%; position: fixed; z-index: 1;">
 				<div class="container-fluid" >
 					<div class="navbar-minimize" style="display: none;">
 						<button id="minimizeSidebar" class="btn btn-fill btn-icon"><i class="ti-more-alt"></i></button>
 					</div>
-					<div class="navbar-header">
+					<div class="navbar-header" style="margin-left: 50px;">
 						<p class="navbar-brand">
 							Test Name : <?php echo $nam ?>
 						</p>
@@ -112,20 +153,127 @@
 							<li>
 								<p style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 20px; margin-bottom: 16px; margin-left: 0px; padding: 10px 15px;" class="btn btn-info btn-fill displayArea">Time goes here</p>
 							</li>
+					
 							<li>
-								<button onclick="location.href = 'user_result.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-danger">
+							<form method="post" id="endtest">
+								<button type="submit" onclick="location.href= 'user_result.php' " name="end" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-danger">
 									End Test
-                </button>
+						</button>
+						</form>
 							</li>
+							
+							
 						</ul>
 					</div>
 				</div>
 			</nav>
+			<div style="width: 70%; margin-left: auto; margin-right: auto;">
+				<div class="card" style="padding: 30px;">
 			<div class="content" style="margin-top: 90px;">
-
-
-
 				<?php
+				$x=$z+1;
+				$answer=0;
+						$con=mysqli_connect('localhost','root','') or die(mysql_error());
+						mysqli_select_db($con,'online_test') or die("cannot select DB");
+						$num3=$questions[$z][0];
+					$query8=mysqli_query($con,"SELECT user_ans FROM useranswer WHERE user_id='$user' and test_id='$id' and que_id='$num3'");
+					$numrows=mysqli_num_rows($query8);
+					if($numrows>0)
+					{
+						$sql=mysqli_fetch_row($query8);
+						$answer=$sql[0];
+					}
+						
+				?>
+				<form method="post">
+					<div class="card-content">
+				<h3 style='margin: 0px;'>Question: <?php echo $x ?></h3>
+					<hr style='color: black; height: 1px; background-color: black;'>
+					<p style='margin-bottom: 20px; font-size: 1.2em;'><?php echo $questions[$z][2]?></p>
+				
+						<div style='margin: 10px 0px; padding: 10px; padding-left: 20px; border: 1px solid grey; border-radius: 10px;'>
+							<input type='radio' name='answer' value='1' <?php if($answer==1)echo "checked"?> >
+							<?php echo $questions[$z][3]?><br>
+						</div>
+					  <div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
+					  	<input type='radio' name='answer' value='2' <?php if($answer==2)echo "checked"?> > <?php echo $questions[$z][4]?><br>
+					  </div>
+					  <div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
+					  	<input type='radio' name='answer' value='3' <?php if($answer==3)echo "checked"?> ><?php echo $questions[$z][5]?> <br>
+					  </div>
+						<div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
+							<input type='radio' name='answer' value='4' <?php if($answer==4)echo "checked"?> ><?php echo $questions[$z][6]?><br>
+						</div>
+						<div class="card-footer">
+		
+						<button type="submit" name="submit" value="<?php echo $z ?>" style="margin-top: 20px; margin-left: 20px;" class="btn btn-info btn-fill pull-right">Submit</button>
+								<button type="reset" style="margin-top: 20px; margin-left: 20px;" name="reset" class="btn btn-warning pull-right">Reset</button>
+												<button name="prev" value="<?php echo $z ?>" style="margin-top: 20px; margin-right: 20px;" class="btn btn-warning pull-left">Previous</button>
+												<button name="next" value="<?php echo $z ?>" style="margin-top: 20px; margin-right: 20px;" class="btn btn-info btn-fill pull-left">Next</button>
+								<div class="clearfix"></div>
+							</div>
+							
+							</div>
+							</form>
+				<?php
+				$cannot="SELECT any option !!";
+				if(isset($_POST["submit"]))
+				{
+					$num2=$_POST["submit"];
+					$num3=$questions[$num2][0];
+					$num4=$questions[$num2][7];
+					if(isset($_POST["answer"]))
+					{
+						$val=$_POST["answer"];
+						echo $answer[$num2][0]." ".$answer[$num2][3];
+						$con=mysqli_connect('localhost','root','') or die(mysql_error());
+						mysqli_select_db($con,'online_test') or die("cannot select DB");
+						$query=mysqli_query($con,"SELECT user_ans FROM useranswer WHERE user_id='$user' and test_id='$id' and que_id='$num3'");
+						$numrows=mysqli_num_rows($query);
+						if($numrows==0)
+						{
+						$r=mysqli_query($con,"insert into useranswer(user_id,test_id,que_id,user_ans,curr_ans) values ('$user','$id','$num3','$val','$num4')");
+						if($r)
+						{
+							$_SESSION['start_num']=$z+1;
+							header("location: test.php");
+							}
+						else
+							echo "not SUBMITTED";
+						}
+						else
+						{
+							$query=mysqli_query($con,"UPDATE useranswer SET user_ans='$val' WHERE user_id='$user' and test_id='$id' and que_id='$num3'");
+							if($query)
+								{
+							$_SESSION['start_num']=$z+1;
+								header("location: test.php");
+							}
+							else
+								echo "not upadted";
+						}
+					}
+					else
+					echo "<script type='text/javascript'>alert('$cannot');</script>";
+				}
+				else if(isset($_POST['prev']))
+				{
+					$_SESSION['start_num']=$z-1;
+					header("location: test.php");
+				}
+				else if(isset($_POST['next']))
+				{
+					$_SESSION['start_num']=$z+1;
+					header("location: test.php");
+				}
+				else if(isset($_POST['select']))
+				{
+					$z=$_POST['select'];
+					$_SESSION['start_num']=$z;
+					header("location: test.php");
+				}
+				?>
+				<!--?php
 				/*if(isset($_POST["select"]))
 				{
 					$num=$_POST["select"];
@@ -137,39 +285,55 @@
 
 				?>
 				<div style="width: 70%; margin-left: auto; margin-right: auto;">
-				<div class="card" style="padding: 30px;">
-				<h3 style='margin: 0px;'>Question: <?php echo $x ?></h3>
+				<div class="card" style="padding: 30px;"-->
+				<!--?php
+				$answer=0;
+						$con=mysqli_connect('localhost','root','') or die(mysql_error());
+						mysqli_select_db($con,'online_test') or die("cannot select DB");
+						$num3=$questions[$z][0];
+					$query8=mysqli_query($con,"SELECT user_ans FROM useranswer WHERE user_id='$user' and test_id='$id' and que_id='$num3'");
+					$numrows=mysqli_num_rows($query8);
+					if($numrows>0)
+					{
+						$sql=mysqli_fetch_row($query8);
+						$answer=$sql[0];
+					}
+						
+				?>
+				<h3 style='margin: 0px;'>Question: <!?php echo $x ?></h3>
 					<hr style='color: black; height: 1px; background-color: black;'>
-					<p style='margin-bottom: 20px; font-size: 1.2em;'><?php echo $questions[$z][2]?></p>
-					<form method='post'>
+					<p style='margin-bottom: 20px; font-size: 1.2em;'><!?php echo $questions[$z][2]?></p>
+					<form method="post">
 					<div class="card-content">
 						<div style='margin: 10px 0px; padding: 10px; padding-left: 20px; border: 1px solid grey; border-radius: 10px;'>
-							<input type='radio' name='answer' value='1'>
-							<?php echo $questions[$z][3]?><br>
+							<input type='radio' name='answer' value='1' <!?php if($answer==1)echo "checked"?> >
+							<!?php echo $questions[$z][3]?><br>
 						</div>
 					  <div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
-					  	<input type='radio' name='answer' value='2'> <?php echo $questions[$z][4]?><br>
+					  	<input type='radio' name='answer' value='2' <!?php if($answer==2)echo "checked"?> > <!?php echo $questions[$z][4]?><br>
 					  </div>
 					  <div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
-					  	<input type='radio' name='answer' value='3'><?php echo $questions[$z][5]?> <br>
+					  	<input type='radio' name='answer' value='3' <!?php if($answer==3)echo "checked"?> ><!?php echo $questions[$z][5]?> <br>
 					  </div>
 						<div style='margin: 10px 0px; padding: 10px; padding-left: 20px;  border: 1px solid grey; border-radius: 10px;'>
-							<input type='radio' name='answer' value='4'><?php echo $questions[$z][6]?><br>
+							<input type='radio' name='answer' value='4' <!?php if($answer==4)echo "checked"?> ><!?php echo $questions[$z][6]?><br>
 						</div>
 						<div class="card-footer">
+						<button type="submit" name="submit" value="<!?php echo $z ?>" style="margin-top: 20px; margin-left: 20px;" class="btn btn-info btn-fill pull-right">Submit</button>
 								<button type="reset" style="margin-top: 20px;" name="reset" class="btn btn-warning pull-right">Reset</button>
 								<div class="clearfix"></div>
 							</div>
-							</form>
+							
 							</div>
+							</form>
 					</div>
 				</div>
 				<br>
-				<?php
+				<!?php
 					$x=$x+1;
 					}
 					?>
-				<?php
+				<!--?php
 				$cannot="SELECT any option !!";
 				if(isset($_POST["submit"]))
 				{
@@ -179,23 +343,28 @@
 					if(isset($_POST["answer"]))
 					{
 						$val=$_POST["answer"];
+						echo $answer[$num2][0]." ".$answer[$num2][3];
 						$con=mysqli_connect('localhost','root','') or die(mysql_error());
 						mysqli_select_db($con,'online_test') or die("cannot select DB");
-						$query=mysqli_query($con,"SELECT user_ans FROM useranswer WHERE user_id='$user' and test_id='$id' and que_id='$num2'");
+						$query=mysqli_query($con,"SELECT user_ans FROM useranswer WHERE user_id='$user' and test_id='$id' and que_id='$num3'");
 						$numrows=mysqli_num_rows($query);
 						if($numrows==0)
 						{
 						$r=mysqli_query($con,"insert into useranswer(user_id,test_id,que_id,user_ans,curr_ans) values ('$user','$id','$num3','$val','$num4')");
 						if($r)
-						{echo "SUBMITTED !!";}
+						{echo "SUBMITTED !!";
+							header('Refresh: 1; url=test.php');
+							}
 						else
 							echo "not SUBMITTED";
 						}
 						else
 						{
-							$query=mysqli_query($con,"UPDATE useranswer SET user_ans='$val' WHERE user_id='$user' and test_id='$id' and que_id='$num2'");
+							$query=mysqli_query($con,"UPDATE useranswer SET user_ans='$val' WHERE user_id='$user' and test_id='$id' and que_id='$num3'");
 							if($query)
-								{echo "SUBMITTED !!";}
+								{echo "SUBMITTED !!";
+								header('Refresh: 1; url=test.php');
+							}
 							else
 								echo "not upadted";
 						}
@@ -203,15 +372,42 @@
 					else
 					echo "<script type='text/javascript'>alert('$cannot');</script>";
 				}
-				?>
-
+				?-->
+				<!--?php
+					if(isset($_POST['end']))
+					{
+						$p=0;
+						while($p<$num)
+						{
+							echo $answer[$p][3];
+						}
+						/*$con=mysqli_connect('localhost','root','') or die(mysql_error());
+						mysqli_select_db($con,'online_test') or die("cannot select DB");
+						$query=mysqli_query($con,"SELECT user_ans FROM useranswer WHERE user_id='$user' and test_id='$id' and que_id='$num3'");
+						$numrows=mysqli_num_rows($query);
+						if($numrows==0)
+						{
+							$p=0;
+							while($p<$num)
+							{
+								$r=mysqli_query($con,"insert into useranswer(user_id,test_id,que_id,user_ans,curr_ans) values ('$answer[$p][0]','$answer[$p][1]','$answer[$p][2]','$answer[$p][3]','$answer[$p][4]')");
+								if($r)
+									echo "SUBMITTED !!";
+								else
+									echo "not SUBMITTED";
+							}
+								echo("<script>location.href = '".user_result.".php';</script>");
+						}*/
+					}
+				?-->
+				</div>
 			</div>
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
 						<ul>
 							<li>
-								<a href="http://www.creative-tim.com">
+								<a href="new.html">
                     About
                 </a>
 							</li>
@@ -230,7 +426,7 @@
 </body>
 
 <script>
-	var duration = 10;
+	var duration = <?php echo $final ?>;
 	var displayArea = document.querySelector('.displayArea');
 	displayArea.innerHTML = `Remaining ${duration}M`
 	function decminute(){
@@ -247,7 +443,7 @@
 			},1000);
 			duration = duration - 1;
 			if (duration == 0) {
-				console.log('Form Submit');
+				window.location.href = 'user_result.php';
 				clearInterval(tt);
 			}
 		},60000);
@@ -260,6 +456,7 @@
 <script src="assets/js/jquery-3.1.1.min.js" type="text/javascript"></script>
 <script src="assets/js/jquery-ui.min.js" type="text/javascript"></script>
 <script src="assets/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+<script src="assets/js/jquery.fullscreen.min.js" type="text/javascript"></script>
 <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
 
 <!--  Forms Validations Plugin -->

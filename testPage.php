@@ -38,10 +38,10 @@
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text logo-mini">
+				<a href="http://javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://www.creative-tim.com" class="simple-text logo-normal">
+				<a href="http://javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -170,13 +170,12 @@
 						<div class="" style=" display: block; width: 97.5%; height: 40vh; z-index: -1; position: absolute; overflow: hidden;">
 							<img src="assets/test.jpg" alt="" style=" background-size: cover;">
 						</div>
-						<div style="margin-left: auto; margin-right: auto; font-size: 1.5em; text-align: center; color: white; width: 500px; padding-top: 20vh;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, repellendus!</div>
+						<div style="margin-left: auto; margin-right: auto; font-size: 1.5em; text-align: center; color: white; width: 500px; padding-top: 20vh;"></div>
 						<br>
 						<form method="post">
 						<button type="submit" name="start" class="btn btn-success" style="display: block;margin-left: auto; margin-right: auto; width: 100px;">Start</button>
 						</form>
 					</div>
-					<h3>Introduction</h3>
 					<?php
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
@@ -184,14 +183,13 @@
 							$query1=mysqli_query($con,"select now() from DUAL");
 							$val = mysqli_fetch_array($query1);
 							$value=$val[0];
-							printf("%s",$value);
 							$numrows=mysqli_num_rows($query);
 							if($numrows>0)
 							{
 								$row=mysqli_fetch_row($query);
 
-								echo "<p><h4> Test name: $row[2]</h4>
-										<h3>RULES</h3>
+								echo "<p><h3> Test name: $row[2]</h3>
+										<h4>Introduction</h4>
 										<ol>
 											<li>
 												Total no of questions: $row[4]
@@ -238,9 +236,12 @@
 								$can="CAN START TEST";
 								$cannot="CANNOT START TEST";
 								if( ($sec1>=$sec) && ($sec1<$sec2))
-								{ @$_SESSION['ques_num']=$row[4];
+								{
+									@$_SESSION['ques_num']=$row[4];
+									@$_SESSION['start_num']=0;
 									@$_SESSION['test_id']=$id;
-								echo("<script>location.href = '".test.".php';</script>");}
+									echo("<script>location.href = '".test.".php';</script>");
+								}
 								else
 									echo "<script type='text/javascript'>alert('$cannot');</script>";
 							}
@@ -253,7 +254,7 @@
 					<nav class="pull-left">
 						<ul>
 							<li>
-								<a href="http://www.creative-tim.com">
+								<a href="new.html">
                     About
                 </a>
 							</li>
