@@ -69,7 +69,7 @@
 						<div class="collapse in" id="componentsExamples">
 							<ul class="nav">
 								<li >
-									<a href="components/buttons.html">
+									<a href="create_test.php">
 										<span class="sidebar-mini">CT</span>
 										<span class="sidebar-normal">Create Test</span>
 									</a>
