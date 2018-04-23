@@ -189,7 +189,14 @@
 								//echo "<script>console$query</script>";
 								//$row=mysql_fetch_assoc($query);
 								//echo $row;
-
+								$query1=mysqli_query($con,"SELECT * FROM result WHERE test_id='$id' and user_id='$user'");
+								$numrows=mysqli_num_rows($query1);
+								if($numrows>0)
+								{
+									echo "<script type='text/javascript'>alert('YOU HAVE GIVEN THE TEST !!');</script>";
+								}
+								else
+								{
 								$sec = strtotime($row[5]);
 								$sec2 =strtotime($row[6]);
 								$query1=mysqli_query($con,"select now() from DUAL");
@@ -209,6 +216,7 @@
 								}
 								else
 									echo "<script type='text/javascript'>alert('$cannot');</script>";
+								}
 							}
 
 					?>
