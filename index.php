@@ -27,6 +27,21 @@
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Muli:400,300" rel="stylesheet" type="text/css">
 	<link href="assets/css/themify-icons.css" rel="stylesheet">
+	<script>
+	function validateForm() {
+	    var x = document.forms["login"]["username"].value;
+			var y = document.forms["login"]["password"].value;
+	    if (x == "") {
+	        alert("Login ID must be filled out.");
+	        return false;
+	    }
+			if (y == "") {
+	        alert("Password must be filled out");
+	        return false;
+	    }
+			return true;
+	}
+	</script>
 </head>
 
 <body>
@@ -70,7 +85,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-							<form method="post">
+							<form method="post" name="login" onsubmit="return validateForm()">
 								<div class="card" data-background="color" data-color="blue">
 									<div class="card-header">
 										<h3 class="card-title">Login</h3>
@@ -120,7 +135,7 @@
 				@$_SESSION['sess_user']=$row['user_id'];
 				@$_SESSION['sess_name']=$user;
 				echo "logged in session started";
-				
+
 				header("Location: home.php");
 			}
 		} else {

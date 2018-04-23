@@ -3,7 +3,7 @@
 		 $test_id=$_SESSION['sess_test'];
 		 $count=$_SESSION['sess_ques'];
 		 $z=1;
-		 
+
 		 $no="SUCCESSFULLY EDITED ALL QUESTIONS !!";
 		/* if($count==0)
 		 {
@@ -35,13 +35,13 @@
 			$questions[$j][4]=$row[4];
 			$questions[$j][5]=$row[5];
 			$questions[$j][6]=$row[6];
-			$questions[$j][7]=$row[7];		
+			$questions[$j][7]=$row[7];
 			$i=$i+1;
 			$j=$j+1;
-			
+
 		}
 ?>
-	
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,10 +74,10 @@
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://javascript:void(0)" class="simple-text logo-mini">
+				<a href="javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://javascript:void(0)" class="simple-text logo-normal">
+				<a href="javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -162,7 +162,7 @@
 						<a class="navbar-brand" href="editquestions.php">
 							Edit Questions
 						</a>
-						
+
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -171,31 +171,6 @@
 									Start Test
                 </button>
 							</li>
-							<li class="dropdown">
-								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
-	                <i class="ti-bell"></i>
-	                <span class="notification">5</span>
-									<p class="hidden-md hidden-lg">
-										Notifications
-										<b class="caret"></b>
-									</p>
-                </a>
-								<ul class="dropdown-menu">
-									<li><a href="#not1">Notification 1</a></li>
-									<li><a href="#not2">Notification 2</a></li>
-									<li><a href="#not3">Notification 3</a></li>
-									<li><a href="#not4">Notification 4</a></li>
-									<li><a href="#another">Another notification</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#settings" class="btn-rotate">
-									<i class="ti-settings"></i>
-									<p class="hidden-md hidden-lg">
-										Settings
-									</p>
-                </a>
-							</li>
 						</ul>
 					</div>
 				</div>
@@ -203,7 +178,7 @@
 			<div class="content">
 				<div style="width: 60%; margin-left: auto; margin-right: auto;">
 				<?php
-				 
+
 					while($z<=$count)
 					{
 						$x=$z-1;
@@ -213,7 +188,7 @@
 							<div class="card-header">
 								<h4 class="card-title">
 										Edit Question <?php echo $z ?>
-										
+
 									</h4>
 							</div>
 							<div class="card-content">
@@ -263,18 +238,18 @@
 						$z=$z+1;
 					}
 					?>
-				
-			
-			
+
+
+
 	<?php
 
 		if(isset($_POST["update"]))
-		{	
+		{
 			$qid=$_POST["update"];
 			echo $qid;
 		if(!empty($_POST['desc']) || !empty($_POST['op1']) || !empty($_POST['op2']) || !empty($_POST['op3']) || !empty($_POST['op4']) || !empty($_POST['curr_ans']))
 		{
-			
+
 			$updated="Question updated !!";
 			$des=$_POST['desc'];
 			$opt1=$_POST['op1'];
@@ -282,7 +257,7 @@
 			$opt3=$_POST['op3'];
 			$opt4=$_POST['op4'];
 			$curr_ans=$_POST['curr_ans'];
-	
+
 			$con=mysqli_connect('localhost','root','');
 			mysqli_select_db($con,'online_test') or die("cannot select DB");
 			$sql=mysqli_query($con,"UPDATE questions SET ques_desc='$des',opt1='$opt1',opt2='$opt2',opt3='$opt3',opt4='$opt4',curr_ans='$curr_ans' where test_id='$test_id' and ques_id='$qid' ");
@@ -291,7 +266,7 @@
 				echo "<script type='text/javascript'>alert('$updated');</script>";
 				echo("<script>location.href = '".editquestions.".php';</script>");
 			}
-			
+
 		}
 		}
 	?>

@@ -45,10 +45,10 @@ $id=$_GET['id'];
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://javascript:void(0)" class="simple-text logo-mini">
+				<a href="javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://javascript:void(0)" class="simple-text logo-normal">
+				<a href="javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -185,83 +185,27 @@ $id=$_GET['id'];
 						Download
 					</button>
 				</div>
-					<!--form method="post">
-					<button type='submit' action="export.php" name='download' class='btn btn-danger data-active-color btn-fill pull-right'>Download Result</button>
-					</form-->
 				</div>
-<!--?php
-					if(isset($_POST["download"]))
-					{
-						$con=mysqli_connect('localhost','root','') or die(mysql_error());
-						mysqli_select_db($con,'online_test') or die("cannot select DB");
-						$query=mysqli_query($con,"SELECT username, result FROM result WHERE test_id='$id'");
-						$numrows=mysqli_num_rows($query);
-						$output='';
-						/*$output .= '
-							<table class="table" bordered="1">
-							<tr>
-								<th>Test Name : $test_n</th>
-								<th>Total Marks : $total_marks</th>
-							</tr>
-							<tr></tr>';*/
-							$columnHeader = '';
-							$columnHeader = "Username" . "\t" . "Marks" ."\t";
-							$setData = '';
-							while ($rec = mysqli_fetch_row($query)) {
-							$rowData = '';
-							foreach ($rec as $value) {
-							$value = '"' . $value . '"' . "\t";
-							$rowData .= $value;
-							}
-							$setData .= trim($rowData) . "\n";
-							}
-						/*if($numrows > 0)
-						{
-							$output .= '<table class="table" bordered="1">
-							<tr>
-								<th>Username</th>
-								<th>Marks</th>
-
-							</tr>';
-						while($row = mysqli_fetch_array($query))
-						{
-							$output .= '
-							<tr>
-								<td>'.$row["2"].'</td>
-								<td>'.$row["3"].'</td>
-							</tr>';
-						}
-						$output .= '</table>';*/
-						header('Content-Type: application/octet-stream');
-						header('Content-Disposition: attachment; filename=download.xls');
-						header("Pragma: no-cache");
-						header("Expires: 0");
-						echo ucwords($columnHeader) . "\n" . $setData . "\n";
-						//echo $output;
-						}
-
-?-->
-
-			<footer class="footer">
-				<div class="container-fluid">
-					<nav class="pull-left">
-						<ul>
-							<li>
-								<a href="new.html">
-                    About
-                </a>
-							</li>
-						</ul>
-					</nav>
-					<div class="copyright pull-right">
-						&copy;
-						<script>
-							document.write(new Date().getFullYear())
-						</script>, made with <i class="fa fa-heart heart"></i> by Team MCA
-					</div>
-				</div>
-			</footer>
 		</div>
+		<footer class="footer">
+			<div class="container-fluid">
+				<nav class="pull-left">
+					<ul>
+						<li>
+							<a href="new.html">
+									About
+							</a>
+						</li>
+					</ul>
+				</nav>
+				<div class="copyright pull-right">
+					&copy;
+					<script>
+						document.write(new Date().getFullYear())
+					</script>, made with <i class="fa fa-heart heart"></i> by Team MCA
+				</div>
+			</div>
+		</footer>
 	</div>
 </body>
 

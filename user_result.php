@@ -41,7 +41,7 @@
 		}
 		$query2=mysqli_query($con,"insert into result (`user_id`, `test_id`, `username`, `result`) values ('$user','$id','$n','$c')");
 		if($query2)
-		echo "inserted!!"; 
+		echo "inserted!!";
 	}
 ?>
 <!DOCTYPE html>
@@ -77,10 +77,10 @@
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://javascript:void(0)" class="simple-text logo-mini">
+				<a href="javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://javascript:void(0)" class="simple-text logo-normal">
+				<a href="javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -92,14 +92,14 @@
 								<p>Home</p>
 	          </a>
 					</li>
-					<li class="active">
+					<li>
 						<a data-toggle="collapse" href="#componentsExamples">
 							<i class="ti-ruler-pencil"></i>
 							<p>Tests
 							   <b class="caret"></b>
 							</p>
 						</a>
-						<div class="collapse in" id="componentsExamples">
+						<div class="collapse" id="componentsExamples">
 							<ul class="nav">
 								<li>
 									<a href="create_test.php">
@@ -113,7 +113,7 @@
 										<span class="sidebar-normal">View/Edit Test</span>
 									</a>
 								</li>
-								<li class="active">
+								<li class="">
 									<a href="delete_test.php">
 										<span class="sidebar-mini">DT</span>
 										<span class="sidebar-normal">Delete Test</span>
@@ -122,11 +122,19 @@
 							</ul>
 						</div>
 					</li>
-					<li>
+					<li class="active">
 						<a href="produce_result.php">
                 <i class="ti-clipboard"></i>
                 <p>
 									Results
+                </p>
+            </a>
+					</li>
+					<li>
+						<a href="changepassword.php">
+                <i class="ti-key"></i>
+                <p>
+									Change Password
                 </p>
             </a>
 					</li>
@@ -157,7 +165,7 @@
 						<a class="navbar-brand" href="user_result.php">
 							Your Result
 						</a>
-						
+
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -165,31 +173,6 @@
 								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
 									Start Test
                 </button>
-							</li>
-							<li class="dropdown">
-								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
-	                <i class="ti-bell"></i>
-	                <span class="notification">5</span>
-									<p class="hidden-md hidden-lg">
-										Notifications
-										<b class="caret"></b>
-									</p>
-                </a>
-								<ul class="dropdown-menu">
-									<li><a href="#not1">Notification 1</a></li>
-									<li><a href="#not2">Notification 2</a></li>
-									<li><a href="#not3">Notification 3</a></li>
-									<li><a href="#not4">Notification 4</a></li>
-									<li><a href="#another">Another notification</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#settings" class="btn-rotate">
-									<i class="ti-settings"></i>
-									<p class="hidden-md hidden-lg">
-										Settings
-									</p>
-                </a>
 							</li>
 						</ul>
 					</div>
@@ -200,7 +183,7 @@
 							<div class="card">
 							<div class="card-header">
 								<h4 class="card-title">
-										<?php 
+										<?php
 											if($flag==1)
 											{
 												echo $n." you passed this test !!";
@@ -228,7 +211,7 @@
 				<br><br>
 				<hr>
 			</div>
-					
+
 			<footer class="footer">
 				<div class="container-fluid">
 					<nav class="pull-left">
