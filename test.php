@@ -89,6 +89,7 @@
 				while ($row=mysqli_fetch_row($query))
 				{
 					//<?php $qid=$row[0];<a id='select' style='margin-top: 0px;' href='#dashboardOverview' $qid=$row[0]; >
+					$answer=0;
 					$questions[$j]=array();
 					$questions[$j][0]=$row[0];
 					$questions[$j][1]=$row[1];
@@ -427,6 +428,7 @@
 			if(hr <= 0 && min <= 0 && sec<= 0)
 			{
 		    clearInterval(timer);
+				window.location.href = 'user_result.php';
 				document.getElementById("finish").click();
 			}
 			else {
