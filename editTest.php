@@ -10,7 +10,7 @@
 		if($numrows>0)
 		{
 			$row=mysqli_fetch_row($query);
-		}			
+		}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,10 +44,10 @@
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://javascript:void(0)" class="simple-text logo-mini">
+				<a href="javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://javascript:void(0)" class="simple-text logo-normal">
+				<a href="javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -132,7 +132,7 @@
 						<a class="navbar-brand" href="editTest.php">
 							Edit Test
 						</a>
-						
+
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -140,31 +140,6 @@
 								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
 									Start Test
                 </button>
-							</li>
-							<li class="dropdown">
-								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
-	                <i class="ti-bell"></i>
-	                <span class="notification">5</span>
-									<p class="hidden-md hidden-lg">
-										Notifications
-										<b class="caret"></b>
-									</p>
-                </a>
-								<ul class="dropdown-menu">
-									<li><a href="#not1">Notification 1</a></li>
-									<li><a href="#not2">Notification 2</a></li>
-									<li><a href="#not3">Notification 3</a></li>
-									<li><a href="#not4">Notification 4</a></li>
-									<li><a href="#another">Another notification</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#settings" class="btn-rotate">
-									<i class="ti-settings"></i>
-									<p class="hidden-md hidden-lg">
-										Settings
-									</p>
-                </a>
 							</li>
 						</ul>
 					</div>
@@ -188,7 +163,7 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label">
-											Category 
+											Category
 									</label>
 									<input class="form-control" name="category" value="<?php echo $row[3] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
@@ -200,19 +175,19 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label">
-											Correct Answers Marks 
+											Correct Answers Marks
 									</label>
 									<input class="form-control" name="curr_ans" value="<?php echo $row[7] ?>" default="1" value="1" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
 								<div class="form-group">
 									<label class="control-label">
-											Worng Answers Penalty 
+											Worng Answers Penalty
 									</label>
 									<input class="form-control" name="wng_ans" value="<?php echo $row[8] ?>" default="0" value="0" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
 								<div class="form-group">
 									<label class="control-label">
-											Passing Marks 
+											Passing Marks
 									</label>
 									<input class="form-control" name="limit" value="<?php echo $row[9] ?>" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
@@ -234,7 +209,7 @@
 							</div>
 							<div class="card-footer">
 								<button type="submit" action="editquestions.php" name="update" class="btn btn-info btn-fill pull-right">UPDATE</button>
-								
+
 								<div class="clearfix"></div>
 							</div>
 						</form>
@@ -248,7 +223,7 @@
 				 $updated="Updated values !!";
 			 	if(!empty($_POST['testname']) || !empty($_POST['category']) || !empty($_POST['totalq']) || !empty($_POST['curr_ans']) || !empty($_POST['wng_ans']) || !empty($_POST['limit']) || !empty($_POST['st_datetime']) || !empty($_POST['end_datetime']))
 			 	{
-					
+
 					$test_name=$_POST['testname'];
 			 		$category=$_POST['category'];
 			 		$totalq=$_POST['totalq'];
@@ -261,7 +236,7 @@
 					$st_date=$st_date.":00";
 					$end_date=date("Y-m-d H:i", strtotime($end_date));
 					$end_date=$end_date.":00";
-					
+
 			 		$con=mysqli_connect('localhost','root','') or die(mysql_error());
 			 		mysqli_select_db($con,'online_test') or die("cannot select DB");
 			 		$sql=mysqli_query($con,"UPDATE `tests` SET test_name='$test_name', category='$category', total_ques='$totalq', startTest_dateTime='$st_date', endTest_datetime='$end_date', pt_curr='$curr_ans', pt_neg='$wng_ans', pass_limit='$limit' WHERE test_id='$id'");
@@ -274,7 +249,7 @@
 						//<script> location.replace("addquestions.php"); </script>
 						//header('Location: editquestions.php');
 					}
-			 		
+
 			 	}
 			 	else
 			 	{

@@ -29,6 +29,26 @@ ob_start();
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Muli:400,300" rel="stylesheet" type="text/css">
 	<link href="assets/css/themify-icons.css" rel="stylesheet">
+	<script>
+	function validateForm() {
+	    var x = document.forms["register"]["user"].value;
+			var y = document.forms["register"]["pass"].value;
+			var z = document.forms["register"]["conpass"].value;
+	    if (x == "") {
+	        alert("Username must be filled out.");
+	        return false;
+	    }
+			if (y == "" || y.length <= 5) {
+	        alert("Password must greater than length 5.");
+	        return false;
+	    }
+			if (z != y) {
+	        alert("Password must be same.");
+	        return false;
+	    }
+			return true;
+	}
+	</script>
 </head>
 <body>
 	<nav class="navbar navbar-transparent navbar-absolute">
@@ -89,7 +109,7 @@ ob_start();
 							</div>
 						</div>
 						<div class="col-md-4">
-							<form method="post">
+							<form method="post" name="register" onsubmit="return validateForm()">
 								<div class="card card-plain">
 									<div class="content">
 										<div class="form-group">
@@ -111,44 +131,42 @@ ob_start();
 					</div>
 				</div>
 			</div>
-<?php
-	if(isset($_POST["submit"])){
-		if(!empty($_POST['user']) && !empty($_POST['pass']) && !empty($_POST['conpass'])) {
-			$user=$_POST['user'];
-			$pass=$_POST['pass'];
-			//$len=preg_match("@^.{5-15}$@",$pass);
-			//echo $len;
-			//if(!$len)
-				//echo "<script type='text/javascript'>alert('Length should be graeter than 5!')</script>";
-			//else
-			//{
-			$cpass=$_POST['conpass'];
-			if($pass==$cpass)
-				echo "<script type='text/javascript'>alert('Password doesnt matched!')</script>";
-			$count=0;
-				$con=mysqli_connect('localhost','root','');
-				mysqli_select_db($con,'online_test') or die("cannot select DB");
-				$query=mysqli_query($con,"SELECT * FROM register WHERE username='$user'");
-				$numrows=mysqli_num_rows($query);
-				if($numrows==0)
-				{
-					$sql="INSERT INTO register(username,password) VALUES('$user','$pass')";
-					$result=mysqli_query($con,$sql);
-					if($result){
-						header("Location: index.php");
-						//echo "<script type='text/javascript'>alert('submitted successfully!')</script>";
-					} else {
-						//echo "<script type='text/javascript'>alert('Failure!')</script>";
+			<?php
+				if(isset($_POST["submit"])){
+					if(!empty($_POST['user']) && !empty($_POST['pass']) && !empty($_POST['conpass'])) {
+						$user=$_POST['user'];
+						$pass=$_POST['pass'];
+						//$len=preg_match("@^.{5-15}$@",$pass);
+						//echo $len;
+						//if(!$len)
+							//echo "<script type='text/javascript'>alert('Length should be graeter than 5!')</script>";
+						//else
+						//{
+						$cpass=$_POST['conpass'];
+						$count=0;
+							$con=mysqli_connect('localhost','root','');
+							mysqli_select_db($con,'online_test') or die("cannot select DB");
+							$query=mysqli_query($con,"SELECT * FROM register WHERE username='$user'");
+							$numrows=mysqli_num_rows($query);
+							if($numrows==0)
+							{
+								$sql="INSERT INTO register(username,password) VALUES('$user','$pass')";
+								$result=mysqli_query($con,$sql);
+								if($result){
+									header("Location: index.php");
+									//echo "<script type='text/javascript'>alert('submitted successfully!')</script>";
+								} else {
+									//echo "<script type='text/javascript'>alert('Failure!')</script>";
+								}
+							} else {
+								echo "<script type='text/javascript'>alert('username already exists! Please try again with another!')</script>";
+							}
+						//}
+						}else {
+						echo "<script type='text/javascript'>alert('All fields are required!')</script>";
 					}
-				} else {
-					echo "<script type='text/javascript'>alert('username already exists! Please try again with another!')</script>";
 				}
-			//}
-			}else {
-			echo "<script type='text/javascript'>alert('All fields are required!')</script>";
-		}
-	}
-?>
+			?>
 			<footer class="footer footer-transparent">
 				<div class="container">
 					<div class="copyright text-center">

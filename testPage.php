@@ -18,7 +18,6 @@
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 	<meta name="viewport" content="width=device-width" />
 
-
 	<!-- Bootstrap core CSS     -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 
@@ -32,16 +31,17 @@
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Muli:400,300" rel="stylesheet" type="text/css">
 	<link href="assets/css/themify-icons.css" rel="stylesheet">
+
 </head>
 
 <body>
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="brown" data-active-color="danger">
 			<div class="logo">
-				<a href="http://javascript:void(0)" class="simple-text logo-mini">
+				<a href="javascript:void(0)" class="simple-text logo-mini">
 					OQ
 				</a>
-				<a href="http://javascript:void(0)" class="simple-text logo-normal">
+				<a href="javascript:void(0)" class="simple-text logo-normal">
 					Online Quiz
 				</a>
 			</div>
@@ -60,28 +60,22 @@
 							   <b class="caret"></b>
 							</p>
 						</a>
-						<div class="collapse in" id="componentsExamples">
+						<div class="collapse" id="componentsExamples">
 							<ul class="nav">
-								<li>
-									<a href="create_test.php">
+								<li class="">
+									<a href="components/buttons.html">
 										<span class="sidebar-mini">CT</span>
 										<span class="sidebar-normal">Create Test</span>
 									</a>
 								</li>
 								<li>
-									<a href="components/grid.html">
+									<a href="view_test.php">
 										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View Test</span>
+										<span class="sidebar-normal">View/Edit Test</span>
 									</a>
 								</li>
 								<li>
-									<a href="components/panels.html">
-										<span class="sidebar-mini">ET</span>
-										<span class="sidebar-normal">Edit Test</span>
-									</a>
-								</li>
-								<li>
-									<a href="delete_test.php.php" >
+									<a href="delete_test.php">
 										<span class="sidebar-mini">DT</span>
 										<span class="sidebar-normal">Delete Test</span>
 									</a>
@@ -133,35 +127,6 @@
 							Rules
 						</a>
 					</div>
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li class="dropdown">
-								<a href="#notifications" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
-	                <i class="ti-bell"></i>
-	                <span class="notification">5</span>
-									<p class="hidden-md hidden-lg">
-										Notifications
-										<b class="caret"></b>
-									</p>
-                </a>
-								<ul class="dropdown-menu">
-									<li><a href="#not1">Notification 1</a></li>
-									<li><a href="#not2">Notification 2</a></li>
-									<li><a href="#not3">Notification 3</a></li>
-									<li><a href="#not4">Notification 4</a></li>
-									<li><a href="#another">Another notification</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#settings" class="btn-rotate">
-									<i class="ti-settings"></i>
-									<p class="hidden-md hidden-lg">
-										Settings
-									</p>
-                </a>
-							</li>
-						</ul>
-					</div>
 				</div>
 			</nav>
 			<div class="content" style="">
@@ -173,7 +138,7 @@
 						<div style="margin-left: auto; margin-right: auto; font-size: 1.5em; text-align: center; color: white; width: 500px; padding-top: 20vh;"></div>
 						<br>
 						<form method="post">
-						<button type="submit" name="start" class="btn btn-success" style="display: block;margin-left: auto; margin-right: auto; width: 100px;">Start</button>
+							<button type="submit" name="start" class="btn btn-success" style="display: block;margin-left: auto; margin-right: auto; width: 100px;">Start</button>
 						</form>
 					</div>
 					<?php
