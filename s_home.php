@@ -1,15 +1,18 @@
 <?php
-		 session_start();
-		 $test_id=$_SESSION['sess_test'];
-		 $count=$_SESSION['sess_ques'];
-		 if($count==0)
-		 {
-			 unset($_SESSION['sess_test']);
-				unset($_SESSION['sess_ques']);
-			header("Location: index.php");
-		 }
-		?>
+	session_start();
+	if(!isset($_SESSION["sess_user"])){
+		header("location:index.php");
+	}
+	$user=$_SESSION['sess_user'];
+	$n=$_SESSION['sess_name'];
+	// echo "LOGGED IN USER IS -----";
+	// echo $user;
 
+	/*if(!isset($_GET)) {
+		$topic =$_GET['user_id'];
+		echo "Get". $topic ;
+	}*/
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,14 +26,26 @@
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 	<meta name="viewport" content="width=device-width" />
 
+
 	<!-- Bootstrap core CSS     -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 
 	<!--  Paper Dashboard core CSS    -->
 	<link href="assets/css/paper-dashboard.css" rel="stylesheet" />
 
+
 	<!--  CSS for Demo Purpose, don't include it in your project     -->
 	<link href="assets/css/demo.css" rel="stylesheet" />
+	<style media="">
+	.responsive-cards {
+		width: 47.4%;
+	}
+		@media only screen and (max-width: 700px){
+	    .responsive-cards {
+	        width: 95%;
+	    }
+		}
+	</style>
 
 	<!--  Fonts and icons     -->
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -51,42 +66,13 @@
 			</div>
 			<div class="sidebar-wrapper">
 				<ul class="nav">
-					<li>
+					<li class="active">
 						<a href="home.php">
 	              <i class="ti-panel"></i>
 								<p>Home</p>
 	          </a>
 					</li>
-					<li class="active">
-						<a data-toggle="collapse" href="#componentsExamples">
-							<i class="ti-ruler-pencil"></i>
-							<p>Tests
-							   <b class="caret"></b>
-							</p>
-						</a>
-						<div class="collapse in" id="componentsExamples">
-							<ul class="nav">
-								<li class="active">
-									<a href="create_test.php">
-										<span class="sidebar-mini">CT</span>
-										<span class="sidebar-normal">Create Test</span>
-									</a>
-								</li>
-								<li>
-									<a href="view_test.php">
-										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View/Edit test</span>
-									</a>
-								</li>
-								<li>
-									<a href="delete_test.php">
-										<span class="sidebar-mini">DT</span>
-										<span class="sidebar-normal">Delete test</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</li>
+					
 					<li>
 						<a href="produce_result.php">
                 <i class="ti-clipboard"></i>
@@ -127,132 +113,69 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-						<a class="navbar-brand" href="addquestions.php">
-							Add Questions
-						</a>
+						<p class="navbar-brand">
+							<b>WELCOME <?php echo $n ?></b>
+						</p>
+						<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px; margin-right: 20px;padding: 10px 15px;" class="btn btn-success hidden-md hidden-lg pull-right">
+							Start Test
+						</button>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
-						
+							<li>
+								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
+									Start Test
+                </button>
+							</li>
 						</ul>
 					</div>
 				</div>
 			</nav>
-			<div class="content">
-				<div style="width: 60%; margin-left: auto; margin-right: auto;">
-					<div class="card">
-						<form method="post">
-							<div class="card-header">
-								<h4 class="card-title">
-										Add Question
-									</h4>
-							</div>
-							<div class="card-content">
-								<div class="form-group">
-									<label class="control-label">
-											Question Description <star>*</star>
-									</label>
-									<textarea name="desc" maxlength="700" class="form-control" placeholder="Enter Question" rows="3"></textarea>
+			<div class="content" style="margin-top: 0px; padding-top: 0px;padding-left: 0px;">
+
+			<div class="responsive-cards" style="float: left; margin: 7px; margin-left: 2%; background-color: #BDCFB7; border-radius: 7px;">
+				<h3 style="padding: 10px;">Comming Soon Tests:</h3>
+				<?php
+						$pub=1;
+						$con=mysqli_connect('localhost','root','') or die(mysql_error());
+						mysqli_select_db($con,'online_test') or die("cannot select DB");
+						$query1=mysqli_query($con,"select now() from DUAL");
+								$val = mysqli_fetch_array($query1);
+								$sec1=$val[0];
+								$query=mysqli_query($con,"SELECT * FROM tests WHERE type='$pub' and endTest_datetime>'$sec1' and user_id<>'$user'");
+
+								if($query)
+								{
+									$numrows=mysqli_num_rows($query);
+									if($numrows>0)
+									{
+						while ($row=mysqli_fetch_row($query))
+						{
+							$id=$row[0];
+
+							echo "<div class='card' style='margin: 6px; margin-bottom: 15px;' >
+								 <a href='testPage.php?id=$id'>
+								<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
+								<hr style='margin: 0px;'>
+								<div class='' style='width: 100%;'>
+									<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
+									<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
+									<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
 								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Option 1 <star>*</star>
-									</label>
-									<textarea name="op1" maxlength="200" class="form-control" placeholder="Option 1" rows="1"></textarea>
-								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Option 2 <star>*</star>
-									</label>
-									<textarea name="op2" maxlength="200" class="form-control" placeholder="Option 2" rows="1"></textarea>
-								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Option 3 <star>*</star>
-									</label>
-									<textarea name="op3" maxlength="200" class="form-control" placeholder="Option 3" rows="1"></textarea>
-								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Option 4 <star>*</star>
-									</label>
-									<textarea name="op4" maxlength="200" class="form-control" placeholder="Option 4" rows="1"></textarea>
-								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Correct Answer <star>*</star>
-									</label>
-									<textarea name="curr_ans" name="curr_ans" maxlength="200" class="form-control" placeholder="Answer" rows="1"></textarea>
-								</div>
-								<br>
-								<div class="category">
-									<star>*</star> Required fields</div>
-							</div>
-							<div class="card-footer">
-								<button type="submit" name="submit" class="btn btn-info btn-fill pull-right">Submit</button>
-								<button type="reset" style="margin-right: 20px;" class="btn btn-danger btn-fill pull-right">Reset</button>
-								<div class="clearfix"></div>
-							</div>
-						</form>
-					</div>
+								</a>
+							</div>";
+						}
+					}
+						else
+						{
+							echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO UPCOMING PUBLIC TEST </h6></div>";
+						}
+					}
+			?>
 				</div>
+				
 			</div>
-			<?php
-		 echo "test_id=".$test_id."count=".$count;
-		?>
-	<?php
-
-		if(isset($_POST["submit"])){
-		if($count>0 &&!empty($_POST['desc']) && !empty($_POST['op1']) && !empty($_POST['op2'])&& !empty($_POST['op3'])&& !empty($_POST['op4']) && !empty($_POST['curr_ans']))
-		{
-
-			$des=$_POST['desc'];
-			$opt1=$_POST['op1'];
-			$opt2=$_POST['op2'];
-			$opt3=$_POST['op3'];
-			$opt4=$_POST['op4'];
-			$curr_ans=$_POST['curr_ans'];
-			echo $des;
-			echo $opt1;
-			echo $opt2;
-			echo $opt3;
-			echo $opt4;
-
-			$con=mysqli_connect('localhost','root','');
-			mysqli_select_db($con,'online_test') or die("cannot select DB");
-			$sql="insert into questions(ques_desc,opt1,opt2,opt3,opt4,curr_ans) values ('$des','$opt1','$opt2','$opt3','$opt4','$curr_ans')";
-			if ($con->query($sql) === TRUE) {
-				echo "abcd";
-						$last_id = mysqli_insert_id($con);
-						mysqli_query($con,"insert into ques_link values ('$test_id','$last_id')");
-
-			--$count;
-			}
-			@$_SESSION['sess_ques']=$count;
-			echo "count1=".$count;
-			echo "<p align=center>Question Added Successfully.</p>";
-			if($count==0)
-			{
-				unset($_SESSION['sess_test']);
-				unset($_SESSION['sess_ques']);
-				//header("Location: home.php");
-				echo("<script>location.href = '".home.".php';</script>");
-			}
-		}
-		else{
-			if($count<1)
-			{
-				unset($_SESSION['sess_test']);
-				unset($_SESSION['sess_ques']);
-				echo("<script>location.href = '".home.".php';</script>");
-			}
-			else
-				echo"ENTER REQUIRED FIELDS !!";
-		}
-
-		}
-	?>
-			<footer class="footer">
+			<footer class="footer" style="border: 0px;">
 				<div class="container-fluid">
 					<nav class="pull-left">
 						<ul>
@@ -337,11 +260,6 @@
 		demo.initOverviewDashboard();
 		demo.initCirclePercentage();
 
-	});
-</script>
-<script type="text/javascript">
-	$().ready(function() {
-		demo.initFormExtendedDatetimepickers();
 	});
 </script>
 

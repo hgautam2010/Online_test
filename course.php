@@ -66,65 +66,52 @@
 			</div>
 			<div class="sidebar-wrapper">
 				<ul class="nav">
-					<li class="active">
-						<a href="home.php">
-	              <i class="ti-panel"></i>
+					<li>
+						<a href="a_home.php">
+							<i class="ti-panel"></i>
 								<p>Home</p>
-	          </a>
-					</li>
-					<li>
-						<a data-toggle="collapse" href="#componentsExamples">
-							<i class="ti-ruler-pencil"></i>
-							<p>Tests
-							   <b class="caret"></b>
-							</p>
 						</a>
-						<div class="collapse" id="componentsExamples">
-							<ul class="nav">
-								<li>
-									<a href="create_test.php">
-										<span class="sidebar-mini">CT</span>
-										<span class="sidebar-normal">Create Test</span>
-									</a>
-								</li>
-								<li>
-									<a href="view_test.php">
-										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View/Edit test</span>
-									</a>
-								</li>
-								<li>
-									<a href="delete_test.php">
-										<span class="sidebar-mini">DT</span>
-										<span class="sidebar-normal">Delete Test</span>
-									</a>
-								</li>
-							</ul>
-						</div>
+					</li>
+					<li class="active">
+						<a href="course.php">
+							<i class="ti-panel"></i>
+								<p>Course</p>
+						</a>
 					</li>
 					<li>
-						<a href="produce_result.php">
-                <i class="ti-clipboard"></i>
-                <p>
-									Results
-                </p>
-            </a>
+						<a href="subject.php">
+							<i class="ti-panel"></i>
+								<p>Subject</p>
+						</a>
 					</li>
+					<li>
+						<a href="teacher.php">
+							<i class="ti-panel"></i>
+								<p>Teacher</p>
+						</a>
+					</li>
+					<li>
+						<a href="student.php">
+							<i class="ti-panel"></i>
+								<p>Student</p>
+						</a>
+					</li>
+					
 					<li>
 						<a href="changepassword.php">
-                <i class="ti-key"></i>
-                <p>
+							<i class="ti-key"></i>
+							<p>
 									Change Password
-                </p>
-            </a>
+							</p>
+						</a>
 					</li>
 					<li>
 						<a href="logout.php">
-                <i class="ti-share"></i>
-                <p>
+							<i class="ti-share"></i>
+							<p>
 									Logout
-                </p>
-            </a>
+							</p>
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -145,6 +132,7 @@
 						<p class="navbar-brand">
 							<b>WELCOME <?php echo $n ?></b>
 						</p>
+						
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -156,39 +144,101 @@
 			<div class="content" style="margin-top: 0px; padding-top: 0px;padding-left: 0px;">
 
 			<div class="responsive-cards" style="float: left; margin: 7px; margin-left: 2%; background-color: #BDCFB7; border-radius: 7px;">
-				<h3 style="padding: 10px;">Tests:</h3>
-				
-				</div>
-				<div class="responsive-cards" style="float: left; margin: 7px; background-color: #F3EBD6; border-radius: 7px;">
-					<h3 style="padding: 10px;">Tests created by you:</h3>
-					<?php
+				<?php
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT t.test_id,t.test_name,t.duration,t.total_ques,s.s_name FROM test t,subject s WHERE s.t_id='$user' and t.sub_id=s.s_id");
+							$query=mysqli_query($con,"SELECT * FROM course");
 							$numrows=mysqli_num_rows($query);
 
 							if($numrows>0)
 							while ($row=mysqli_fetch_row($query))
 							{
 								$id=$row[0];
+
 								echo "<div class='card' style='margin: 6px;margin-bottom: 15px;' >
-									 <a href='editTest.php?id=$id'>
-									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[1]</h4></div>
+									 <a href='editCourse.php?id=$id'>
+									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'><b>Course Id :</b>$row[0]</h4></div>
 									<hr style='margin: 0px;'>
 									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>Duration : </b> $row[2] </div>
-										<div class='card-body' style='padding: 10px;'><b>Subject : </b> $row[4] </div>
-										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[3] </div>
+										<div class='card-body' style='padding: 10px;'><b>Course Name :</b> $row[1]</div>
+										<div class='card-body' style='padding: 10px;'><b>Branch : </b> $row[2] </div>
+										<div class='card-body' style='padding: 10px;'><b>Year : </b> $row[3] </div>
 									</div>
 									</a>
 								</div>";
 							}
 							else
 							{
-								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
+								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO Course Added</h6></div>";
 							}
 				?>
+				</div>
+				<div class="responsive-cards" style="float: right; margin: 7px; padding-left:60px; background-color:; border-radius: 7px;">
+				<div class="">
+							<form method="post">
+								<div class="card" data-background="color" data-color="blue">
+									<div class="card-header">
+										<h3 class="card-title">Add Course</h3>
+									</div>
+									<div class="card-content">
+										<div class="form-group">
+											<label>Course ID</label>
+											<input type="text" placeholder="Course ID" name="username" class="form-control input-no-border">
+										</div>
+										<div class="form-group">
+											<label>Course Name</label>
+											<input type="text" placeholder="Course Name" name="password" class="form-control input-no-border">
+										</div>
+									
+										<div class="form-group">
+											<label>Branch</label>
+											<select name="branch" class="form-control input-no-border">
+												<option value="NA">NA</option>
+												<option value="CS">CS</option>
+												<option value="IT">IT</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label>Year</label>
+											<select name="year" class="form-control input-no-border">
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+											</select>
+										</div>
+									</div>
+									<div class="card-footer text-center">
+										<button type="submit" value="login" name="submit" class="btn btn-fill btn-wd ">ADD</button>
+									</div>
+								</div>
+							</form>
+						</div>
 					</div>
+					<?php
+						if(isset($_POST["submit"])){
+							$not="Fill all fields !!";
+							$c_id=$_POST['username'];
+							$c_name=$_POST['password'];
+							$branch=$_POST['branch'];
+							$year=$_POST['year'];
+							$query=mysqli_query($con,"SELECT * FROM course where c_id='$c_id'");
+							$numrows=mysqli_num_rows($query);
+							if($numrows==0)
+							{
+								$sql="INSERT INTO course VALUES('$c_id','$c_name','$branch','$year')";
+								$result=mysqli_query($con,$sql);
+								if($result){
+									//header("Location: index.php");
+									echo "<script type='text/javascript'>alert('successfully added! ')</script>";
+								} else {
+									echo "<script type='text/javascript'>alert('Failure!')</script>";
+								}
+							}
+							else
+								echo "<script type='text/javascript'>alert('Course already exist!')</script>";
+						}
+					?>
 			</div>
 			<footer class="footer" style="border: 0px;">
 				<div class="container-fluid">

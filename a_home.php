@@ -67,64 +67,51 @@
 			<div class="sidebar-wrapper">
 				<ul class="nav">
 					<li class="active">
-						<a href="home.php">
-	              <i class="ti-panel"></i>
+						<a href="a_home.php">
+							<i class="ti-panel"></i>
 								<p>Home</p>
-	          </a>
-					</li>
-					<li>
-						<a data-toggle="collapse" href="#componentsExamples">
-							<i class="ti-ruler-pencil"></i>
-							<p>Tests
-							   <b class="caret"></b>
-							</p>
 						</a>
-						<div class="collapse" id="componentsExamples">
-							<ul class="nav">
-								<li>
-									<a href="create_test.php">
-										<span class="sidebar-mini">CT</span>
-										<span class="sidebar-normal">Create Test</span>
-									</a>
-								</li>
-								<li>
-									<a href="view_test.php">
-										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View/Edit test</span>
-									</a>
-								</li>
-								<li>
-									<a href="delete_test.php">
-										<span class="sidebar-mini">DT</span>
-										<span class="sidebar-normal">Delete Test</span>
-									</a>
-								</li>
-							</ul>
-						</div>
 					</li>
 					<li>
-						<a href="produce_result.php">
-                <i class="ti-clipboard"></i>
-                <p>
-									Results
-                </p>
-            </a>
+						<a href="course.php">
+							<i class="ti-panel"></i>
+								<p>Course</p>
+						</a>
 					</li>
+					<li>
+						<a href="subject.php">
+							<i class="ti-panel"></i>
+								<p>Subject</p>
+						</a>
+					</li>
+					<li>
+						<a href="teacher.php">
+							<i class="ti-panel"></i>
+								<p>Teacher</p>
+						</a>
+					</li>
+					<li>
+						<a href="student.php">
+							<i class="ti-panel"></i>
+								<p>Student</p>
+						</a>
+					</li>
+					
 					<li>
 						<a href="changepassword.php">
-                <i class="ti-key"></i>
-                <p>
+							<i class="ti-key"></i>
+							<p>
 									Change Password
-                </p>
-            </a>
+							</p>
+						</a>
 					</li>
 					<li>
 						<a href="logout.php">
-                <i class="ti-share"></i>
-                <p>
+							<i class="ti-share"></i>
+							<p>
 									Logout
-                </p>
-            </a>
+							</p>
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -145,6 +132,7 @@
 						<p class="navbar-brand">
 							<b>WELCOME <?php echo $n ?></b>
 						</p>
+						
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -156,38 +144,10 @@
 			<div class="content" style="margin-top: 0px; padding-top: 0px;padding-left: 0px;">
 
 			<div class="responsive-cards" style="float: left; margin: 7px; margin-left: 2%; background-color: #BDCFB7; border-radius: 7px;">
-				<h3 style="padding: 10px;">Tests:</h3>
-				
+				HELLO
 				</div>
 				<div class="responsive-cards" style="float: left; margin: 7px; background-color: #F3EBD6; border-radius: 7px;">
-					<h3 style="padding: 10px;">Tests created by you:</h3>
-					<?php
-							$con=mysqli_connect('localhost','root','') or die(mysql_error());
-							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT t.test_id,t.test_name,t.duration,t.total_ques,s.s_name FROM test t,subject s WHERE s.t_id='$user' and t.sub_id=s.s_id");
-							$numrows=mysqli_num_rows($query);
-
-							if($numrows>0)
-							while ($row=mysqli_fetch_row($query))
-							{
-								$id=$row[0];
-								echo "<div class='card' style='margin: 6px;margin-bottom: 15px;' >
-									 <a href='editTest.php?id=$id'>
-									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[1]</h4></div>
-									<hr style='margin: 0px;'>
-									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>Duration : </b> $row[2] </div>
-										<div class='card-body' style='padding: 10px;'><b>Subject : </b> $row[4] </div>
-										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[3] </div>
-									</div>
-									</a>
-								</div>";
-							}
-							else
-							{
-								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
-							}
-				?>
+				EVERYONE
 					</div>
 			</div>
 			<footer class="footer" style="border: 0px;">

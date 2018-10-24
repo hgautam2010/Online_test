@@ -1,9 +1,13 @@
 <?php
+ob_start();
 		 session_start();
-		 //if(!isset($_SESSION["sess_user"])){
-		 //	header("location:index.php");
-		 //}
+		 if(!isset($_SESSION["sess_user"])){
+		 	header("location:index.php");
+		 }
 		 $user=$_SESSION['sess_user'];
+		 $con=mysqli_connect('localhost','root','') or die(mysql_error());
+		mysqli_select_db($con,'online_test') or die("cannot select DB");
+		$query=mysqli_query($con,"SELECT * FROM subject WHERE t_id='$user'");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -125,17 +129,11 @@
 						<a class="navbar-brand" href="create_test.php">
 							Create Test
 						</a>
-						<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px; margin-right: 20px;padding: 10px 15px;" class="btn btn-success hidden-md hidden-lg pull-right">
-							Start Test
-						</button>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
 						<li>
-								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
-									Start Test
-                </button>
-							</li>
+								
 						</ul>
 					</div>
 				</div>
@@ -157,10 +155,24 @@
 									<input class="form-control" name="testname" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
 								<div class="form-group">
+											<label class="control-label">Subject <star>*</star></label>
+											<select name="subject" class="form-control input-no-border">
+											<?php
+											
+												if($row=mysqli_fetch_row($query))
+												{
+													echo "<option value='$row[0]'>$row[0]  $row[1]</option>";
+												}
+												else
+													echo "abcxyz";
+											?>
+											</select>
+										</div>
+								<div class="form-group">
 									<label class="control-label">
-											Category
+											Duration <star>*</star>
 									</label>
-									<input class="form-control" name="category" type="text" required="true" email="true" autocomplete="off" aria-required="true">
+									<input class="form-control timepicker" id="timepick" name="duration" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
 								<div class="form-group">
 									<label class="control-label">
@@ -186,26 +198,6 @@
 									</label>
 									<input class="form-control" name="limit" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Start at <star>*</star>
-									</label>
-									<input type="text" name="st_datetime" class="form-control datetimepicker" placeholder="Start Date and Time" />
-								</div>
-								<div class="form-group">
-									<label class="control-label">
-											End at <star>*</star>
-									</label>
-									<input type="text" name="end_datetime" class="form-control datetimepicker" placeholder="End Date and Time" />
-								</div>
-								<div class="form-group">
-									<label class="control-label">
-											Test type <star>*</star>
-									</label>
-									<br>
-									<span style="margin-right: 20%;"><input type="radio" name="testType" value="0" > Private</span>
-								  <input type="radio" name="testType" value="1"> Public
-								</div>
 								<br>
 								<div class="category">
 									<star>*</star> Required fields</div>
@@ -222,32 +214,29 @@
 <?php
 			 if(isset($_POST["submit"]))
 			 {
-			 	if(!empty($_POST['testname']) && !empty($_POST['totalq']) && !empty($_POST['st_datetime']) && !empty($_POST['end_datetime']) && !empty($_POST['testType']))
+			 	if(!empty($_POST['testname']) && !empty($_POST['totalq']) && !empty($_POST['duration']) )
 			 	{
-					$type=$_POST['testType'];
 					$test_name=$_POST['testname'];
-			 		$category=$_POST['category'];
+					$subject=$_POST['subject'];
 			 		$totalq=$_POST['totalq'];
-			 		$st_date=$_POST['st_datetime'];
-			 		$end_date=$_POST['end_datetime'];
+			 		$duration=$_POST['duration'];
 			 		$curr_ans=$_POST['curr_ans'];
 			 		$wng_ans=$_POST['wng_ans'];
 			 		$limit=$_POST['limit'];
-					$st_date=date("Y-m-d H:i", strtotime($st_date));
-					$st_date=$st_date.":00";
-					$end_date=date("Y-m-d H:i", strtotime($end_date));
-					$end_date=$end_date.":00";
-
-			 		$con=mysqli_connect('localhost','root','') or die(mysql_error());
-			 		mysqli_select_db($con,'online_test') or die("cannot select DB");
-			 		$sql="INSERT INTO `tests`(`user_id`, `test_name`, `category`, `total_ques`, `startTest_dateTime`, `endTest_datetime`, `pt_curr`, `pt_neg`, `pass_limit`,  `type`) VALUES  ('$user','$test_name','$category','$totalq','$st_date','$end_date','$curr_ans','$wng_ans','$limit', '$type')";
+					$duration=$_POST['duration'];
+					
+					$duration=date("H:i", strtotime($duration));
+					$duration=$duration.":00";  
+					$a=0; echo $subject." ".$test_name." ".$totalq." ".$duration; 
+			 	
+			 		$sql="INSERT INTO `test`(`sub_id`, `test_name`, `duration`, `total_ques`,`pt_curr`, `pt_neg`, `pass_limit`, `active`) VALUES  ('$subject','$test_name','$duration','$totalq','$curr_ans','$wng_ans','$limit', '$a')";
 					if ($con->query($sql) === TRUE) {
 						$last_id = mysqli_insert_id($con);
 						@$_SESSION['sess_test']=$last_id;
 						@$_SESSION['sess_ques']=$totalq;
-						echo("<script>location.href = '".addquestions.".php';</script>");
+						//echo("<script>location.href = '".addquestions.".php';</script>");
 						//<script> location.replace("addquestions.php"); </script>
-						//header('Location: addquestions.php');
+						header('Location: addquestions.php');
 					}
 
 			 	}
@@ -285,7 +274,12 @@
 <script src="assets/js/jquery-ui.min.js" type="text/javascript"></script>
 <script src="assets/js/perfect-scrollbar.min.js" type="text/javascript"></script>
 <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
-
+<script type="text/javascript">
+      $('#timepick').timepicker({
+		time_12hr: 'true',
+		timeFormat: 'H:i',
+      });
+    </script>
 <!--  Forms Validations Plugin -->
 <script src="assets/js/jquery.validate.min.js"></script>
 

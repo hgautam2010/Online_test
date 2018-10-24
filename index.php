@@ -118,25 +118,28 @@
 		$confrm="Incorrect username or password !!";
 		$con=mysqli_connect('localhost','root','') or die(mysql_error());
 		mysqli_select_db($con,'online_test') or die("cannot select DB");
-		$result=mysqli_query($con,"SELECT * FROM register WHERE username='".$user."' AND password='".$pass."'");
+		$result=mysqli_query($con,"SELECT * FROM user WHERE u_handle='".$user."' AND u_pass='".$pass."'");
 		$numrows=mysqli_num_rows($result);
 		if($numrows!=0)
 		{
-			while($row=mysqli_fetch_assoc($result))
-			{
-				$dbusername=$row['username'];
-				$dbpassword=$row['password'];
-			}
+			$row=mysqli_fetch_assoc($result);
+				$dbusername=$row['u_handle'];
+				$dbpassword=$row['u_pass'];
 			if($user == $dbusername && $pass == $dbpassword)
 			{
-				$result=mysqli_query($con,"SELECT user_id FROM register WHERE username='".$user."' AND password='".$pass."'");
+				$result=mysqli_query($con,"SELECT user_id,type FROM user WHERE u_handle='".$user."' AND u_pass='".$pass."'");
 				$row=mysqli_fetch_assoc($result);
 				session_start();
 				@$_SESSION['sess_user']=$row['user_id'];
 				@$_SESSION['sess_name']=$user;
 				echo "logged in session started";
-
-				header("Location: home.php");
+				$type=$row['type'];
+				if($type=='teacher')
+					header("Location: home.php");
+				if($type=='student')
+					header("Location: s_home.php");
+				if($type=='admin')
+					header("Location: a_home.php");
 			}
 		} else {
 			echo "<script type='text/javascript'>alert('$confrm');</script>";
