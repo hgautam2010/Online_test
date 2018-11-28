@@ -96,7 +96,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="student.php">
+						<a href="addstudent.php">
 							<i class="ti-panel"></i>
 								<p>Student</p>
 						</a>

@@ -5,13 +5,7 @@
 	}
 	$user=$_SESSION['sess_user'];
 	$n=$_SESSION['sess_name'];
-	// echo "LOGGED IN USER IS -----";
-	// echo $user;
-
-	/*if(!isset($_GET)) {
-		$topic =$_GET['user_id'];
-		echo "Get". $topic ;
-	}*/
+	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -91,7 +85,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="student.php">
+						<a href="addstudent.php">
 							<i class="ti-panel"></i>
 								<p>Student</p>
 						</a>

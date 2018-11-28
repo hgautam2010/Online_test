@@ -5,13 +5,6 @@
 	}
 	$user=$_SESSION['sess_user'];
 	$n=$_SESSION['sess_name'];
-	// echo "LOGGED IN USER IS -----";
-	// echo $user;
-
-	/*if(!isset($_GET)) {
-		$topic =$_GET['user_id'];
-		echo "Get". $topic ;
-	}*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,7 +67,7 @@
 					</li>
 					
 					<li>
-						<a href="produce_result.php">
+						<a href="view_user_result.php">
                 <i class="ti-clipboard"></i>
                 <p>
 									Results
@@ -132,45 +125,65 @@
 				</div>
 			</nav>
 			<div class="content" style="margin-top: 0px; padding-top: 0px;padding-left: 0px;">
-
-			<div class="responsive-cards" style="float: left; margin: 7px; margin-left: 2%; background-color: #BDCFB7; border-radius: 7px;">
-				<h3 style="padding: 10px;">Comming Soon Tests:</h3>
-				<?php
-						$pub=1;
+				<div class="responsive-cards" style="float: left; margin: 7px; margin-left: 2%; background-color: #BDCFB7; border-radius: 7px;">
+					<h3 style="padding: 10px;">Notification:</h3>
+					<?php
 						$con=mysqli_connect('localhost','root','') or die(mysql_error());
 						mysqli_select_db($con,'online_test') or die("cannot select DB");
-						$query1=mysqli_query($con,"select now() from DUAL");
-								$val = mysqli_fetch_array($query1);
-								$sec1=$val[0];
-								$query=mysqli_query($con,"SELECT * FROM tests WHERE type='$pub' and endTest_datetime>'$sec1' and user_id<>'$user'");
-
-								if($query)
-								{
-									$numrows=mysqli_num_rows($query);
-									if($numrows>0)
-									{
-						while ($row=mysqli_fetch_row($query))
-						{
-							$id=$row[0];
-
-							echo "<div class='card' style='margin: 6px; margin-bottom: 15px;' >
-								 <a href='testPage.php?id=$id'>
-								<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[2]</h4></div>
-								<hr style='margin: 0px;'>
-								<div class='' style='width: 100%;'>
-									<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
-									<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
-									<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
-								</div>
-								</a>
-							</div>";
-						}
-					}
+						$q=mysqli_query($con,"select n.t_id,n.time_date,n.comment,c.s_name from student s,subject c,notification n where s.course=c.c_id and c.s_id=n.sub_id and s.user_id='$user'");
+						if(!$q)
+							echo "No notification for you !!";
 						else
 						{
-							echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO UPCOMING PUBLIC TEST </h6></div>";
+						while ($r=mysqli_fetch_row($q))
+						{
+							$q1=mysqli_query($con,"select t_name from teacher where user_id='$r[0]'");
+							$r1=mysqli_fetch_row($q1);
+							?>
+							
+							<div class='card' style='margin: 6px; margin-bottom: 15px;' >
+								<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'><?php echo $r[3];?></h4></div>
+								<hr style='margin: 0px;'>
+								<div class='' style='width: 100%;'>
+									<div class='card-body' style='padding: 10px;'><b>Date :</b> <?php echo $r[1];?></div>
+									<div class='card-body' style='padding: 10px;'><b>By : </b> <?php echo $r1[0];?> </div>
+									<div class='card-body' style='padding: 10px;'><b>Comment : </b> <?php echo $r[2];?> </div>
+								</div>
+							</div>
+							<?php
 						}
-					}
+						}
+					?>
+				</div>
+			<div class="responsive-cards" style="float: left; margin: 7px; background-color: #F3EBD6; border-radius: 7px;">
+				<h3 style="padding: 10px;">Your Active Test:</h3>
+				<?php
+						$query1=mysqli_query($con,"select now() from DUAL");
+						$val = mysqli_fetch_array($query1);
+						$value=date("Y-m-d", strtotime($val[0]));
+						$query=mysqli_query($con,"select t.test_id,t.test_name,t.duration,sub.s_name from student s,course c,subject sub,test t where s.course=c.c_id and c.c_id=sub.c_id and sub.s_id=t.sub_id and t.active=1 and s.user_id='$user' and t.start_date='$value'");
+						if($query)
+						{
+							while($row=mysqli_fetch_row($query))
+							{
+								$id=$row[0];
+
+								echo "<div class='card' style='margin: 6px; margin-bottom: 15px;' >
+									<a href='testPage.php?id=$id'>
+										<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$row[1]</h4></div>
+										<hr style='margin: 0px;'>
+										<div class='' style='width: 100%;'>
+											<div class='card-body' style='padding: 10px;'><b>Duration :</b> $row[2]</div>
+											<div class='card-body' style='padding: 10px;'><b>Suject : </b> $row[3] </div>
+										</div>
+									</a>
+								</div>";
+							}
+						}
+						else
+						{
+							echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'> No active test for you !!</h6></div>";
+						}
 			?>
 				</div>
 				

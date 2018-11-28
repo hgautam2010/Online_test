@@ -170,7 +170,14 @@ ob_start();
 										</div>
 								<div class="form-group">
 									<label class="control-label">
+											Date <star>*</star>
+									</label>
+									<input class="form-control datepicker" name="date" type="text" required="true" email="true" autocomplete="off" aria-required="true">
+								</div>
+								<div class="form-group">
+									<label class="control-label">
 											Duration <star>*</star>
+											<h8>select am for duration</h8>
 									</label>
 									<input class="form-control timepicker" id="timepick" name="duration" type="text" required="true" email="true" autocomplete="off" aria-required="true">
 								</div>
@@ -219,31 +226,32 @@ ob_start();
 					$test_name=$_POST['testname'];
 					$subject=$_POST['subject'];
 			 		$totalq=$_POST['totalq'];
+					$date=$_POST['date'];
 			 		$duration=$_POST['duration'];
 			 		$curr_ans=$_POST['curr_ans'];
 			 		$wng_ans=$_POST['wng_ans'];
 			 		$limit=$_POST['limit'];
 					$duration=$_POST['duration'];
 					
+					$date=date("Y-m-d", strtotime($date));
 					$duration=date("H:i", strtotime($duration));
 					$duration=$duration.":00";  
-					$a=0; echo $subject." ".$test_name." ".$totalq." ".$duration; 
+					$a=0; echo $subject." ".$test_name." ".$totalq." ".$duration." ".$date; 
 			 	
-			 		$sql="INSERT INTO `test`(`sub_id`, `test_name`, `duration`, `total_ques`,`pt_curr`, `pt_neg`, `pass_limit`, `active`) VALUES  ('$subject','$test_name','$duration','$totalq','$curr_ans','$wng_ans','$limit', '$a')";
+			 		$sql="INSERT INTO `test`(`sub_id`, `test_name`, `start_date`, `duration`, `total_ques`,`pt_curr`, `pt_neg`, `pass_limit`, `active`) VALUES  ('$subject','$test_name','$date','$duration','$totalq','$curr_ans','$wng_ans','$limit', '$a')";
 					if ($con->query($sql) === TRUE) {
 						$last_id = mysqli_insert_id($con);
 						@$_SESSION['sess_test']=$last_id;
 						@$_SESSION['sess_ques']=$totalq;
+						@$_SESSION['sess_start']=1;
+						@$_SESSION['sess_sub']=$subject;
 						//echo("<script>location.href = '".addquestions.".php';</script>");
 						//<script> location.replace("addquestions.php"); </script>
-						header('Location: addquestions.php');
+						header('Location: select_type.php');
 					}
 
 			 	}
-			 	else
-			 	{
-			 		echo "FILL REQUIRED FIELDS !!";
-			 	}
+			 	
 			 }
 ?>
 		<footer class="footer">
@@ -276,7 +284,7 @@ ob_start();
 <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
 <script type="text/javascript">
       $('#timepick').timepicker({
-		time_12hr: 'true',
+		time_24hr: 'true',
 		timeFormat: 'H:i',
       });
     </script>

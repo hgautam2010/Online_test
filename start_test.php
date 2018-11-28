@@ -50,37 +50,6 @@
 								<p>Home</p>
 	          </a>
 					</li>
-					<li class="active">
-						<a data-toggle="collapse" href="#componentsExamples">
-							<i class="ti-ruler-pencil"></i>
-							<p>Tests
-							   <b class="caret"></b>
-							</p>
-						</a>
-						<div class="collapse" id="componentsExamples">
-							<ul class="nav">
-								<li>
-									<a href="create_test.php">
-										<span class="sidebar-mini">CT</span>
-										<span class="sidebar-normal">Create Test</span>
-									</a>
-								</li>
-								<li>
-									<a href="view_test.php">
-										<span class="sidebar-mini">VT</span>
-										<span class="sidebar-normal">View/Edit Test</span>
-									</a>
-								</li>
-
-								<li>
-									<a href="delete_test.php">
-										<span class="sidebar-mini">DT</span>
-										<span class="sidebar-normal">Delete Test</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</li>
 					<li>
 						<a href="produce_result.php">
                 <i class="ti-clipboard"></i>
@@ -159,9 +128,13 @@
 							$name=$_POST['test_name'];
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT test_id,total_ques,startTest_dateTime,endTest_datetime FROM tests WHERE test_name='$name' and user_id<>'$user'");
+							$query1=mysqli_query($con,"select now() from DUAL");
+							$val = mysqli_fetch_array($query1);
+							$value=date("Y-m-d", strtotime($val[0]));
+							$query=mysqli_query($con,"SELECT test_id,total_ques,duration,start_date FROM test WHERE test_name='$name' and active=1 and start_date='$value'");
 							$numrows=mysqli_num_rows($query);
 							if($numrows>0)
+							{
 							while ($row=mysqli_fetch_row($query))
 							{
 								//printf ("%s (%s)\n",$row[0],$row[1]);
@@ -173,14 +146,16 @@
 									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>$name</h4></div>
 									<hr style='margin: 0px;'>
 									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[2]</div>
-										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[3] </div>
-										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[1] </div>
-
+										<div class='card-body' style='padding: 10px;'><b>Date :</b> $row[3]</div>
+										<div class='card-body' style='padding: 10px;'><b>Duration :</b> $row[2]</div>
+										<div class='card-body' style='padding: 10px;'><b>Questions :</b> $row[1] </div>
 									</div>
 									</a>
 								</div>";
 							}
+							}
+							else
+								echo "Test not active or not created";
 						}
 					}
 				?>

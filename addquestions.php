@@ -2,11 +2,12 @@
 		 session_start();
 		 $test_id=$_SESSION['sess_test'];
 		 $count=$_SESSION['sess_ques'];
+		 $start=$_SESSION['sess_start'];
 		 if($count==0)
 		 {
 			 unset($_SESSION['sess_test']);
 				unset($_SESSION['sess_ques']);
-			header("Location: index.php");
+			header("Location: home.php");
 		 }
 		?>
 
@@ -144,7 +145,7 @@
 						<form method="post">
 							<div class="card-header">
 								<h4 class="card-title">
-										Add Question
+										Add Question <?php echo $start;?>
 									</h4>
 							</div>
 							<div class="card-content">
@@ -227,9 +228,11 @@
 						mysqli_query($con,"insert into ques_link values ('$test_id','$last_id')");
 
 			--$count;
+			++$start;
 			}
 			@$_SESSION['sess_ques']=$count;
-			echo "count1=".$count;
+			@$_SESSION['sess_start']=$start;
+			echo "<script type='text/javascript'>alert('$start question added!!')</script>";
 			echo "<p align=center>Question Added Successfully.</p>";
 			if($count==0)
 			{

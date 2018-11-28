@@ -131,15 +131,28 @@
 				$row=mysqli_fetch_assoc($result);
 				session_start();
 				@$_SESSION['sess_user']=$row['user_id'];
-				@$_SESSION['sess_name']=$user;
+				$u=$row['user_id'];
 				echo "logged in session started";
 				$type=$row['type'];
 				if($type=='teacher')
+				{
+					$query=mysqli_query($con,"select t_name from teacher where user_id='$u'");
+					$row=mysqli_fetch_row($query);
+					@$_SESSION['sess_name']=$row[0];
 					header("Location: home.php");
+				}
 				if($type=='student')
+				{
+					$query=mysqli_query($con,"select u_name from student where user_id='$u']'");
+					$row=mysqli_fetch_row($query);
+					@$_SESSION['sess_name']=$row[0];
 					header("Location: s_home.php");
+				}
 				if($type=='admin')
+				{
+					@$_SESSION['sess_name']="admin";
 					header("Location: a_home.php");
+				}
 			}
 		} else {
 			echo "<script type='text/javascript'>alert('$confrm');</script>";

@@ -96,7 +96,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="student.php">
+						<a href="addstudent.php">
 							<i class="ti-panel"></i>
 								<p>Student</p>
 						</a>
@@ -148,7 +148,7 @@
 			</nav>
 			<div class="content" style="margin-top: 0px;">
 
-			<div class="responsive-cards" style='width: 40%;'>
+			<div class="responsive-cards" style='width: 60%;'>
 				<?php  
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
@@ -160,8 +160,8 @@
 							{
 								$id=$row[0];  //style='margin: 6px;margin-bottom: 15px;'
 
-								echo "<div class='card' style='width: 40%;' >
-									 <a href='editSubject.php?id=$id'>
+								echo "<div class='card' style='width: 50%;' >
+									 <a href='addstudent.php?id=$id'>
 									<div class='card-body' style='padding: 2px;'><h5 style='margin: 0px;'><b>Course Id :</b>$row[0]</h5></div>
 									<hr style='margin: 0px;'>
 									<div class='' style='width: 100%;'>

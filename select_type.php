@@ -3,7 +3,15 @@
 	if(!isset($_SESSION["sess_user"])){
 		header("location:index.php");
 	}
-	
+	$test_id=$_SESSION['sess_test'];
+	$count=$_SESSION['sess_ques'];
+	if($count==0)
+	{
+		unset($_SESSION['sess_test']);
+		unset($_SESSION['sess_ques']);
+		//echo "<script type='text/javascript'>alert('Test Sucessfully Created!!')</script>";
+		header("Location: home.php");
+	}
 	$user=$_SESSION['sess_user'];
 	$n=$_SESSION['sess_name'];
 	$con=mysqli_connect('localhost','root','') or die(mysql_error());
@@ -65,7 +73,7 @@
 			</div>
 			<div class="sidebar-wrapper">
 				<ul class="nav">
-					<li class="active">
+					<li>
 						<a href="home.php">
 	              <i class="ti-panel"></i>
 								<p>Home</p>
@@ -155,98 +163,32 @@
 				</div>
 			</nav>
 			<div class="content" style="margin-top: 0px; padding-top: 0px;padding-left: 0px;">
+			<a href='view_questions.php'>
 			<div class="responsive-cards" style="float: left; margin: 7px; margin-left: 2%; background-color: #BDCFB7; border-radius: 7px;">
 				
                
-				<h3 style="padding: 10px;">Timeline:</h3>
+				<h3 style="padding: 10px;">Option 1:</h3>
                  
                   
-                   <?php 
-						while($row=mysqli_fetch_row($query))
-						{
-							$s_id=$row[2];
-							$query1=mysqli_query($con,"select s_name,c_id from subject where s_id='$s_id'");
-							$row1=mysqli_fetch_row($query1);
-							$name=$row1[0];
-							$query1=mysqli_query($con,"select * from course where c_id='$row1[1]'");
-							$row1=mysqli_fetch_row($query1);
-							
-						?>
+                  
 						<div class='card' style='margin: 6px;margin-bottom: 15px;' >
-							<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'><?php echo $name ?></h4></div>
+							<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>Use Question Bank</h4></div>
 							<hr style='margin: 0px;'>
-							<div class='' style='width: 100%;'>
-								<div class='card-body' style='padding: 5px;'><b>Course : </b><?php echo $row1[1] ?></div>
-								<div class='card-body' style='padding: 5px;'><b>Branch : </b><?php echo $row1[2] ?></div>
-								<div class='card-body' style='padding: 5px;'><b>Year : </b><?php echo $row1[3] ?></div>
-								<div class='card-body' style='padding: 5px;'><b>Comment : </b><?php echo $row[4] ?></div>
-							</div>
 						</div>
-                   <?php
-                   }
-                   ?>
 				   
 				   </div>
+				   </a>
+				   <a href='addquestions.php'>
 				<div class="responsive-cards" style="float: left; margin: 7px; background-color: #F3EBD6; border-radius: 7px;">
-					<h3 style="padding: 10px;">Todays Test:</h3>
-					<form method="post">
-					<?php
-							$query1=mysqli_query($con,"select now() from DUAL");
-							$val = mysqli_fetch_array($query1);
-							$value=date("Y-m-d", strtotime($val[0]));
-
-							$query=mysqli_query($con,"SELECT t.test_id,t.test_name,t.duration,t.total_ques,s.s_name,t.active FROM test t,subject s WHERE s.t_id='$user' and t.sub_id=s.s_id and t.start_date='$value'");
-							$numrows=mysqli_num_rows($query);
-							$act=0;
-							if($numrows>0)
-							{
-							while ($row=mysqli_fetch_row($query))
-							{
-								$id=$row[0];
-								$act=$row[5];
-								?>
+					<h3 style="padding: 10px;">Option 2:</h3>
 								<div class='card' style='margin: 6px;margin-bottom: 15px;' >
-									 <a href='editTest.php?id=$id'>
-									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'><?php echo $row[1];?></h4></div>
+									 
+									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;'>Add Question</h4></div>
 									<hr style='margin: 0px;'>
-									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>Duration : </b><?php echo $row[2];?> </div>
-										<div class='card-body' style='padding: 10px;'><b>Subject : </b><?php echo $row[4];?> </div>
-										<div class='card-body' style='padding: 10px;'><b>Questions : </b><?php echo $row[3];?> </div>
-									</div>
-									</a>
-									<div class='card-footer'>
-								<button type='submit' value=<?php echo $id;?> name='active' class='btn btn-info btn-fill pull-right' style="display:<?php if($act==1) echo "none";?>;">Activate</button>
-								<button type='submit' value=<?php echo $id;?> name='deactive' class='btn btn-info btn-fill-danger pull-right' style="display:<?php if($act==0) echo "none";?>;">Deactivate</button>
-								<div class='clearfix'></div>
-							</div>
+									
 								</div>
-								<?php
-							}
-							}
-							else
-							{
-								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>No test created by you for today !!</h6></div>";
-							}
-				?>
-				</form>
-				<?php
-					if(isset($_POST['active']))
-					{
-						$t_id=$_POST['active'];
-						$query=mysqli_query($con,"update test set active=1 where test_id='$t_id'");
-						echo "<script type='text/javascript'>alert('Activated Test!')</script>";
-						echo("<script>location.href = '".home.".php';</script>");
-					}
-					if(isset($_POST['deactive']))
-					{
-						$t_id=$_POST['deactive'];
-						$query=mysqli_query($con,"update test set active=0 where test_id='$t_id'");
-						echo "<script type='text/javascript'>alert('Deactivated Test!')</script>";
-						echo("<script>location.href = '".home.".php';</script>");
-					}
-				?>
-					</div>
+				</div>
+				</a>
 			</div>
 			<footer class="footer" style="border: 0px;">
 				<div class="container-fluid">
