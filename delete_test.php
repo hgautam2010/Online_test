@@ -133,16 +133,12 @@
 						<a class="navbar-brand" href="delete_test.php">
 							Delete Test
 						</a>
-						<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px; margin-right: 20px;padding: 10px 15px;" class="btn btn-success hidden-md hidden-lg pull-right">
-							Start Test
-						</button>
+						
 						</div>
 						<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
 							<li>
-								<button onclick="location.href='start_test.php';" style="line-height: 1.42857;font-weight: 900; margin: 16px 0px;margin-top: 16px;margin-right: 0px;margin-bottom: 16px;margin-left: 0px;padding: 10px 15px;" class="btn btn-success hidden-sm">
-									Start Test
-								</button>
+								
 							</li>
 						</ul>
 						</div>
@@ -150,10 +146,11 @@
 			</nav>
 			<div class="content">
 			<div class='card-body' style='padding: 10px;'>
+			<form method='post'>
 					<?php
 							$con=mysqli_connect('localhost','root','') or die(mysql_error());
 							mysqli_select_db($con,'online_test') or die("cannot select DB");
-							$query=mysqli_query($con,"SELECT * FROM tests WHERE user_id='$user' order by StartTest_dateTime desc");
+							$query=mysqli_query($con,"SELECT t.test_id,t.test_name,t.start_date,t.duration,t.total_ques FROM test t,subject s WHERE s.t_id='$user' and s.s_id=t.sub_id order by t.start_date desc");
 							$numrows=mysqli_num_rows($query);
 
 							if($numrows>0)
@@ -161,14 +158,14 @@
 							{
 								$id=$row[0];
 
-								echo "<form method='post'>
+								echo "
 								<div class='card' style='width: 50%; margin-left: auto; margin-right: auto;' >
-									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;color: #50C1E9; text-shadow: none;'>$row[2]</h4></div>
+									<div class='card-body' style='padding: 10px;'><h4 style='margin: 0px;color: #50C1E9; text-shadow: none;'>$row[1]</h4></div>
 									<hr style='margin: 0px;'>
 									<div class='' style='width: 100%;'>
-										<div class='card-body' style='padding: 10px;'><b>Start Time :</b> $row[5]</div>
-										<div class='card-body' style='padding: 10px;'><b>End Time : </b> $row[6] </div>
-										<div class='card-body' style='padding: 10px;'><b>Questions : </b> $row[4] </div>
+										<div class='card-body' style='padding: 10px;'><b>Start Date :</b> $row[2]</div>
+										<div class='card-body' style='padding: 10px;'><b>Duration : </b> $row[3] </div>
+										<div class='card-body' style='padding: 10px;'><b>Total Questions : </b> $row[4] </div>
 
 									</div>
 									<div style='padding: 15px; text-align: center; margin-right: 20px;'>
@@ -176,7 +173,7 @@
 										<div class='clearfix'></div>
 									</div>
 								</div>
-								</form>";
+								";
 
 							}
 							else
@@ -184,14 +181,19 @@
 								echo "<div class='card-body' style='padding: 10px;'><h6 style='margin: 0px;'>NO TEST CREATED BY YOU TILL NOW</h6></div>";
 							}
 				?>
+				</form>
 				<?php
 				if(isset($_POST["delete"]))
 				{
 					$confrm="Test Deleted !!";
 					$id=$_POST["delete"];
-					$query=mysqli_query($con,"delete from tests where test_id='$id'");
-					$query1=mysqli_query($con,"delete from questions where test_id='$id'");
-					if($query && $query1)
+					echo $id;
+					$query3=mysqli_query($con,"delete from useranswer where test_id='$id'");
+					$query2=mysqli_query($con,"delete from result where test_id='$id'");
+					$query1=mysqli_query($con,"delete from ques_link where test_id='$id'");
+					$query=mysqli_query($con,"delete from test where test_id='$id'");
+					
+					if($query && $query1 && $query2)
 					{
 						echo "<script type='text/javascript'>alert('$confrm');</script>";
 						echo("<script>location.href = '".delete_test.".php';</script>");
